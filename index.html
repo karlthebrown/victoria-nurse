@@ -14,15 +14,16 @@
       --teal-500:#10afa0; /* primary */
       --teal-600:#0e998c;
       --teal-700:#0b7f74;
+      --slate-800:#1f2937;
       --slate-700:#334155;
       --slate-600:#475569;
       --slate-500:#64748b;
-      --accent:#ff6b57; /* warm coral for contrast */
+      --accent:#ff6b57; /* coral */
       --bg:#ffffff;
       --muted:#f8fafc;
-      --ring-shadow: 0 0 0 4px rgba(16,175,160,.12);
       --gradient: linear-gradient(135deg, var(--teal-500), #3aa9ff);
       --gradient-2: linear-gradient(135deg, var(--teal-500), #4cc0ff);
+      --ring-shadow: 0 0 0 4px rgba(16,175,160,.12);
     }
 
     *{box-sizing:border-box}
@@ -38,88 +39,57 @@
       position:relative;
       min-height:100dvh;
       width:100%;
-      display:grid;
-      place-items:center;
       overflow:hidden;
       color:#0b3a3a;
+      cursor:pointer; /* tap anywhere to continue */
     }
     .hero__bg{
       position:absolute; inset:0;
-      background:
-        radial-gradient(1200px 600px at 50% 110%, #e8fbff 0%, rgba(255,255,255,0.9) 50%, #ffffff 80%),
-        url('https://images.unsplash.com/photo-1576765608610-8e5f244f6f87?q=80&w=1600&auto=format&fit=crop') center/cover no-repeat;
-      filter:saturate(1.05) contrast(1.02);
+      background: url('./assets/nurse-hero.jpg') center/cover no-repeat; /* full-page image from assets folder */
     }
-    .hero__scrim{
+    .hero__overlay{
       position:absolute; inset:0;
-      background:linear-gradient(to top, rgba(255,255,255,.9) 0%, rgba(255,255,255,.2) 60%, rgba(255,255,255,0) 100%);
+      background: linear-gradient(to bottom, rgba(0,0,0,.35) 0%, rgba(0,0,0,.15) 40%, rgba(0,0,0,.45) 100%);
     }
-    .hero__card{
-      position:relative; z-index:2; text-align:center; padding:2rem;
-      backdrop-filter: blur(2px);
+    .hero__content{
+      position:relative; z-index:2;
+      height:100%; width:100%;
+      display:grid; place-items:center;
+      text-align:center; padding:2rem;
     }
     .logo{
-      width:76px; height:76px; margin:0 auto 1rem auto;
-      background: var(--gradient);
-      border-radius:20px;
+      width:80px; height:80px; margin:0 auto 1rem auto;
+      background: #fff;
+      border-radius: 22px;
       display:grid; place-items:center;
-      box-shadow: 0 10px 30px rgba(16,175,160,.25);
+      box-shadow: 0 10px 30px rgba(0,0,0,.25), inset 0 0 0 8px rgba(16,175,160,.15);
     }
-    .logo svg{width:40px; height:40px; color:#fff}
+    .logo svg{width:42px; height:42px; color: var(--teal-600)}
     .tagline{
-      margin:0.35rem 0 0.2rem 0;
+      margin:.35rem 0 .25rem 0;
       font-size: clamp(1.7rem, 2.2vw + 1rem, 2.6rem);
       font-weight:800;
       line-height:1.15;
+      color:#fff;
     }
     .tagline .care{
       background: var(--gradient); -webkit-background-clip:text; background-clip:text; color:transparent;
+      text-shadow: 0 0 0 rgba(0,0,0,0); /* keep crisp */
     }
-    .tagline .stay{
-      color: var(--accent);
-    }
+    .tagline .stay{ color: var(--accent); }
     .subline{
-      max-width: 42rem;
-      margin: .5rem auto 1.25rem;
+      max-width: 44rem;
+      margin:.5rem auto 0;
       font-size: clamp(1rem, .6vw + .8rem, 1.15rem);
-      color: var(--slate-600);
-    }
-    .btn{
-      display:inline-block;
-      padding: .9rem 1.25rem;
-      border-radius: 999px;
-      border: 0;
-      background: var(--gradient);
-      color:#fff; font-weight:700;
-      letter-spacing:.2px;
-      box-shadow: 0 10px 24px rgba(58,169,255,.25), 0 6px 14px rgba(16,175,160,.28);
-      cursor:pointer;
-      transition: transform .12s ease, box-shadow .12s ease, opacity .12s ease;
-    }
-    .btn:hover{ transform: translateY(-1px); }
-    .btn:active{ transform: translateY(0);}
-    .hero__pulse{
-      position:absolute; left:0; right:0; bottom:2rem; height:56px; opacity:.7;
-      background:
-        linear-gradient(to right, transparent 0%, rgba(16,175,160,.1) 15%, rgba(16,175,160,.1) 85%, transparent 100%);
-      mask: radial-gradient(80% 60% at 50% 50%, #000 60%, transparent 61%);
-    }
-    .hero__pulse::after{
-      content:"";
-      position:absolute; inset-inline:4vw; top:20px; height:2px; border-radius:2px;
-      background: var(--teal-200);
-      box-shadow: 0 1px 0 rgba(16,175,160,.25);
-      /* heartbeat line */
-      -webkit-mask:
-        linear-gradient(#000 0 0) center/100% 100% no-repeat,
-        radial-gradient(14px 10px at 25% 50%, #000 98%, transparent 100%) no-repeat;
+      color: #f3f4f6;
+      text-wrap: balance;
     }
 
     /* ---------- App Shell ---------- */
     .app{
       padding: 2rem clamp(1rem, 3vw, 2rem);
       max-width: 1100px;
-      margin: 0 auto 5rem;
+      margin: 0 auto 4rem;
     }
     .tabs{
       display:flex; gap:.5rem; flex-wrap:wrap; align-items:center; margin-bottom:1rem;
@@ -146,7 +116,6 @@
       box-shadow: 0 10px 28px rgba(2,8,23,.03);
     }
 
-    /* ---------- Form ---------- */
     form{ display:grid; gap:1rem;}
     .grid{ display:grid; gap:1rem;}
     .cols-2{ grid-template-columns: repeat(2, minmax(0,1fr));}
@@ -166,7 +135,7 @@
       border-radius: 12px;
       border:1.5px solid #e7eef7;
       background:#fff;
-      color: var(--slate-700);
+      color: var(--slate-800); /* complement theme */
       outline:none;
       transition: border-color .15s ease, box-shadow .15s ease, background .15s ease;
       box-shadow: inset 0 0 0 0 rgba(0,0,0,0);
@@ -178,12 +147,11 @@
       border-color: transparent;
       box-shadow:
         var(--ring-shadow),
-        0 0 0 1.5px var(--teal-500),
-        0 0 0 1.5px color(display-p3 0.09 0.6 0.56);
+        0 0 0 1.5px var(--teal-500);
     }
 
-    /* Teal-green styling for Time dropdown and Week-of calendar */
-    select.time, input.weekof{
+    /* Teal styling for Time and Week-of */
+    .teal-input{
       border-color: var(--teal-300);
       color: var(--teal-700);
       background:
@@ -191,36 +159,92 @@
         linear-gradient(135deg, var(--teal-300), var(--teal-500)) border-box;
       border:1.5px solid transparent;
     }
-    select.time:focus, input.weekof:focus{
+    .teal-input:focus{
       box-shadow: var(--ring-shadow), 0 0 0 1.5px var(--teal-500);
     }
 
     .actions{
       display:flex; gap:.75rem; flex-wrap:wrap; justify-content:flex-end; margin-top:.5rem;
     }
-    .btn-ghost{
-      background:var(--muted); color: var(--slate-700); border:1px solid #e6eef5;
-      box-shadow:none;
+    .btn{
+      display:inline-block;
+      padding: .85rem 1.1rem;
+      border-radius: 12px;
+      border: 0;
+      background: var(--gradient);
+      color:#fff; font-weight:700; letter-spacing:.2px;
+      box-shadow: 0 10px 24px rgba(58,169,255,.25), 0 6px 14px rgba(16,175,160,.28);
+      cursor:pointer;
+      transition: transform .12s ease, box-shadow .12s ease, opacity .12s ease;
     }
-    .btn-primary{ background: var(--gradient); color:#fff; border:0; }
+    .btn:hover{ transform: translateY(-1px); }
+    .btn:active{ transform: translateY(0);}
+    .btn-ghost{
+      background:var(--muted); color: var(--slate-700); border:1px solid #e6eef5; box-shadow:none;
+    }
     .btn-accent{ background: linear-gradient(135deg, var(--accent), #ff9a8c); color:#fff; }
 
-    /* Helper badges / section titles */
     .section-title{
       margin: .25rem 0 .75rem; font-size:1.05rem; font-weight:800; color: var(--teal-700);
+    }
+
+    footer{
+      padding: 1.25rem;
+      text-align:center;
+      color: var(--slate-600);
+      border-top:1px solid #eef2f7;
+      background:#fff;
+    }
+    footer .mini-logo{
+      display:inline-grid; place-items:center; width:22px; height:22px; border-radius:6px; background: var(--gradient); margin-right:.4rem;
+    }
+    footer .mini-logo svg{ width:14px; height:14px; color:#fff; }
+
+    /* ---------- Printable PDF styles ---------- */
+    @media print{
+      .no-print{ display:none !important; }
+      .print-page{
+        padding: 24px;
+        font-size: 12pt;
+      }
+      .print-header{
+        display:flex; align-items:center; gap:12px; margin-bottom:10px;
+      }
+      .print-logo{
+        width:42px; height:42px; border-radius:10px; background: var(--gradient); display:grid; place-items:center;
+      }
+      .print-logo svg{ width:26px; height:26px; color:#fff; }
+      .print-title{
+        font-weight:800; font-size:16pt; color: var(--slate-800);
+      }
+      .print-sub{
+        color: var(--slate-600); margin-top:2px; font-size: 11pt;
+      }
+      .print-table{
+        width:100%; border-collapse:collapse; margin-top:14px;
+      }
+      .print-table th, .print-table td{
+        border:1px solid #e5e7eb; padding:8px 10px; text-align:left;
+      }
+      .print-section{
+        margin-top:16px; font-weight:800; color: var(--teal-700);
+      }
+      .print-footer{
+        margin-top:18px; font-size:10pt; color: var(--slate-600);
+      }
     }
   </style>
 </head>
 <body>
 
   <!-- ==================== Landing ==================== -->
-  <section class="hero" id="home">
+  <section class="hero" id="home" title="Tap to start">
     <div class="hero__bg" aria-hidden="true"></div>
-    <div class="hero__scrim" aria-hidden="true"></div>
+    <div class="hero__overlay" aria-hidden="true"></div>
 
-    <div class="hero__card">
+    <div class="hero__content">
       <div class="logo" aria-hidden="true">
-        <!-- simple nurse cross icon -->
+        <!-- app cross logo -->
         <svg viewBox="0 0 24 24" fill="none">
           <path d="M5 8.5C5 6.6 6.6 5 8.5 5h7A3.5 3.5 0 0 1 19 8.5V19a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V8.5Z" stroke="currentColor" stroke-width="1.6"/>
           <path d="M12 8v3M10.5 9.5h3" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
@@ -235,39 +259,35 @@
       <p class="subline">
         Share your vitals with family, because health is strongest when we stay together.
       </p>
-
-      <button class="btn" id="startBtn">Start</button>
     </div>
-
-    <div class="hero__pulse" aria-hidden="true"></div>
   </section>
 
   <!-- ==================== App ==================== -->
   <main class="app" id="app" hidden>
     <div class="tabs" role="tablist" aria-label="Victoria Nurse Sections">
       <button class="tab" role="tab" aria-selected="true" aria-controls="panel-patient" id="tab-patient">Patient Information</button>
-      <button class="tab" role="tab" aria-selected="false" aria-controls="panel-vitals" id="tab-vitals">Nurse Vital Signs</button>
+      <button class="tab" role="tab" aria-selected="false" aria-controls="panel-vitals" id="tab-vitals">Patient Vital Signs</button>
     </div>
 
-    <!-- Patient Information (includes WhatsApp recipient + nurse names) -->
+    <!-- Patient Information -->
     <section class="card" role="tabpanel" id="panel-patient" aria-labelledby="tab-patient">
       <h3 class="section-title">Patient Information</h3>
       <form id="patientForm" autocomplete="on">
         <div class="grid cols-2">
           <div>
             <label for="nurseFirst">Nurse First Name</label>
-            <input id="nurseFirst" name="nurseFirst" placeholder="e.g., Ama" required />
+            <input id="nurseFirst" name="nurseFirst" placeholder="e.g., Ama" />
           </div>
           <div>
             <label for="nurseLast">Nurse Last Name</label>
-            <input id="nurseLast" name="nurseLast" placeholder="e.g., Mensah" required />
+            <input id="nurseLast" name="nurseLast" placeholder="e.g., Mensah" />
           </div>
         </div>
 
         <div class="grid cols-2">
           <div>
             <label for="patientName">Patient Name</label>
-            <input id="patientName" name="patientName" placeholder="e.g., Kofi Asare" required />
+            <input id="patientName" name="patientName" placeholder="e.g., Kofi Asare" />
           </div>
           <div>
             <label for="whatsappPatient">Recipient WhatsApp Number (with country code)</label>
@@ -293,20 +313,15 @@
           </div>
           <div>
             <label for="weekOf">Week of</label>
-            <input id="weekOf" class="weekof" name="weekOf" type="date" />
+            <input id="weekOf" class="teal-input" name="weekOf" type="date" />
           </div>
         </div>
 
         <div class="grid cols-3">
           <div>
             <label for="timeOfDay">Time</label>
-            <select id="timeOfDay" class="time" name="timeOfDay">
-              <option value="">Select…</option>
-              <option>Morning</option>
-              <option>Afternoon</option>
-              <option>Evening</option>
-              <option>Night</option>
-            </select>
+            <input id="timeOfDay" class="teal-input" name="timeOfDay" type="time" readonly />
+            <div class="hint">Auto-filled when entering vitals.</div>
           </div>
           <div>
             <label for="mrn">Medical Record No. (optional)</label>
@@ -319,28 +334,25 @@
         </div>
 
         <div class="actions">
-          <button type="button" class="btn btn-ghost" id="toVitals">Go to Vital Signs</button>
-          <button class="btn btn-primary" type="submit">Save Patient Info</button>
+          <button type="button" class="btn btn-ghost" id="toVitals">Go to Patient Vital Signs</button>
+          <!-- Save removed per requirement -->
         </div>
       </form>
     </section>
 
-    <!-- Nurse Vital Signs (with WhatsApp recipient) -->
+    <!-- Patient Vital Signs -->
     <section class="card" role="tabpanel" id="panel-vitals" aria-labelledby="tab-vitals" hidden>
-      <h3 class="section-title">Nurse Vital Signs</h3>
+      <h3 class="section-title">Patient Vital Signs</h3>
       <form id="vitalsForm" autocomplete="on">
         <div class="grid cols-3">
           <div>
             <label for="vdate">Date</label>
-            <input id="vdate" name="vdate" type="date" />
+            <input id="vdate" name="vdate" type="date" class="teal-input" />
           </div>
           <div>
-            <label for="vtime" >Time</label>
-            <select id="vtime" class="time" name="vtime">
-              <option value="">Select…</option>
-              <option>AM</option>
-              <option>PM</option>
-            </select>
+            <label for="vtime">Time</label>
+            <input id="vtime" name="vtime" type="time" class="teal-input" readonly />
+            <div class="hint">Auto-set to current time.</div>
           </div>
           <div>
             <label for="whatsappVitals">Recipient WhatsApp Number (with country code)</label>
@@ -379,36 +391,68 @@
           </div>
         </div>
 
-        <div>
-          <label for="notes">Notes</label>
-          <textarea id="notes" name="notes" placeholder="Observations, medications, symptoms…"></textarea>
+        <!-- NEW: Blood sugar -->
+        <div class="grid cols-3">
+          <div>
+            <label for="glucose">Blood Sugar (mg/dL)</label>
+            <input id="glucose" name="glucose" type="number" min="0" placeholder="e.g., 95" />
+          </div>
+          <div>
+            <label for="weight">Weight (kg) (optional)</label>
+            <input id="weight" name="weight" type="number" step="0.1" placeholder="e.g., 72.5" />
+          </div>
+          <div>
+            <label for="notes">Notes</label>
+            <input id="notes" name="notes" placeholder="Observations, medications..." />
+          </div>
         </div>
 
         <div class="actions">
           <button type="button" class="btn btn-ghost" id="toPatient">Back to Patient Info</button>
-          <button class="btn btn-accent" type="submit">Save Vital Signs</button>
+
+          <!-- Share & PDF actions -->
+          <button type="button" class="btn" id="shareWhatsApp">Share via WhatsApp</button>
+          <button type="button" class="btn" id="shareEmail">Share via Email</button>
+          <button type="button" class="btn btn-accent" id="downloadPdf">Download PDF</button>
+          <!-- Save buttons removed per requirement -->
         </div>
       </form>
     </section>
   </main>
 
-  <script>
-    // Smooth enter into app
-    const startBtn = document.getElementById('startBtn');
-    const appEl   = document.getElementById('app');
-    startBtn?.addEventListener('click', () => {
-      appEl.hidden = false;
-      document.getElementById('tab-patient').setAttribute('aria-selected','true');
-      document.getElementById('panel-patient').hidden = false;
-      document.getElementById('panel-patient').scrollIntoView({behavior:'smooth', block:'start'});
-    });
+  <footer class="no-print">
+    <div>
+      <span class="mini-logo" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none">
+          <path d="M5 8.5C5 6.6 6.6 5 8.5 5h7A3.5 3.5 0 0 1 19 8.5V19a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V8.5Z" stroke="currentColor" stroke-width="1.6"/>
+          <path d="M12 8v3M10.5 9.5h3" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+        </svg>
+      </span>
+      <strong>Victoria Nurse</strong> — Care Together. Stay Together.
+    </div>
+    <div style="margin-top:6px;">Developed by Karl Brown</div>
+  </footer>
 
-    // Tabs toggle
+  <script>
+    // Elements
+    const hero = document.getElementById('home');
+    const appEl = document.getElementById('app');
     const tabPatient = document.getElementById('tab-patient');
     const tabVitals  = document.getElementById('tab-vitals');
     const panelPatient = document.getElementById('panel-patient');
     const panelVitals  = document.getElementById('panel-vitals');
 
+    const patientForm = document.getElementById('patientForm');
+    const vitalsForm  = document.getElementById('vitalsForm');
+
+    // Tap anywhere on landing to proceed
+    hero.addEventListener('click', () => {
+      appEl.hidden = false;
+      selectTab('patient');
+      panelPatient.scrollIntoView({behavior:'smooth', block:'start'});
+    }, {passive:true});
+
+    // Tabs
     function selectTab(which){
       const isPatient = which === 'patient';
       tabPatient.setAttribute('aria-selected', String(isPatient));
@@ -423,15 +467,184 @@
     document.getElementById('toVitals')?.addEventListener('click', ()=>{ selectTab('vitals'); panelVitals.scrollIntoView({behavior:'smooth'}); });
     document.getElementById('toPatient')?.addEventListener('click', ()=>{ selectTab('patient'); panelPatient.scrollIntoView({behavior:'smooth'}); });
 
-    // Simple form handlers (replace with real persistence/share later)
-    document.getElementById('patientForm')?.addEventListener('submit', (e)=>{
-      e.preventDefault();
-      alert('Patient information saved.');
+    // Auto-set current date & time when focusing vitals section
+    function setNowToInputs(){
+      const now = new Date();
+      const pad = n => String(n).padStart(2,'0');
+      const d = `${now.getFullYear()}-${pad(now.getMonth()+1)}-${pad(now.getDate())}`;
+      const t = `${pad(now.getHours())}:${pad(now.getMinutes())}`;
+      const vdate = document.getElementById('vdate');
+      const vtime = document.getElementById('vtime');
+      const timeOfDay = document.getElementById('timeOfDay');
+      if(vdate && !vdate.value) vdate.value = d;
+      if(vtime) vtime.value = t;                 // auto, read-only
+      if(timeOfDay) timeOfDay.value = t;         // mirrors on patient form (read-only)
+    }
+    // Set on tab open and when entering vitals form
+    tabVitals.addEventListener('click', setNowToInputs);
+    panelVitals.addEventListener('transitionend', setNowToInputs);
+    // Also set on load
+    setNowToInputs();
+
+    // ===== Share helpers =====
+    function gatherData(){
+      const data = {
+        nurseFirst: document.getElementById('nurseFirst')?.value?.trim() || '',
+        nurseLast:  document.getElementById('nurseLast')?.value?.trim() || '',
+        patientName:document.getElementById('patientName')?.value?.trim() || '',
+        whatsappPatient:document.getElementById('whatsappPatient')?.value?.trim() || '',
+        weekOf: document.getElementById('weekOf')?.value || '',
+        timeOfDay: document.getElementById('timeOfDay')?.value || '',
+        mrn: document.getElementById('mrn')?.value?.trim() || '',
+        allergies: document.getElementById('allergies')?.value?.trim() || '',
+        vdate: document.getElementById('vdate')?.value || '',
+        vtime: document.getElementById('vtime')?.value || '',
+        hr: document.getElementById('hr')?.value || '',
+        bpSys: document.getElementById('bpSys')?.value || '',
+        bpDia: document.getElementById('bpDia')?.value || '',
+        temp: document.getElementById('temp')?.value || '',
+        resp: document.getElementById('resp')?.value || '',
+        spo2: document.getElementById('spo2')?.value || '',
+        glucose: document.getElementById('glucose')?.value || '',
+        weight: document.getElementById('weight')?.value || '',
+        notes: document.getElementById('notes')?.value?.trim() || '',
+      };
+      data.nurseFull = [data.nurseFirst, data.nurseLast].filter(Boolean).join(' ');
+      return data;
+    }
+
+    function buildShareText(d){
+      const lines = [
+        'Victoria Nurse — Care Together. Stay Together.',
+        'Share your vitals with family, because health is strongest when we stay together.',
+        '',
+        `Nurse: ${d.nurseFull || '—'}`,
+        `Patient: ${d.patientName || '—'}`,
+        `Date/Time: ${d.vdate || '—'} ${d.vtime || ''}`,
+        '',
+        `Heart Rate: ${d.hr || '—'} bpm`,
+        `Blood Pressure: ${d.bpSys || '—'}/${d.bpDia || '—'} mmHg`,
+        `Temperature: ${d.temp || '—'} °C`,
+        `Respiratory Rate: ${d.resp || '—'} /min`,
+        `SpO₂: ${d.spo2 || '—'} %`,
+        `Blood Sugar: ${d.glucose || '—'} mg/dL`,
+        d.weight ? `Weight: ${d.weight} kg` : null,
+        d.allergies ? `Allergies: ${d.allergies}` : null,
+        d.mrn ? `MRN: ${d.mrn}` : null,
+        d.notes ? `Notes: ${d.notes}` : null
+      ].filter(Boolean);
+      return lines.join('\n');
+    }
+
+    // WhatsApp share
+    document.getElementById('shareWhatsApp')?.addEventListener('click', ()=>{
+      const d = gatherData();
+      const text = buildShareText(d);
+      const phone = (d.whatsappPatient || '').replace(/[^\d+]/g,'');
+      const base = phone ? `https://wa.me/${encodeURIComponent(phone)}` : 'https://wa.me/';
+      const url = `${base}?text=${encodeURIComponent(text)}`;
+      window.open(url, '_blank');
     });
-    document.getElementById('vitalsForm')?.addEventListener('submit', (e)=>{
-      e.preventDefault();
-      alert('Vital signs saved.');
+
+    // Email share (mailto body). For PDF, user can click "Download PDF" then attach.
+    document.getElementById('shareEmail')?.addEventListener('click', ()=>{
+      const d = gatherData();
+      const subject = encodeURIComponent(`Patient Vitals — ${d.patientName || 'Unknown'} (${d.vdate || ''} ${d.vtime || ''})`);
+      const body = encodeURIComponent(buildShareText(d) + '\n\n(Attach the generated PDF if available.)');
+      window.location.href = `mailto:?subject=${subject}&body=${body}`;
     });
+
+    // Generate printable PDF page with logo + taglines, then prompt browser Print (user can "Save as PDF")
+    document.getElementById('downloadPdf')?.addEventListener('click', ()=>{
+      const d = gatherData();
+      const html = `
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>Patient Vitals PDF</title>
+  <style>
+    :root{
+      --teal:#10afa0; --teal2:#3aa9ff; --accent:#ff6b57;
+      --grad: linear-gradient(135deg, var(--teal), var(--teal2));
+      --text:#1f2937; --muted:#475569;
+    }
+    body{ font-family: system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Ubuntu, "Noto Sans", sans-serif; margin:24px; color:var(--text); }
+    .print-header{ display:flex; align-items:center; gap:12px; margin-bottom:6px; }
+    .print-logo{ width:48px; height:48px; border-radius:12px; background: var(--grad); display:grid; place-items:center; }
+    .print-logo svg{ width:28px; height:28px; color:#fff; }
+    .title{ font-size:20px; font-weight:800; }
+    .tagline{ font-size:14px; color:var(--muted); margin-top:2px; }
+    .care{ background: var(--grad); -webkit-background-clip:text; background-clip:text; color:transparent; }
+    .stay{ color: var(--accent); }
+    .section{ margin-top:14px; font-weight:800; color:#0b7f74; }
+    table{ width:100%; border-collapse:collapse; margin-top:8px; }
+    th,td{ border:1px solid #e5e7eb; padding:8px 10px; text-align:left; font-size:13px; }
+    .footer{ margin-top:14px; color:#475569; font-size:12px; }
+  </style>
+</head>
+<body>
+  <div class="print-header">
+    <div class="print-logo">
+      <svg viewBox="0 0 24 24" fill="none">
+        <path d="M5 8.5C5 6.6 6.6 5 8.5 5h7A3.5 3.5 0 0 1 19 8.5V19a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V8.5Z" stroke="currentColor" stroke-width="1.6"/>
+        <path d="M12 8v3M10.5 9.5h3" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+      </svg>
+    </div>
+    <div>
+      <div class="title">Victoria Nurse — Patient Vital Signs</div>
+      <div class="tagline"><span class="care">Care Together.</span> <span class="stay">Stay Together.</span></div>
+      <div class="tagline">Share your vitals with family, because health is strongest when we stay together.</div>
+    </div>
+  </div>
+
+  <div class="section">Patient & Nurse</div>
+  <table>
+    <tr><th>Nurse</th><td>${escapeHtml(d.nurseFull || '—')}</td></tr>
+    <tr><th>Patient</th><td>${escapeHtml(d.patientName || '—')}</td></tr>
+    <tr><th>Date</th><td>${escapeHtml(d.vdate || '—')}</td></tr>
+    <tr><th>Time</th><td>${escapeHtml(d.vtime || '—')}</td></tr>
+    ${d.mrn ? `<tr><th>MRN</th><td>${escapeHtml(d.mrn)}</td></tr>` : ''}
+  </table>
+
+  <div class="section">Vital Signs</div>
+  <table>
+    <tr><th>Heart Rate</th><td>${escapeHtml(d.hr || '—')} bpm</td></tr>
+    <tr><th>Blood Pressure</th><td>${escapeHtml(d.bpSys || '—')}/${escapeHtml(d.bpDia || '—')} mmHg</td></tr>
+    <tr><th>Temperature</th><td>${escapeHtml(d.temp || '—')} °C</td></tr>
+    <tr><th>Respiratory Rate</th><td>${escapeHtml(d.resp || '—')} /min</td></tr>
+    <tr><th>SpO₂</th><td>${escapeHtml(d.spo2 || '—')} %</td></tr>
+    <tr><th>Blood Sugar</th><td>${escapeHtml(d.glucose || '—')} mg/dL</td></tr>
+    ${d.weight ? `<tr><th>Weight</th><td>${escapeHtml(d.weight)} kg</td></tr>` : ''}
+  </table>
+
+  ${d.allergies || d.notes ? `
+  <div class="section">Notes</div>
+  <table>
+    ${d.allergies ? `<tr><th>Allergies</th><td>${escapeHtml(d.allergies)}</td></tr>` : ''}
+    ${d.notes ? `<tr><th>Observations</th><td>${escapeHtml(d.notes)}</td></tr>` : ''}
+  </table>` : ''}
+
+  <div class="footer">Generated by Victoria Nurse • Developed by Karl Brown</div>
+
+  <script>
+    function escapeHtml(s){return String(s).replace(/[&<>"]/g,c=>({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));}
+    window.addEventListener('load', ()=> { window.print(); });
+  </script>
+</body>
+</html>`;
+      const pdfWin = window.open('', '_blank');
+      pdfWin.document.open();
+      pdfWin.document.write(html.replace('escapeHtml', escapeHtml.toString()));
+      pdfWin.document.close();
+    });
+
+    // Escape helper for PDF content
+    function escapeHtml(s){return String(s).replace(/[&<>"]/g,c=>({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));}
+
+    // Prevent default submits (no saving)
+    patientForm?.addEventListener('submit', (e)=> e.preventDefault());
+    vitalsForm?.addEventListener('submit', (e)=> e.preventDefault());
   </script>
 </body>
 </html>
