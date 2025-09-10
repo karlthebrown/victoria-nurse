@@ -1,7 +1,7 @@
 // service-worker.js
-const CACHE_NAME = 'victoria-nurse-v6';
+const CACHE_NAME = 'victoria-nurse-v7';
 const ASSETS = [
-  '/',              // adjust if hosted under a subpath
+  '/',                  // adjust if hosted under a subpath
   '/index.html',
   '/assets/nurse-hero.jpg',
   // add other static files if split: '/styles.css', '/app.js', '/favicon.ico', '/manifest.webmanifest'
@@ -9,7 +9,7 @@ const ASSETS = [
 
 self.addEventListener('install', (evt) => {
   self.skipWaiting();
-  evt.waitUntil(caches.open(CACHE_NAME).then((cache) => cache.addAll(ASSETS)));
+  evt.waitUntil(caches.open(CACHE_NAME).then((c) => c.addAll(ASSETS)));
 });
 
 self.addEventListener('activate', (evt) => {
@@ -20,8 +20,8 @@ self.addEventListener('activate', (evt) => {
   );
 });
 
-// Navigation: network-first with index.html fallback
-// Assets in ASSETS: cache-first
+// Navigations: network-first (fresh HTML), fallback to cached index
+// Static ASSETS: cache-first
 // Others: cache, else network
 self.addEventListener('fetch', (evt) => {
   const req = evt.request;
@@ -40,3 +40,4 @@ self.addEventListener('fetch', (evt) => {
 
   evt.respondWith(caches.match(req).then((cached) => cached || fetch(req)));
 });
+
