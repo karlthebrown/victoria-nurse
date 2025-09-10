@@ -1,3 +1,4 @@
+<!-- index.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -191,10 +192,7 @@
     }
     footer .mini-logo svg{ width:14px; height:14px; color:#fff; }
 
-    /* Print styles used in generated PDF window */
-    @media print{
-      .no-print{ display:none !important; }
-    }
+    @media print{ .no-print{ display:none !important; } }
   </style>
 </head>
 <body>
@@ -433,7 +431,6 @@
       setNow();
       timestampSet = true;
     }
-    // First interaction within vitals sets the time if not set
     document.getElementById('vitalsForm')?.addEventListener('focusin', initTimestampOnce);
 
     // ---------- Share helpers ----------
@@ -443,6 +440,7 @@
         nurseLast:  document.getElementById('nurseLast')?.value?.trim() || '',
         patientName:document.getElementById('patientName')?.value?.trim() || '',
         whatsappPatient:document.getElementById('whatsappPatient')?.value?.trim() || '',
+        whatsappVitals:document.getElementById('whatsappVitals')?.value?.trim() || '',
         weekOf: document.getElementById('weekOf')?.value || '',
         timeOfDay: document.getElementById('timeOfDay')?.value || '',
         mrn: document.getElementById('mrn')?.value?.trim() || '',
@@ -588,7 +586,7 @@
     document.getElementById('patientForm')?.addEventListener('submit', (e)=> e.preventDefault());
     document.getElementById('vitalsForm')?.addEventListener('submit', (e)=> e.preventDefault());
 
-    // ---------- Service worker registration (ensure file path matches your deploy) ----------
+    // ---------- Service worker registration ----------
     if ('serviceWorker' in navigator) {
       window.addEventListener('load', () => {
         navigator.serviceWorker.register('/service-worker.js?v=6', { scope: '/' })
