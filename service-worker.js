@@ -1,46 +1,54 @@
-// Victoria Nurse – Service Worker (GitHub Pages scope-aware)
-const CACHE_NAME = 'victoria-nurse-v4';
-const BASE = '/victoria-nurse/';
-
+// sw.js
+const CACHE_NAME = 'victoria-nurse-v5';
 const ASSETS = [
-  BASE,
-  BASE + 'index.html',
-  BASE + 'manifest.webmanifest',
-  BASE + 'icons/icon-192.png',
-  BASE + 'icons/icon-512.png'
+  '/',              // SPA entry
+  '/index.html',
+  '/assets/nurse-hero.jpg',
+  // add other static files if you split CSS/JS: '/styles.css', '/app.js', etc.
 ];
 
-self.addEventListener('install', (event) => {
-  event.waitUntil(
-    caches.open(CACHE_NAME).then((cache) => cache.addAll(ASSETS)).then(() => self.skipWaiting())
+self.addEventListener('install', (evt) => {
+  self.skipWaiting();
+  evt.waitUntil(
+    caches.open(CACHE_NAME).then((cache) => cache.addAll(ASSETS))
   );
 });
 
-self.addEventListener('activate', (event) => {
-  event.waitUntil(
+self.addEventListener('activate', (evt) => {
+  evt.waitUntil(
     caches.keys().then((keys) =>
-      Promise.all(keys.map((k) => (k === CACHE_NAME ? null : caches.delete(k))))
+      Promise.all(keys.filter((k) => k !== CACHE_NAME).map((k) => caches.delete(k)))
     ).then(() => self.clients.claim())
   );
 });
 
-self.addEventListener('fetch', (event) => {
-  const req = event.request;
+// Strategy:
+// - Navigation requests: network-first, fallback to cached index.html (keeps app fresh)
+// - Static assets in ASSETS: cache-first
+// - Everything else: try cache, else network
+self.addEventListener('fetch', (evt) => {
+  const req = evt.request;
+
+  // SPA navigations (address bar/links)
+  if (req.mode === 'navigate') {
+    evt.respondWith(
+      fetch(req).catch(() => caches.match('/index.html'))
+    );
+    return;
+  }
+
+  // Cache-first for known static assets
   const url = new URL(req.url);
-  const inScope = url.origin === self.location.origin && url.pathname.startsWith(BASE);
-  if (req.method !== 'GET' || !inScope) return;
-  event.respondWith(
-    caches.match(req).then((cached) => {
-      if (cached) return cached;
-      return fetch(req).then((res) => {
-        const clone = res.clone();
-        caches.open(CACHE_NAME).then((cache) => cache.put(req, clone));
-        return res;
-      }).catch(() => {
-        if (req.headers.get('accept')?.includes('text/html')) {
-          return caches.match(BASE + 'index.html');
-        }
-      });
-    })
+  const isStatic = ASSETS.some((p) => url.pathname === p);
+  if (isStatic) {
+    evt.respondWith(
+      caches.match(req).then((cached) => cached || fetch(req))
+    );
+    return;
+  }
+
+  // Default: try cache, else network
+  evt.respondWith(
+    caches.match(req).then((cached) => cached || fetch(req))
   );
 });
