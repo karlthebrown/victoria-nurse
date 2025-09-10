@@ -7,23 +7,21 @@
   <style>
     :root{
       --teal-50:#e6f7f6;
-      --teal-100:#c9efec;
       --teal-200:#92dfd9;
       --teal-300:#5ecfc6;
-      --teal-400:#31bfb3;
-      --teal-500:#10afa0; /* primary */
+      --teal-500:#10afa0;
       --teal-600:#0e998c;
       --teal-700:#0b7f74;
+      --blue-400:#3aa9ff;
       --slate-800:#1f2937;
       --slate-700:#334155;
       --slate-600:#475569;
       --slate-500:#64748b;
-      --accent:#ff6b57; /* coral */
+      --accent:#ff6b57;
       --bg:#ffffff;
       --muted:#f8fafc;
-      --gradient: linear-gradient(135deg, var(--teal-500), #3aa9ff);
-      --gradient-2: linear-gradient(135deg, var(--teal-500), #4cc0ff);
-      --ring-shadow: 0 0 0 4px rgba(16,175,160,.12);
+      --grad: linear-gradient(135deg, var(--teal-500), var(--blue-400));
+      --ring: 0 0 0 4px rgba(16,175,160,.12);
     }
 
     *{box-sizing:border-box}
@@ -34,28 +32,28 @@
       background: var(--bg);
     }
 
-    /* ---------- Landing (hero) ---------- */
+    /* ---------- Landing ---------- */
     .hero{
       position:relative;
       min-height:100dvh;
       width:100%;
       overflow:hidden;
-      color:#0b3a3a;
       cursor:pointer; /* tap anywhere to continue */
     }
     .hero__bg{
       position:absolute; inset:0;
-      background: url('./assets/nurse-hero.jpg') center/cover no-repeat; /* full-page image from assets folder */
+      background: url('./assets/nurse-hero.jpg') center/cover no-repeat;
     }
     .hero__overlay{
       position:absolute; inset:0;
       background: linear-gradient(to bottom, rgba(0,0,0,.35) 0%, rgba(0,0,0,.15) 40%, rgba(0,0,0,.45) 100%);
     }
     .hero__content{
-      position:relative; z-index:2;
+      position:relative; z-index:1;
       height:100%; width:100%;
       display:grid; place-items:center;
       text-align:center; padding:2rem;
+      color:#fff;
     }
     .logo{
       width:80px; height:80px; margin:0 auto 1rem auto;
@@ -73,15 +71,14 @@
       color:#fff;
     }
     .tagline .care{
-      background: var(--gradient); -webkit-background-clip:text; background-clip:text; color:transparent;
-      text-shadow: 0 0 0 rgba(0,0,0,0); /* keep crisp */
+      background: var(--grad); -webkit-background-clip:text; background-clip:text; color:transparent;
     }
     .tagline .stay{ color: var(--accent); }
     .subline{
       max-width: 44rem;
       margin:.5rem auto 0;
       font-size: clamp(1rem, .6vw + .8rem, 1.15rem);
-      color: #f3f4f6;
+      color:#f3f4f6;
       text-wrap: balance;
     }
 
@@ -104,7 +101,7 @@
       cursor:pointer;
     }
     .tab[aria-selected="true"]{
-      color:#fff; background: var(--gradient-2); border-color: transparent;
+      color:#fff; background: var(--grad); border-color: transparent;
       box-shadow: 0 6px 18px rgba(76,192,255,.25), 0 3px 10px rgba(16,175,160,.18);
     }
 
@@ -135,22 +132,19 @@
       border-radius: 12px;
       border:1.5px solid #e7eef7;
       background:#fff;
-      color: var(--slate-800); /* complement theme */
+      color: var(--slate-800);
       outline:none;
       transition: border-color .15s ease, box-shadow .15s ease, background .15s ease;
       box-shadow: inset 0 0 0 0 rgba(0,0,0,0);
     }
     textarea{ min-height:110px; resize:vertical;}
 
-    /* Focus ring in theme gradient */
     input:focus, select:focus, textarea:focus{
       border-color: transparent;
-      box-shadow:
-        var(--ring-shadow),
-        0 0 0 1.5px var(--teal-500);
+      box-shadow: var(--ring), 0 0 0 1.5px var(--teal-500);
     }
 
-    /* Teal styling for Time and Week-of */
+    /* Teal emphasis for date/time controls */
     .teal-input{
       border-color: var(--teal-300);
       color: var(--teal-700);
@@ -159,9 +153,7 @@
         linear-gradient(135deg, var(--teal-300), var(--teal-500)) border-box;
       border:1.5px solid transparent;
     }
-    .teal-input:focus{
-      box-shadow: var(--ring-shadow), 0 0 0 1.5px var(--teal-500);
-    }
+    .teal-input:focus{ box-shadow: var(--ring), 0 0 0 1.5px var(--teal-500); }
 
     .actions{
       display:flex; gap:.75rem; flex-wrap:wrap; justify-content:flex-end; margin-top:.5rem;
@@ -171,14 +163,13 @@
       padding: .85rem 1.1rem;
       border-radius: 12px;
       border: 0;
-      background: var(--gradient);
+      background: var(--grad);
       color:#fff; font-weight:700; letter-spacing:.2px;
       box-shadow: 0 10px 24px rgba(58,169,255,.25), 0 6px 14px rgba(16,175,160,.28);
       cursor:pointer;
       transition: transform .12s ease, box-shadow .12s ease, opacity .12s ease;
     }
     .btn:hover{ transform: translateY(-1px); }
-    .btn:active{ transform: translateY(0);}
     .btn-ghost{
       background:var(--muted); color: var(--slate-700); border:1px solid #e6eef5; box-shadow:none;
     }
@@ -196,52 +187,22 @@
       background:#fff;
     }
     footer .mini-logo{
-      display:inline-grid; place-items:center; width:22px; height:22px; border-radius:6px; background: var(--gradient); margin-right:.4rem;
+      display:inline-grid; place-items:center; width:22px; height:22px; border-radius:6px; background: var(--grad); margin-right:.4rem;
     }
     footer .mini-logo svg{ width:14px; height:14px; color:#fff; }
 
-    /* ---------- Printable PDF styles ---------- */
+    /* Print styles used in generated PDF window */
     @media print{
       .no-print{ display:none !important; }
-      .print-page{
-        padding: 24px;
-        font-size: 12pt;
-      }
-      .print-header{
-        display:flex; align-items:center; gap:12px; margin-bottom:10px;
-      }
-      .print-logo{
-        width:42px; height:42px; border-radius:10px; background: var(--gradient); display:grid; place-items:center;
-      }
-      .print-logo svg{ width:26px; height:26px; color:#fff; }
-      .print-title{
-        font-weight:800; font-size:16pt; color: var(--slate-800);
-      }
-      .print-sub{
-        color: var(--slate-600); margin-top:2px; font-size: 11pt;
-      }
-      .print-table{
-        width:100%; border-collapse:collapse; margin-top:14px;
-      }
-      .print-table th, .print-table td{
-        border:1px solid #e5e7eb; padding:8px 10px; text-align:left;
-      }
-      .print-section{
-        margin-top:16px; font-weight:800; color: var(--teal-700);
-      }
-      .print-footer{
-        margin-top:18px; font-size:10pt; color: var(--slate-600);
-      }
     }
   </style>
 </head>
 <body>
 
-  <!-- ==================== Landing ==================== -->
+  <!-- ============== Landing (tap anywhere to continue) ============== -->
   <section class="hero" id="home" title="Tap to start">
     <div class="hero__bg" aria-hidden="true"></div>
     <div class="hero__overlay" aria-hidden="true"></div>
-
     <div class="hero__content">
       <div class="logo" aria-hidden="true">
         <!-- app cross logo -->
@@ -250,15 +211,11 @@
           <path d="M12 8v3M10.5 9.5h3" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
         </svg>
       </div>
-
       <h1 class="tagline">
         <span class="care">Care Together.</span>
         <span class="stay">Stay Together.</span>
       </h1>
-
-      <p class="subline">
-        Share your vitals with family, because health is strongest when we stay together.
-      </p>
+      <p class="subline">Share your vitals with family, because health is strongest when we stay together.</p>
     </div>
   </section>
 
@@ -335,7 +292,7 @@
 
         <div class="actions">
           <button type="button" class="btn btn-ghost" id="toVitals">Go to Patient Vital Signs</button>
-          <!-- Save removed per requirement -->
+          <!-- No Save button (no persistence) -->
         </div>
       </form>
     </section>
@@ -391,7 +348,6 @@
           </div>
         </div>
 
-        <!-- NEW: Blood sugar -->
         <div class="grid cols-3">
           <div>
             <label for="glucose">Blood Sugar (mg/dL)</label>
@@ -409,12 +365,9 @@
 
         <div class="actions">
           <button type="button" class="btn btn-ghost" id="toPatient">Back to Patient Info</button>
-
-          <!-- Share & PDF actions -->
           <button type="button" class="btn" id="shareWhatsApp">Share via WhatsApp</button>
           <button type="button" class="btn" id="shareEmail">Share via Email</button>
           <button type="button" class="btn btn-accent" id="downloadPdf">Download PDF</button>
-          <!-- Save buttons removed per requirement -->
         </div>
       </form>
     </section>
@@ -434,7 +387,7 @@
   </footer>
 
   <script>
-    // Elements
+    // ---------- App boot + navigation ----------
     const hero = document.getElementById('home');
     const appEl = document.getElementById('app');
     const tabPatient = document.getElementById('tab-patient');
@@ -442,33 +395,28 @@
     const panelPatient = document.getElementById('panel-patient');
     const panelVitals  = document.getElementById('panel-vitals');
 
-    const patientForm = document.getElementById('patientForm');
-    const vitalsForm  = document.getElementById('vitalsForm');
-
-    // Tap anywhere on landing to proceed
     hero.addEventListener('click', () => {
       appEl.hidden = false;
       selectTab('patient');
       panelPatient.scrollIntoView({behavior:'smooth', block:'start'});
     }, {passive:true});
 
-    // Tabs
     function selectTab(which){
       const isPatient = which === 'patient';
       tabPatient.setAttribute('aria-selected', String(isPatient));
       tabVitals.setAttribute('aria-selected', String(!isPatient));
       panelPatient.hidden = !isPatient;
       panelVitals.hidden  =  isPatient;
+      if (!isPatient) initTimestampOnce();
     }
     tabPatient.addEventListener('click', ()=>selectTab('patient'));
     tabVitals.addEventListener('click',  ()=>selectTab('vitals'));
-
-    // Quick nav buttons
     document.getElementById('toVitals')?.addEventListener('click', ()=>{ selectTab('vitals'); panelVitals.scrollIntoView({behavior:'smooth'}); });
     document.getElementById('toPatient')?.addEventListener('click', ()=>{ selectTab('patient'); panelPatient.scrollIntoView({behavior:'smooth'}); });
 
-    // Auto-set current date & time when focusing vitals section
-    function setNowToInputs(){
+    // ---------- Auto timestamp ----------
+    let timestampSet = false;
+    function setNow(){
       const now = new Date();
       const pad = n => String(n).padStart(2,'0');
       const d = `${now.getFullYear()}-${pad(now.getMonth()+1)}-${pad(now.getDate())}`;
@@ -476,17 +424,19 @@
       const vdate = document.getElementById('vdate');
       const vtime = document.getElementById('vtime');
       const timeOfDay = document.getElementById('timeOfDay');
-      if(vdate && !vdate.value) vdate.value = d;
-      if(vtime) vtime.value = t;                 // auto, read-only
-      if(timeOfDay) timeOfDay.value = t;         // mirrors on patient form (read-only)
+      if (vdate && !vdate.value) vdate.value = d;
+      if (vtime) vtime.value = t;
+      if (timeOfDay) timeOfDay.value = t; // mirror on patient page
     }
-    // Set on tab open and when entering vitals form
-    tabVitals.addEventListener('click', setNowToInputs);
-    panelVitals.addEventListener('transitionend', setNowToInputs);
-    // Also set on load
-    setNowToInputs();
+    function initTimestampOnce(){
+      if (timestampSet) return;
+      setNow();
+      timestampSet = true;
+    }
+    // First interaction within vitals sets the time if not set
+    document.getElementById('vitalsForm')?.addEventListener('focusin', initTimestampOnce);
 
-    // ===== Share helpers =====
+    // ---------- Share helpers ----------
     function gatherData(){
       const data = {
         nurseFirst: document.getElementById('nurseFirst')?.value?.trim() || '',
@@ -536,17 +486,15 @@
       return lines.join('\n');
     }
 
-    // WhatsApp share
     document.getElementById('shareWhatsApp')?.addEventListener('click', ()=>{
       const d = gatherData();
       const text = buildShareText(d);
-      const phone = (d.whatsappPatient || '').replace(/[^\d+]/g,'');
+      const phone = (d.whatsappVitals || d.whatsappPatient || '').replace(/[^\d+]/g,'');
       const base = phone ? `https://wa.me/${encodeURIComponent(phone)}` : 'https://wa.me/';
       const url = `${base}?text=${encodeURIComponent(text)}`;
       window.open(url, '_blank');
     });
 
-    // Email share (mailto body). For PDF, user can click "Download PDF" then attach.
     document.getElementById('shareEmail')?.addEventListener('click', ()=>{
       const d = gatherData();
       const subject = encodeURIComponent(`Patient Vitals — ${d.patientName || 'Unknown'} (${d.vdate || ''} ${d.vtime || ''})`);
@@ -554,7 +502,6 @@
       window.location.href = `mailto:?subject=${subject}&body=${body}`;
     });
 
-    // Generate printable PDF page with logo + taglines, then prompt browser Print (user can "Save as PDF")
     document.getElementById('downloadPdf')?.addEventListener('click', ()=>{
       const d = gatherData();
       const html = `
@@ -564,11 +511,7 @@
   <meta charset="utf-8" />
   <title>Patient Vitals PDF</title>
   <style>
-    :root{
-      --teal:#10afa0; --teal2:#3aa9ff; --accent:#ff6b57;
-      --grad: linear-gradient(135deg, var(--teal), var(--teal2));
-      --text:#1f2937; --muted:#475569;
-    }
+    :root{ --teal:#10afa0; --teal2:#3aa9ff; --accent:#ff6b57; --grad: linear-gradient(135deg, var(--teal), var(--teal2)); --text:#1f2937; --muted:#475569; }
     body{ font-family: system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Ubuntu, "Noto Sans", sans-serif; margin:24px; color:var(--text); }
     .print-header{ display:flex; align-items:center; gap:12px; margin-bottom:6px; }
     .print-logo{ width:48px; height:48px; border-radius:12px; background: var(--grad); display:grid; place-items:center; }
@@ -633,18 +576,26 @@
   </script>
 </body>
 </html>`;
-      const pdfWin = window.open('', '_blank');
-      pdfWin.document.open();
-      pdfWin.document.write(html.replace('escapeHtml', escapeHtml.toString()));
-      pdfWin.document.close();
+      const w = window.open('', '_blank');
+      w.document.open();
+      w.document.write(html.replace('escapeHtml', escapeHtml.toString()));
+      w.document.close();
     });
 
-    // Escape helper for PDF content
     function escapeHtml(s){return String(s).replace(/[&<>"]/g,c=>({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));}
 
-    // Prevent default submits (no saving)
-    patientForm?.addEventListener('submit', (e)=> e.preventDefault());
-    vitalsForm?.addEventListener('submit', (e)=> e.preventDefault());
+    // Prevent default submits (no persistence)
+    document.getElementById('patientForm')?.addEventListener('submit', (e)=> e.preventDefault());
+    document.getElementById('vitalsForm')?.addEventListener('submit', (e)=> e.preventDefault());
+
+    // ---------- Service worker registration (ensure file path matches your deploy) ----------
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/service-worker.js?v=6', { scope: '/' })
+          .then(reg => reg.update())
+          .catch(console.error);
+      });
+    }
   </script>
 </body>
 </html>
