@@ -2,7 +2,8 @@
 <html lang="en">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <!-- NOTE: viewport-fit=cover helps iOS with notches; interactive-widget avoids mobile zoom issues -->
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, interactive-widget=resizes-content" />
   <title>Victoria Nurse — Care Together. Stay Together.</title>
   <style>
     :root{
@@ -13,7 +14,6 @@
       --teal-600:#0e998c;
       --teal-700:#0b7f74;
       --blue-400:#3aa9ff;
-      --slate-900:#0f172a;
       --slate-800:#1f2937;
       --slate-700:#334155;
       --slate-600:#475569;
@@ -28,33 +28,42 @@
     *{box-sizing:border-box}
     body{
       margin:0;
-      font-family: system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Ubuntu, "Noto Sans", "Apple Color Emoji","Segoe UI Emoji", sans-serif;
       color: var(--slate-700);
       background: var(--bg);
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Ubuntu, "Noto Sans", "Apple Color Emoji","Segoe UI Emoji", sans-serif;
+      /* iOS safe areas */
+      padding-left: env(safe-area-inset-left);
+      padding-right: env(safe-area-inset-right);
     }
 
-    /* ---------- Landing (full-page nurse image) ---------- */
+    /* ---------- Landing (full-page hero) ---------- */
     .hero{
       position:relative;
-      min-height:100dvh;
       width:100%;
+      /* stack svh/dvh/vh for best cross-browser behavior */
+      min-height:100vh;   /* fallback */
+      min-height:100dvh;  /* modern dynamic viewport */
+      min-height:100svh;  /* small viewport (iOS address bar) */
       overflow:hidden;
       cursor:pointer; /* tap/click anywhere to continue */
     }
     .hero__bg{
       position:absolute; inset:0;
-      background: url('./assets/nurse-hero.jpg') center/cover no-repeat; /* full-page nurse image */
+      background: url('./assets/nurse-hero.jpg') center/cover no-repeat;
     }
     .hero__overlay{
       position:absolute; inset:0;
       background: linear-gradient(to bottom, rgba(0,0,0,.35) 0%, rgba(0,0,0,.15) 40%, rgba(0,0,0,.45) 100%);
+      pointer-events:none;
     }
     .hero__content{
       position:relative; z-index:1;
-      height:100%; width:100%;
+      height:100%;
+      width:100%;
       display:grid; place-items:center;
       text-align:center; padding:2rem;
       color:#fff;
+      padding-top: calc(2rem + env(safe-area-inset-top));
     }
     .logo{
       width:80px; height:80px; margin:0 auto 1rem auto;
@@ -133,10 +142,11 @@
       border-radius: 12px;
       border:1.5px solid #e7eef7;
       background:#fff;
-      color: var(--slate-800); /* complements theme */
+      color: var(--slate-800);
       outline:none;
       transition: border-color .15s ease, box-shadow .15s ease, background .15s ease;
       box-shadow: inset 0 0 0 0 rgba(0,0,0,0);
+      -webkit-tap-highlight-color: transparent; /* nicer on mobile */
     }
     textarea{ min-height:110px; resize:vertical;}
 
@@ -145,7 +155,7 @@
       box-shadow: var(--ring), 0 0 0 1.5px var(--teal-500);
     }
 
-    /* Teal emphasis for Week-of calendar and Time dropdowns */
+    /* Teal emphasis for Week-of calendar and Time input/dropdown */
     .teal-input{
       border-color: var(--teal-300);
       color: var(--teal-700);
@@ -169,11 +179,9 @@
       box-shadow: 0 10px 24px rgba(58,169,255,.25), 0 6px 14px rgba(16,175,160,.28);
       cursor:pointer;
       transition: transform .12s ease, box-shadow .12s ease, opacity .12s ease;
+      -webkit-tap-highlight-color: transparent;
     }
     .btn:hover{ transform: translateY(-1px); }
-    .btn-ghost{
-      background:var(--muted); color: var(--slate-700); border:1px solid #e6eef5; box-shadow:none;
-    }
 
     footer{
       padding: 1.25rem;
@@ -193,12 +201,11 @@
 <body>
 
   <!-- ============== Landing (tap anywhere to continue) ============== -->
-  <section class="hero" id="home" title="Tap to start">
+  <section class="hero" id="home" role="button" aria-label="Open app" tabindex="0">
     <div class="hero__bg" aria-hidden="true"></div>
     <div class="hero__overlay" aria-hidden="true"></div>
     <div class="hero__content">
       <div class="logo" aria-hidden="true">
-        <!-- app cross logo -->
         <svg viewBox="0 0 24 24" fill="none">
           <path d="M5 8.5C5 6.6 6.6 5 8.5 5h7A3.5 3.5 0 0 1 19 8.5V19a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V8.5Z" stroke="currentColor" stroke-width="1.6"/>
           <path d="M12 8v3M10.5 9.5h3" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
@@ -216,10 +223,9 @@
   <main class="app" id="app" hidden>
     <div class="tabs" role="tablist" aria-label="Victoria Nurse Sections">
       <button class="tab" role="tab" aria-selected="true" aria-controls="panel-patient" id="tab-patient">Patient Information</button>
-      <button class="tab" role="tab" aria-selected="false" aria-controls="panel-vitals" id="tab-vitals">Nurse Vital Signs</button>
+      <button class="tab" role="tab" aria-selected="false" aria-controls="panel-vitals" id="tab-vitals">Patient Vital Signs</button>
     </div>
 
-    <!-- Patient Information (Nurse first/last + WhatsApp) -->
     <section class="card" role="tabpanel" id="panel-patient" aria-labelledby="tab-patient">
       <h3 class="section-title">Patient Information</h3>
       <form id="patientForm" autocomplete="on">
@@ -270,11 +276,7 @@
         <div class="grid cols-3">
           <div>
             <label for="timeOfDay">Time</label>
-            <select id="timeOfDay" class="teal-input" name="timeOfDay">
-              <option value="">Select…</option>
-              <option>AM</option>
-              <option>PM</option>
-            </select>
+            <input id="timeOfDay" class="teal-input" name="timeOfDay" type="time" />
           </div>
           <div>
             <label for="mrn">Medical Record No. (optional)</label>
@@ -287,15 +289,13 @@
         </div>
 
         <div class="actions">
-          <button type="button" class="btn btn-ghost" id="toVitals">Go to Nurse Vital Signs</button>
-          <!-- No Preview/Close/Save buttons -->
+          <button type="button" class="btn btn-ghost" id="toVitals">Go to Patient Vital Signs</button>
         </div>
       </form>
     </section>
 
-    <!-- Nurse Vital Signs (adds WhatsApp field here too) -->
     <section class="card" role="tabpanel" id="panel-vitals" aria-labelledby="tab-vitals" hidden>
-      <h3 class="section-title">Nurse Vital Signs</h3>
+      <h3 class="section-title">Patient Vital Signs</h3>
       <form id="vitalsForm" autocomplete="on">
         <div class="grid cols-3">
           <div>
@@ -304,11 +304,7 @@
           </div>
           <div>
             <label for="vtime">Time</label>
-            <select id="vtime" name="vtime" class="teal-input">
-              <option value="">Select…</option>
-              <option>AM</option>
-              <option>PM</option>
-            </select>
+            <input id="vtime" name="vtime" type="time" class="teal-input" />
           </div>
           <div>
             <label for="whatsappVitals">Recipient WhatsApp Number (with country code)</label>
@@ -347,17 +343,23 @@
           </div>
         </div>
 
-        <!-- Optional extra field if you want: Blood Sugar
         <div class="grid cols-3">
           <div>
             <label for="glucose">Blood Sugar (mg/dL)</label>
             <input id="glucose" name="glucose" type="number" min="0" placeholder="e.g., 95" />
           </div>
-        </div> -->
+          <div>
+            <label for="weight">Weight (kg) (optional)</label>
+            <input id="weight" name="weight" type="number" step="0.1" placeholder="e.g., 72.5" />
+          </div>
+          <div>
+            <label for="notes">Notes</label>
+            <input id="notes" name="notes" placeholder="Observations, medications..." />
+          </div>
+        </div>
 
         <div class="actions">
           <button type="button" class="btn btn-ghost" id="toPatient">Back to Patient Info</button>
-          <!-- No Preview/Close/Save buttons -->
         </div>
       </form>
     </section>
@@ -376,7 +378,7 @@
   </footer>
 
   <script>
-    // Enter app by tapping the hero
+    // ---------- Enter app: support touch, mouse, and keyboard ----------
     const hero = document.getElementById('home');
     const appEl = document.getElementById('app');
     const tabPatient = document.getElementById('tab-patient');
@@ -384,13 +386,16 @@
     const panelPatient = document.getElementById('panel-patient');
     const panelVitals  = document.getElementById('panel-vitals');
 
-    hero.addEventListener('click', () => {
+    const openApp = () => {
       appEl.hidden = false;
       selectTab('patient');
       panelPatient.scrollIntoView({behavior:'smooth', block:'start'});
-    }, {passive:true});
+    };
+    hero.addEventListener('pointerdown', openApp, {passive:true});
+    hero.addEventListener('click', openApp, {passive:true});
+    hero.addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.key === ' ') openApp(); });
 
-    // Tabs
+    // ---------- Tabs ----------
     function selectTab(which){
       const isPatient = which === 'patient';
       tabPatient.setAttribute('aria-selected', String(isPatient));
@@ -401,23 +406,23 @@
     tabPatient.addEventListener('click', ()=>selectTab('patient'));
     tabVitals.addEventListener('click',  ()=>selectTab('vitals'));
 
-    // Quick nav buttons
+    // Quick nav
     document.getElementById('toVitals')?.addEventListener('click', ()=>{ selectTab('vitals'); panelVitals.scrollIntoView({behavior:'smooth'}); });
     document.getElementById('toPatient')?.addEventListener('click', ()=>{ selectTab('patient'); panelPatient.scrollIntoView({behavior:'smooth'}); });
 
     // Prevent default submits (no persistence)
     document.getElementById('patientForm')?.addEventListener('submit', (e)=> e.preventDefault());
     document.getElementById('vitalsForm')?.addEventListener('submit', (e)=> e.preventDefault());
+
+    // ---------- Service worker registration (bump ?v=9 to force same build everywhere) ----------
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker
+          .register('/service-worker.js?v=9', { scope: '/' })
+          .then(reg => reg.update())
+          .catch(console.error);
+      });
+    }
   </script>
-<script>
-if ('serviceWorker' in navigator) {
-  window.addEventListener('load', () => {
-    navigator.serviceWorker
-      .register('/service-worker.js?v=8', { scope: '/' }) // prefix path/scope if app is under a subfolder
-      .then(reg => reg.update())
-      .catch(console.error);
-  });
-}
-</script>
 </body>
 </html>
