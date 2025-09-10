@@ -15,17 +15,19 @@
 
   <style>
     :root{
-      --primary:#1E88E5;        /* medical blue */
-      --primary-2:#26A69A;      /* teal accent */
-      --bg:#F5F7FA;             /* soft grey page */
-      --card:#FFFFFF;           /* white card */
-      --text:#2C3E50;           /* neutral text */
-      --muted:#607D8B;          /* muted labels */
-      --border:#E3E8EF;         /* light border */
-      --shadow: 0 6px 20px rgba(30,136,229,0.08);
+      --primary:#1E88E5;
+      --primary-2:#26A69A;
+      --bg:#F5F7FA;
+      --card:#FFFFFF;
+      --text:#2C3E50;
+      --muted:#607D8B;
+      --border:#E3E8EF;
+      --shadow: 0 6px 20px rgba(30,136,229,0.10);
       --grad-btn: linear-gradient(135deg, #1E88E5 0%, #26A69A 100%);
       --grad-header: linear-gradient(90deg, #1E88E5 0%, #26A69A 100%);
+      /* Landing gradient inspired by your screenshot */
       --grad-welcome: linear-gradient(160deg, #0ea5e9 0%, #1E88E5 35%, #4f46e5 70%, #0b5bd3 100%);
+      --focus: 0 0 0 3px rgba(30,136,229,0.25);
     }
     *{box-sizing:border-box;margin:0;padding:0}
     html,body{height:100%}
@@ -35,28 +37,47 @@
       color:var(--text)
     }
 
+    /* ---------- Landing (hero + imaginative panel) ---------- */
     #landing{min-height:100svh; display:flex; flex-direction:column;}
     .hero{
       height:50svh; width:100%;
       background:url('assets/nurse-hero.jpg') center/cover no-repeat;
       position:relative;
     }
+    /* subtle wave divider */
+    .hero::after{
+      content:""; position:absolute; left:0; right:0; bottom:-1px; height:80px;
+      background:
+        radial-gradient(120% 100% at 50% 120%, transparent 60%, #0000 61%) top/100% 100%,
+        linear-gradient(to bottom, rgba(255,255,255,0) 0%, rgba(255,255,255,.06) 50%, rgba(255,255,255,0) 100%);
+      pointer-events:none;
+    }
     .welcome{
       flex:1; display:flex; align-items:center; justify-content:center;
-      text-align:center; padding:28px 18px;
-      background:var(--grad-welcome);
-      color:#fff;
+      text-align:center; padding:28px 18px; background:var(--grad-welcome); color:#fff; position:relative;
+      overflow:hidden;
     }
+    /* floating shapes for a richer imagination */
+    .welcome::before, .welcome::after{
+      content:""; position:absolute; border-radius:50%;
+      filter: blur(30px); opacity:.25; pointer-events:none;
+    }
+    .welcome::before{ width:280px; height:280px; left:-60px; top:-40px; background:#26A69A; }
+    .welcome::after { width:320px; height:320px; right:-80px; bottom:-60px; background:#1E88E5; }
+
     .welcome .box{
-      max-width:760px; width:100%;
-      background:rgba(255,255,255,0.06);
+      max-width:820px; width:100%;
+      background:rgba(255,255,255,0.08);
       border:1px solid rgba(255,255,255,0.18);
-      box-shadow:0 10px 30px rgba(0,0,0,0.15);
-      backdrop-filter: blur(6px);
-      border-radius:20px; padding:28px 20px;
+      box-shadow:0 18px 50px rgba(0,0,0,0.18);
+      backdrop-filter: blur(8px);
+      border-radius:22px; padding:30px 20px;
     }
-    .welcome h1{ font-size:clamp(26px, 5vw, 42px); letter-spacing:.3px; line-height:1.15; margin-bottom:10px; }
-    .welcome p{opacity:.92; margin-bottom:16px}
+    .welcome h1{
+      font-size:clamp(26px, 5vw, 44px);
+      letter-spacing:.3px; line-height:1.15; margin-bottom:10px;
+    }
+    .welcome p{opacity:.96; margin-bottom:18px; font-size:clamp(14px,2.5vw,16px)}
     .start-btn{
       appearance:none; border:none; cursor:pointer;
       padding:12px 18px; border-radius:14px;
@@ -66,69 +87,105 @@
     }
     .start-btn:active{ transform: translateY(1px); opacity:.95; }
 
+    /* ---------- Header ---------- */
     .app-header{
       display:flex;align-items:center;gap:14px;
       background:var(--grad-header);color:#fff;
       padding:16px 18px;border-bottom:3px solid #1565C0; display:none;
     }
+    .brand-link{display:flex; align-items:center; gap:14px; text-decoration:none; color:inherit;}
     .app-header .logo{ width:44px;height:44px;border-radius:10px;box-shadow:var(--shadow); }
     .app-header .brand h1{font-size:18px;line-height:1.1;margin:0}
     .app-header .brand .tagline{margin-top:2px;font-size:11px;opacity:.92}
 
+    /* ---------- App Layout ---------- */
     #app{display:none}
-    .wrap{max-width:900px;margin:18px auto 24px;padding:0 14px}
-    .card{ background:var(--card);border-radius:16px;box-shadow:var(--shadow); padding:18px 16px;margin-top:16px }
+    .wrap{max-width:980px;margin:18px auto 24px;padding:0 14px}
+    .card{
+      background:var(--card);border-radius:16px;box-shadow:var(--shadow);
+      padding:18px 16px;margin-top:16px
+    }
     h2{font-size:18px;margin-bottom:10px;color:var(--primary)}
     label{display:block;margin:10px 0 6px;color:var(--muted);font-weight:600}
 
-    input,select,textarea{ font-size:15px; padding:10px; margin-bottom:8px; width:100%; border:1px solid var(--border); border-radius:8px; background:#fff }
+    /* Inputs with themed focus ring */
+    input,select,textarea{
+      font-size:15px; padding:10px; margin-bottom:8px; width:100%;
+      border:1px solid var(--border); border-radius:10px; background:#fff; transition: box-shadow .15s ease, border-color .15s ease;
+    }
+    input:focus, select:focus, textarea:focus{
+      outline:none; border-color:transparent;
+      box-shadow:
+        0 0 0 2px #fff,
+        0 0 0 4px rgba(30,136,229,0.25),
+        0 0 0 8px rgba(38,166,154,0.18);
+    }
     textarea{resize:vertical}
     .grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-    @media (max-width:720px){.grid{grid-template-columns:1fr}}
+    @media (max-width:820px){.grid{grid-template-columns:1fr}}
 
-    table{width:100%;border-collapse:collapse;margin-top:10px;background:#fff;border:1px solid var(--border);border-radius:10px;overflow:hidden}
-    thead{background:var(--primary);color:#fff}
+    /* Form Mode row (combines Patient Summary + Nurse) */
+    .mode-row{display:flex; gap:10px; align-items:center; flex-wrap:wrap}
+    .mode-row .spacer{flex:1}
+
+    /* Table (non-clickable header) */
+    table{width:100%;border-collapse:collapse;margin-top:10px;background:#fff;border:1px solid var(--border);border-radius:12px;overflow:hidden}
+    thead{background:var(--primary);color:#fff; cursor:default; user-select:none;}
     th,td{padding:10px;border-bottom:1px solid var(--border);text-align:center;font-size:14px}
     tbody tr:nth-child(odd){background:#fafcff}
     tbody tr:hover{background:#f3f9ff}
 
+    /* Buttons (all gradient style) */
     .btn-row{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}
-    .btn{ flex:1;padding:10px 12px;border:none;border-radius:10px;color:#fff;font-weight:700;font-size:15px; background:var(--grad-btn);box-shadow:var(--shadow);cursor:pointer;transition:transform .05s ease,opacity .2s ease }
+    .btn{
+      flex:1; padding:11px 14px; border:none; border-radius:12px;
+      color:#fff; font-weight:800; font-size:15px; letter-spacing:.2px;
+      background:var(--grad-btn); box-shadow:var(--shadow);
+      cursor:pointer; transition:transform .05s ease, opacity .2s ease
+    }
     .btn:active{transform:translateY(1px);opacity:.95}
     .ghost{background:#fff;color:var(--primary);border:1px solid var(--primary);box-shadow:none}
 
-    footer.signature { font-size:11px;color:#8899aa;text-align:center;margin:18px auto 28px;max-width:900px; padding:8px 0;border-top:1px solid var(--border);font-style:italic;letter-spacing:.5px }
+    footer.signature {
+      font-size:11px;color:#8899aa;text-align:center;margin:18px auto 28px;max-width:980px;
+      padding:8px 0;border-top:1px solid var(--border);font-style:italic;letter-spacing:.5px
+    }
     footer.signature strong{color:#1E88E5;font-style:normal}
 
+    /* Mobile: stack table */
     @media (max-width:640px){
       table thead{display:none}
       table,tbody,tr,td{display:block;width:100%}
-      tr{margin:8px 0;border:1px solid var(--border);border-radius:10px;overflow:hidden;background:#fff}
+      tr{margin:8px 0;border:1px solid var(--border);border-radius:12px;overflow:hidden;background:#fff}
       td{text-align:left;padding:8px 10px;border-bottom:1px solid var(--border)}
       td:last-child{border-bottom:none}
       td::before{content:attr(data-label);font-weight:700;margin-right:8px;display:inline-block;min-width:120px;color:#2c3e50}
-      .btn{width:100%;font-size:15px;padding:10px}
+      .btn{width:100%;font-size:15px;padding:12px}
     }
 
+    /* Print (Email) includes logo + title header */
     @media print{
-      #landing,.app-header,.btn-row,.modal,.ghost{display:none !important}
+      #landing,.btn-row,.modal,.ghost{display:none !important}
       body{background:#fff}
+      .print-header{display:flex !important}
       .wrap{margin:0;padding:0}
       .card{box-shadow:none;border:none;padding:0}
       table{border:1px solid #999}
       th,td{border:1px solid #999}
       footer.signature{display:none}
     }
-
-    .modal{position:fixed;inset:0;background:rgba(0,0,0,.35);display:none;align-items:center;justify-content:center;padding:16px;z-index:1000}
-    .modal.show{display:flex}
-    .modal .sheet{background:#fff;border-radius:14px;max-width:680px;width:100%;box-shadow:var(--shadow);padding:16px}
-    .modal h3{margin-bottom:10px;color:var(--primary)}
-    .modal pre{white-space:pre-wrap;background:#f6f9ff;border:1px solid var(--border);border-radius:10px;padding:12px;max-height:50vh;overflow:auto}
+    .print-header{display:none; align-items:center; gap:12px; margin:0 auto 12px; max-width:980px; padding:6px 0 0}
+    .print-header img{width:42px; height:42px; border-radius:8px}
+    .print-header h1{font-size:20px; margin:0; color:#1E88E5}
+    .print-header small{display:block; color:#607D8B}
+    
+    /* Tiny helper classes */
+    .hidden{display:none !important}
   </style>
 </head>
 
 <body>
+  <!-- Landing -->
   <section id="landing" aria-label="Welcome">
     <div class="hero" role="img" aria-label="Nurse with patient"></div>
     <div class="welcome">
@@ -140,94 +197,139 @@
     </div>
   </section>
 
+  <!-- Header (logo + link to landing) -->
   <header class="app-header" id="appHeader">
-    <img src="icons/icon-192.png" alt="Victoria Nurse Logo" class="logo" />
-    <div class="brand">
-      <h1>Victoria Nurse</h1>
-      <p class="tagline">Your digital nursing companion</p>
-    </div>
+    <a href="#" class="brand-link" id="homeLink" title="Back to Welcome">
+      <img src="icons/icon-192.png" alt="Victoria Nurse Logo" class="logo" />
+      <div class="brand">
+        <h1>Victoria Nurse</h1>
+        <p class="tagline">Your digital nursing companion</p>
+      </div>
+    </a>
   </header>
 
+  <!-- Print/PDF Header -->
+  <div class="print-header">
+    <img src="icons/icon-192.png" alt="Logo">
+    <div>
+      <h1>Victoria Nurse</h1>
+      <small>Shared summary & vitals</small>
+    </div>
+  </div>
+
+  <!-- Main App -->
   <main id="app" role="main" aria-label="Main app">
     <div class="wrap">
+      <!-- Combined Form: Patient Summary + Nurse Vital Signs -->
       <div class="card">
-        <h2>Patient Summary</h2>
+        <h2>Patient Information</h2>
         <div class="grid">
-          <div><label for="patientName">Patient name / initials</label><input id="patientName" placeholder="e.g., A. Mensah"></div>
-          <div><label for="weekOf">Week of</label><input type="date" id="weekOf"></div>
-          <div><label for="startWeight">Starting weight (kg)</label><input id="startWeight" type="number" step="0.1" placeholder="e.g., 72.4"></div>
-          <div><label for="endWeight">Ending weight (kg)</label><input id="endWeight" type="number" step="0.1" placeholder="e.g., 71.9"></div>
-          <div><label for="recipient">Recipient WhatsApp number (with country code)</label><input id="recipient" placeholder="+23324XXXXXXX"></div>
-          <div><label for="note">Optional note</label><input id="note" placeholder="Short note (no sensitive identifiers)"></div>
+          <div>
+            <label for="patientName">Patient name / initials</label>
+            <input id="patientName" placeholder="e.g., A. Mensah">
+          </div>
+          <div>
+            <label for="weekOf">Week of</label>
+            <input type="date" id="weekOf">
+          </div>
+        </div>
+
+        <div class="mode-row" style="margin-top:8px">
+          <div>
+            <label for="formMode">Form Section</label>
+            <select id="formMode">
+              <option value="patient">Patient Summary</option>
+              <option value="nurse">Nurse Vital Signs</option>
+            </select>
+          </div>
+          <div class="spacer"></div>
+        </div>
+
+        <!-- Patient-only fields -->
+        <div id="patientOnly" class="grid" style="margin-top:4px">
+          <div>
+            <label for="startWeight">Starting weight (kg)</label>
+            <input id="startWeight" type="number" step="0.1" placeholder="e.g., 72.4">
+          </div>
+          <div>
+            <label for="endWeight">Ending weight (kg)</label>
+            <input id="endWeight" type="number" step="0.1" placeholder="e.g., 71.9">
+          </div>
+          <div>
+            <label for="recipient">Recipient WhatsApp number (with country code)</label>
+            <input id="recipient" placeholder="+23324XXXXXXX">
+          </div>
+          <div>
+            <label for="note">Optional note</label>
+            <input id="note" placeholder="Short note (no sensitive identifiers)">
+          </div>
+        </div>
+
+        <!-- Nurse-only fields -->
+        <div id="nurseOnly" class="hidden" style="margin-top:6px">
+          <h3 style="margin:8px 0 6px;color:#1E88E5">Nurse Vital Signs</h3>
+          <div class="grid">
+            <div><label for="clNurse">Nurse initials</label><input id="clNurse" placeholder="e.g., KB"></div>
+            <div><label for="clTime">Time</label><input id="clTime" type="time"></div>
+
+            <div><label>Temperature (°C/°F)</label><input id="clTemp"></div>
+            <div><label>Pulse / HR (bpm)</label><input id="clHR" type="number"></div>
+            <div><label>Respiratory rate (breaths/min)</label><input id="clRR" type="number"></div>
+            <div><label>Blood Pressure (mmHg)</label><input id="clBP" placeholder="e.g., 120/80"></div>
+            <div><label>Oxygen saturation (SpO₂ %)</label><input id="clSpO2" type="number"></div>
+
+            <div><label>Pain level (0–10)</label><input id="clPain" type="number" min="0" max="10"></div>
+            <div><label>LOC (AVPU/GCS)</label><input id="clLOC" placeholder="e.g., Alert / GCS 15"></div>
+            <div><label>Blood glucose</label><input id="clBGL" placeholder="mg/dL or mmol/L"></div>
+            <div><label>Weight (kg)</label><input id="clWt" type="number" step="0.1"></div>
+            <div><label>Height (cm)</label><input id="clHt" type="number" step="0.1"></div>
+            <div><label>Intake (mL)</label><input id="clIn" type="number"></div>
+            <div><label>Output (mL)</label><input id="clOut" type="number"></div>
+
+            <div><label>Pulse characteristics</label><input id="clPulse" placeholder="regular/irregular, strong/weak"></div>
+            <div><label>Skin signs</label><input id="clSkin" placeholder="warm/cool, dry/moist, color"></div>
+            <div><label>Capillary refill (sec)</label><input id="clCap" type="number" step="0.1"></div>
+          </div>
+
+          <label style="margin-top:10px">Notes</label>
+          <textarea id="clNotes" rows="3" placeholder="Short clinical notes (no sensitive identifiers)"></textarea>
         </div>
       </div>
 
+      <!-- Daily Vitals -->
       <div class="card">
         <h2>Daily Vitals</h2>
-        <table id="vitalsTable">
+        <table id="vitalsTable" aria-label="Daily Vitals Table">
           <thead>
-            <tr><th>Day</th><th>Time</th><th>AM/PM</th><th>Heart Rate</th><th>Systolic</th><th>Diastolic</th></tr>
+            <tr>
+              <th>Day</th>
+              <th>Time</th>
+              <th>AM/PM</th>
+              <th>Heart Rate</th>
+              <th>Systolic</th>
+              <th>Diastolic</th>
+            </tr>
           </thead>
           <tbody></tbody>
         </table>
+
         <div class="btn-row">
-          <button class="btn ghost" onclick="addRow()">➕ Add Row</button>
-          <button class="btn ghost" onclick="addRowPair()">➕ Add AM & PM</button>
+          <button class="btn" onclick="addRow()">Add Row</button>
+          <button class="btn" onclick="addRowPair()">Add AM & PM</button>
           <button class="btn" onclick="doPreview()">Preview</button>
           <button class="btn" onclick="doShare()">Share via WhatsApp</button>
-          <button class="btn" onclick="doExportPDF()">Export to PDF</button>
+          <button class="btn" onclick="doExportPDF()">Email</button>
           <button class="btn ghost" onclick="clearTable()">Clear</button>
-        </div>
-      </div>
-
-      <div class="card" id="checklistCard">
-        <h2>Nurse Vital Signs Checklist</h2>
-        <div class="grid">
-          <div><label for="clName">Patient name / initials</label><input id="clName"></div>
-          <div><label for="clDate">Date (Week Of)</label><input type="date" id="clDate"></div>
-          <div><label for="clNurse">Nurse initials</label><input id="clNurse" placeholder="e.g., KB"></div>
-          <div><label for="clTime">Time</label><input id="clTime" type="time"></div>
-        </div>
-        <h3 style="margin:12px 0 6px;color:#1E88E5">Core Vital Signs</h3>
-        <div class="grid">
-          <div><label>Temperature (°C/°F)</label><input id="clTemp"></div>
-          <div><label>Pulse / HR (bpm)</label><input id="clHR" type="number"></div>
-          <div><label>Respiratory rate (breaths/min)</label><input id="clRR" type="number"></div>
-          <div><label>Blood Pressure (mmHg)</label><input id="clBP" placeholder="e.g., 120/80"></div>
-          <div><label>Oxygen saturation (SpO₂ %)</label><input id="clSpO2" type="number"></div>
-        </div>
-        <h3 style="margin:12px 0 6px;color:#1E88E5">Extended Checks</h3>
-        <div class="grid">
-          <div><label>Pain level (0–10)</label><input id="clPain" type="number" min="0" max="10"></div>
-          <div><label>LOC (AVPU/GCS)</label><input id="clLOC" placeholder="e.g., Alert / GCS 15"></div>
-          <div><label>Blood glucose</label><input id="clBGL" placeholder="mg/dL or mmol/L"></div>
-          <div><label>Weight (kg)</label><input id="clWt" type="number" step="0.1"></div>
-          <div><label>Height (cm)</label><input id="clHt" type="number" step="0.1"></div>
-          <div><label>Intake (mL)</label><input id="clIn" type="number"></div>
-          <div><label>Output (mL)</label><input id="clOut" type="number"></div>
-        </div>
-        <h3 style="margin:12px 0 6px;color:#1E88E5">Observations</h3>
-        <div class="grid">
-          <div><label>Pulse characteristics</label><input id="clPulse" placeholder="regular/irregular, strong/weak"></div>
-          <div><label>Skin signs</label><input id="clSkin" placeholder="warm/cool, dry/moist, color"></div>
-          <div><label>Capillary refill (sec)</label><input id="clCap" type="number" step="0.1"></div>
-        </div>
-        <label style="margin-top:10px">Notes</label>
-        <textarea id="clNotes" rows="3" placeholder="Short clinical notes (no sensitive identifiers)"></textarea>
-        <div style="margin-top:10px">
-          <label style="display:flex;align-items:center;gap:8px;font-weight:600;color:#607D8B">
-            <input id="includeChecklist" type="checkbox" checked> Include this checklist in Preview / Share / PDF
-          </label>
-        </div>
-        <div class="btn-row" style="margin-top:10px">
-          <button class="btn ghost" onclick="navigator.clipboard.writeText(clBuildText()).then(()=>alert('Checklist copied'))">Copy Checklist Only</button>
         </div>
       </div>
     </div>
   </main>
 
-  <footer class="signature">Developed by <strong>Karl Brown</strong> © <span id="year"></span></footer>
+  <footer class="signature">
+    Developed by <strong>Karl Brown</strong> © <span id="year"></span>
+  </footer>
 
+  <!-- Preview Modal -->
   <div class="modal" id="previewModal" aria-modal="true" role="dialog" aria-labelledby="previewTitle">
     <div class="sheet">
       <h3 id="previewTitle">Preview message</h3>
@@ -242,14 +344,35 @@
   <script>
     const $ = (id)=>document.getElementById(id);
 
+    /* ---------- Landing / Navigation ---------- */
     const startBtn = document.getElementById('startBtn');
+    const appHeader = document.getElementById('appHeader');
+    const homeLink = document.getElementById('homeLink');
     startBtn.addEventListener('click', () => {
       document.getElementById('landing').style.display = 'none';
       document.getElementById('app').style.display = 'block';
-      document.getElementById('appHeader').style.display = 'flex';
+      appHeader.style.display = 'flex';
+      window.scrollTo({top:0, behavior:'smooth'});
+    });
+    homeLink.addEventListener('click', (e)=>{
+      e.preventDefault();
+      document.getElementById('app').style.display = 'none';
+      appHeader.style.display = 'none';
+      document.getElementById('landing').style.display = 'block';
       window.scrollTo({top:0, behavior:'smooth'});
     });
 
+    /* ---------- Form switcher (combine Patient + Nurse) ---------- */
+    const formMode = document.getElementById('formMode');
+    const patientOnly = document.getElementById('patientOnly');
+    const nurseOnly = document.getElementById('nurseOnly');
+    formMode.addEventListener('change', ()=>{
+      const mode = formMode.value;
+      if(mode === 'patient'){ patientOnly.classList.remove('hidden'); nurseOnly.classList.add('hidden'); }
+      else { patientOnly.classList.add('hidden'); nurseOnly.classList.remove('hidden'); }
+    });
+
+    /* ---------- Daily vitals ---------- */
     function addRow(values={}){
       const tbody = document.querySelector("#vitalsTable tbody");
       const tr = document.createElement("tr");
@@ -271,11 +394,12 @@
     function addRowPair(){ addRow({meridiem:'AM'}); addRow({meridiem:'PM'}); }
     function clearTable(){ document.querySelector("#vitalsTable tbody").innerHTML = ""; }
 
+    /* ---------- Build nurse checklist text ---------- */
     function clBuildText(){
       const get = id => (document.getElementById(id)?.value || '').trim();
       const lines = [
-        `Nurse Checklist — ${get('clName') || 'Patient'}`,
-        `Date: ${get('clDate') || ''}  Time: ${get('clTime') || ''}  Nurse: ${get('clNurse') || ''}`,
+        `Nurse Checklist — ${get('patientName') || 'Patient'}`,
+        `Week of: ${get('weekOf') || ''}  Time: ${get('clTime') || ''}  Nurse: ${get('clNurse') || ''}`,
         ``,
         `Core Vitals:`,
         `• Temp: ${get('clTemp') || '-'}  • HR: ${get('clHR') || '-'} bpm  • RR: ${get('clRR') || '-'} /min`,
@@ -296,12 +420,13 @@
       return lines.join('\n');
     }
 
-    function gather(includeChecklist = false){
+    /* ---------- Gather weekly summary ---------- */
+    function gather(){
       const name = $("patientName").value.trim() || "Patient";
       const week = $("weekOf").value || "(week not set)";
-      const sw = $("startWeight").value;
-      const ew = $("endWeight").value;
-      const note = $("note").value.trim();
+      const sw = $("startWeight")?.value;
+      const ew = $("endWeight")?.value;
+      const note = $("note")?.value?.trim() || "";
 
       const rows = [...document.querySelectorAll("#vitalsTable tbody tr")].map(tr=>{
         const day  = tr.children[0].querySelector('input').value || '';
@@ -321,16 +446,17 @@
       rows.forEach(r=>{ msg += `• ${r.day} ${r.time} ${r.ampm} — HR ${r.hr} bpm, ${r.sys}/${r.dia} mmHg\n`; });
       if (note) msg += `\nNote: ${note}\n`;
 
-      if (includeChecklist){
+      // If Nurse section is visible, append it automatically
+      if (!nurseOnly.classList.contains('hidden')) {
         msg += `\n————————————\n` + clBuildText();
       }
 
-      return {name, week, sw, ew, note, rows, msg};
+      return {msg};
     }
 
+    /* ---------- Preview / Share / Email (Print) ---------- */
     function doPreview(){
-      const include = document.getElementById('includeChecklist')?.checked;
-      const {msg} = gather(!!include);
+      const {msg} = gather();
       $("previewText").textContent = msg;
       $("previewModal").classList.add("show");
     }
@@ -341,18 +467,20 @@
     }
 
     function doShare(){
-      const include = document.getElementById('includeChecklist')?.checked;
-      const {msg} = gather(!!include);
-      const phone = $("recipient").value.trim();
+      const {msg} = gather();
+      const phone = $("recipient")?.value?.trim();
       const wa = phone ? `https://wa.me/${encodeURIComponent(phone)}?text=${encodeURIComponent(msg)}`
                        : `https://wa.me/?text=${encodeURIComponent(msg)}`;
       window.open(wa, "_blank");
     }
 
+    // "Email" button still uses print-to-PDF for now (user can attach/share via mail apps)
     function doExportPDF(){ window.print(); }
 
+    /* ---------- Footer year ---------- */
     (function(){ const y=$("year"); if (y) y.textContent = new Date().getFullYear(); })();
 
+    /* ---------- Service worker ---------- */
     if ('serviceWorker' in navigator){
       window.addEventListener('load', () => {
         try { navigator.serviceWorker.register('./service-worker.js'); }
@@ -360,6 +488,7 @@
       });
     }
 
+    /* ---------- Shortcuts (?action=...) ---------- */
     (function(){
       const params = new URLSearchParams(location.search);
       const action = (params.get('action')||'').toLowerCase();
