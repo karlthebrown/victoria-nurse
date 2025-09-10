@@ -1,428 +1,54 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="utf-8" />
-  <!-- NOTE: viewport-fit=cover helps iOS with notches; interactive-widget avoids mobile zoom issues -->
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, interactive-widget=resizes-content" />
-  <title>Victoria Nurse — Care Together. Stay Together.</title>
-  <style>
-    :root{
-      --teal-50:#e6f7f6;
-      --teal-200:#92dfd9;
-      --teal-300:#5ecfc6;
-      --teal-500:#10afa0;
-      --teal-600:#0e998c;
-      --teal-700:#0b7f74;
-      --blue-400:#3aa9ff;
-      --slate-800:#1f2937;
-      --slate-700:#334155;
-      --slate-600:#475569;
-      --slate-500:#64748b;
-      --accent:#ff6b57;
-      --bg:#ffffff;
-      --muted:#f8fafc;
-      --grad: linear-gradient(135deg, var(--teal-500), var(--blue-400));
-      --ring: 0 0 0 4px rgba(16,175,160,.12);
+// service-worker.js
+// Subpath-safe SW with strict HTML freshness and cache versioning.
+(() => {
+  const VERSION = 'v11';
+  const SCOPE_PATH = new URL(self.registration.scope).pathname.replace(/\/$/, '');
+  const BASE = SCOPE_PATH === '' ? '/' : SCOPE_PATH + '/';
+  const CACHE_NAME = `victoria-nurse-${VERSION}`;
+
+  const ASSETS = [
+    `${BASE}`,
+    `${BASE}index.html`,
+    `${BASE}assets/nurse-hero.jpg`,
+  ];
+
+  self.addEventListener('install', (evt) => {
+    self.skipWaiting();
+    evt.waitUntil(caches.open(CACHE_NAME).then((c) => c.addAll(ASSETS)));
+  });
+
+  self.addEventListener('activate', (evt) => {
+    evt.waitUntil(
+      caches.keys().then((keys) =>
+        Promise.all(
+          keys
+            .filter((k) => k !== CACHE_NAME && k.startsWith('victoria-nurse-'))
+            .map((k) => caches.delete(k))
+        )
+      ).then(() => self.clients.claim())
+    );
+  });
+
+  // Navigations: network-first (no-store) so HTML is always fresh; fallback to cached index
+  // Static ASSETS: cache-first
+  // Others: cache, else network
+  self.addEventListener('fetch', (evt) => {
+    const req = evt.request;
+    const url = new URL(req.url);
+
+    if (req.mode === 'navigate') {
+      evt.respondWith(
+        fetch(req, { cache: 'no-store' }).catch(() => caches.match(`${BASE}index.html`))
+      );
+      return;
     }
 
-    *{box-sizing:border-box}
-    body{
-      margin:0;
-      color: var(--slate-700);
-      background: var(--bg);
-      font-family: system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Ubuntu, "Noto Sans", "Apple Color Emoji","Segoe UI Emoji", sans-serif;
-      /* iOS safe areas */
-      padding-left: env(safe-area-inset-left);
-      padding-right: env(safe-area-inset-right);
+    const isStatic = ASSETS.includes(url.pathname);
+    if (isStatic) {
+      evt.respondWith(caches.match(req).then((r) => r || fetch(req)));
+      return;
     }
 
-    /* ---------- Landing (full-page hero) ---------- */
-    .hero{
-      position:relative;
-      width:100%;
-      /* stack svh/dvh/vh for best cross-browser behavior */
-      min-height:100vh;   /* fallback */
-      min-height:100dvh;  /* modern dynamic viewport */
-      min-height:100svh;  /* small viewport (iOS address bar) */
-      overflow:hidden;
-      cursor:pointer; /* tap/click anywhere to continue */
-    }
-    .hero__bg{
-      position:absolute; inset:0;
-      background: url('./assets/nurse-hero.jpg') center/cover no-repeat;
-    }
-    .hero__overlay{
-      position:absolute; inset:0;
-      background: linear-gradient(to bottom, rgba(0,0,0,.35) 0%, rgba(0,0,0,.15) 40%, rgba(0,0,0,.45) 100%);
-      pointer-events:none;
-    }
-    .hero__content{
-      position:relative; z-index:1;
-      height:100%;
-      width:100%;
-      display:grid; place-items:center;
-      text-align:center; padding:2rem;
-      color:#fff;
-      padding-top: calc(2rem + env(safe-area-inset-top));
-    }
-    .logo{
-      width:80px; height:80px; margin:0 auto 1rem auto;
-      background: #fff;
-      border-radius: 22px;
-      display:grid; place-items:center;
-      box-shadow: 0 10px 30px rgba(0,0,0,.25), inset 0 0 0 8px rgba(16,175,160,.15);
-    }
-    .logo svg{width:42px; height:42px; color: var(--teal-600)}
-    .tagline{
-      margin:.35rem 0 .25rem 0;
-      font-size: clamp(1.7rem, 2.2vw + 1rem, 2.6rem);
-      font-weight:800;
-      line-height:1.15;
-      color:#fff;
-    }
-    .tagline .care{
-      background: var(--grad); -webkit-background-clip:text; background-clip:text; color:transparent;
-    }
-    .tagline .stay{ color: var(--accent); }
-    .subline{
-      max-width: 44rem;
-      margin:.5rem auto 0;
-      font-size: clamp(1rem, .6vw + .8rem, 1.15rem);
-      color:#f3f4f6;
-      text-wrap: balance;
-    }
-
-    /* ---------- App Shell ---------- */
-    .app{
-      padding: 2rem clamp(1rem, 3vw, 2rem);
-      max-width: 1100px;
-      margin: 0 auto 4rem;
-    }
-    .tabs{
-      display:flex; gap:.5rem; flex-wrap:wrap; align-items:center; margin-bottom:1rem;
-    }
-    .tab{
-      padding:.65rem 1rem;
-      border-radius: 12px;
-      background: var(--muted);
-      color: var(--slate-600);
-      font-weight:700;
-      border:1px solid #e6eef5;
-      cursor:pointer;
-    }
-    .tab[aria-selected="true"]{
-      color:#fff; background: var(--grad); border-color: transparent;
-      box-shadow: 0 6px 18px rgba(76,192,255,.25), 0 3px 10px rgba(16,175,160,.18);
-    }
-
-    .card{
-      background:#fff;
-      border:1px solid #e6eef5;
-      border-radius: 18px;
-      padding: clamp(1rem, 2vw, 1.5rem);
-      box-shadow: 0 10px 28px rgba(2,8,23,.03);
-    }
-
-    form{ display:grid; gap:1rem;}
-    .grid{ display:grid; gap:1rem;}
-    .cols-2{ grid-template-columns: repeat(2, minmax(0,1fr));}
-    .cols-3{ grid-template-columns: repeat(3, minmax(0,1fr));}
-    @media (max-width: 720px){
-      .cols-2,.cols-3{ grid-template-columns: 1fr; }
-    }
-
-    label{
-      display:block; font-size:.9rem; font-weight:700; color:var(--slate-600); margin-bottom:.45rem;
-    }
-    .hint{ font-size:.8rem; color:var(--slate-500); margin-top:.35rem;}
-
-    input, select, textarea{
-      width:100%;
-      padding:.8rem .9rem;
-      border-radius: 12px;
-      border:1.5px solid #e7eef7;
-      background:#fff;
-      color: var(--slate-800);
-      outline:none;
-      transition: border-color .15s ease, box-shadow .15s ease, background .15s ease;
-      box-shadow: inset 0 0 0 0 rgba(0,0,0,0);
-      -webkit-tap-highlight-color: transparent; /* nicer on mobile */
-    }
-    textarea{ min-height:110px; resize:vertical;}
-
-    input:focus, select:focus, textarea:focus{
-      border-color: transparent;
-      box-shadow: var(--ring), 0 0 0 1.5px var(--teal-500);
-    }
-
-    /* Teal emphasis for Week-of calendar and Time input/dropdown */
-    .teal-input{
-      border-color: var(--teal-300);
-      color: var(--teal-700);
-      background:
-        linear-gradient(#fff,#fff) padding-box,
-        linear-gradient(135deg, var(--teal-300), var(--teal-500)) border-box;
-      border:1.5px solid transparent;
-    }
-    .teal-input:focus{ box-shadow: var(--ring), 0 0 0 1.5px var(--teal-500); }
-
-    .actions{
-      display:flex; gap:.75rem; flex-wrap:wrap; justify-content:flex-end; margin-top:.5rem;
-    }
-    .btn{
-      display:inline-block;
-      padding: .85rem 1.1rem;
-      border-radius: 12px;
-      border: 0;
-      background: var(--grad);
-      color:#fff; font-weight:700; letter-spacing:.2px;
-      box-shadow: 0 10px 24px rgba(58,169,255,.25), 0 6px 14px rgba(16,175,160,.28);
-      cursor:pointer;
-      transition: transform .12s ease, box-shadow .12s ease, opacity .12s ease;
-      -webkit-tap-highlight-color: transparent;
-    }
-    .btn:hover{ transform: translateY(-1px); }
-
-    footer{
-      padding: 1.25rem;
-      text-align:center;
-      color: var(--slate-600);
-      border-top:1px solid #eef2f7;
-      background:#fff;
-    }
-    footer .mini-logo{
-      display:inline-grid; place-items:center; width:22px; height:22px; border-radius:6px; background: var(--grad); margin-right:.4rem;
-    }
-    footer .mini-logo svg{ width:14px; height:14px; color:#fff; }
-
-    @media print{ .no-print{ display:none !important; } }
-  </style>
-</head>
-<body>
-
-  <!-- ============== Landing (tap anywhere to continue) ============== -->
-  <section class="hero" id="home" role="button" aria-label="Open app" tabindex="0">
-    <div class="hero__bg" aria-hidden="true"></div>
-    <div class="hero__overlay" aria-hidden="true"></div>
-    <div class="hero__content">
-      <div class="logo" aria-hidden="true">
-        <svg viewBox="0 0 24 24" fill="none">
-          <path d="M5 8.5C5 6.6 6.6 5 8.5 5h7A3.5 3.5 0 0 1 19 8.5V19a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V8.5Z" stroke="currentColor" stroke-width="1.6"/>
-          <path d="M12 8v3M10.5 9.5h3" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
-        </svg>
-      </div>
-      <h1 class="tagline">
-        <span class="care">Care Together.</span>
-        <span class="stay">Stay Together.</span>
-      </h1>
-      <p class="subline">Share your vitals with family, because health is strongest when we stay together.</p>
-    </div>
-  </section>
-
-  <!-- ==================== App ==================== -->
-  <main class="app" id="app" hidden>
-    <div class="tabs" role="tablist" aria-label="Victoria Nurse Sections">
-      <button class="tab" role="tab" aria-selected="true" aria-controls="panel-patient" id="tab-patient">Patient Information</button>
-      <button class="tab" role="tab" aria-selected="false" aria-controls="panel-vitals" id="tab-vitals">Patient Vital Signs</button>
-    </div>
-
-    <section class="card" role="tabpanel" id="panel-patient" aria-labelledby="tab-patient">
-      <h3 class="section-title">Patient Information</h3>
-      <form id="patientForm" autocomplete="on">
-        <div class="grid cols-2">
-          <div>
-            <label for="nurseFirst">Nurse First Name</label>
-            <input id="nurseFirst" name="nurseFirst" placeholder="e.g., Ama" />
-          </div>
-          <div>
-            <label for="nurseLast">Nurse Last Name</label>
-            <input id="nurseLast" name="nurseLast" placeholder="e.g., Mensah" />
-          </div>
-        </div>
-
-        <div class="grid cols-2">
-          <div>
-            <label for="patientName">Patient Name</label>
-            <input id="patientName" name="patientName" placeholder="e.g., Kofi Asare" />
-          </div>
-          <div>
-            <label for="whatsappPatient">Recipient WhatsApp Number (with country code)</label>
-            <input id="whatsappPatient" name="whatsappPatient" inputmode="tel" placeholder="+233xxxxxxxxx" />
-            <div class="hint">Example: +233240000000</div>
-          </div>
-        </div>
-
-        <div class="grid cols-3">
-          <div>
-            <label for="age">Age</label>
-            <input id="age" name="age" type="number" min="0" placeholder="e.g., 58" />
-          </div>
-          <div>
-            <label for="gender">Gender</label>
-            <select id="gender" name="gender">
-              <option value="">Select…</option>
-              <option>Female</option>
-              <option>Male</option>
-              <option>Non-binary</option>
-              <option>Prefer not to say</option>
-            </select>
-          </div>
-          <div>
-            <label for="weekOf">Week of</label>
-            <input id="weekOf" class="teal-input" name="weekOf" type="date" />
-          </div>
-        </div>
-
-        <div class="grid cols-3">
-          <div>
-            <label for="timeOfDay">Time</label>
-            <input id="timeOfDay" class="teal-input" name="timeOfDay" type="time" />
-          </div>
-          <div>
-            <label for="mrn">Medical Record No. (optional)</label>
-            <input id="mrn" name="mrn" placeholder="e.g., MRN-002134" />
-          </div>
-          <div>
-            <label for="allergies">Allergies (optional)</label>
-            <input id="allergies" name="allergies" placeholder="e.g., Penicillin" />
-          </div>
-        </div>
-
-        <div class="actions">
-          <button type="button" class="btn btn-ghost" id="toVitals">Go to Patient Vital Signs</button>
-        </div>
-      </form>
-    </section>
-
-    <section class="card" role="tabpanel" id="panel-vitals" aria-labelledby="tab-vitals" hidden>
-      <h3 class="section-title">Patient Vital Signs</h3>
-      <form id="vitalsForm" autocomplete="on">
-        <div class="grid cols-3">
-          <div>
-            <label for="vdate">Date</label>
-            <input id="vdate" name="vdate" type="date" class="teal-input" />
-          </div>
-          <div>
-            <label for="vtime">Time</label>
-            <input id="vtime" name="vtime" type="time" class="teal-input" />
-          </div>
-          <div>
-            <label for="whatsappVitals">Recipient WhatsApp Number (with country code)</label>
-            <input id="whatsappVitals" name="whatsappVitals" inputmode="tel" placeholder="+233xxxxxxxxx" />
-            <div class="hint">Example: +233240000000</div>
-          </div>
-        </div>
-
-        <div class="grid cols-3">
-          <div>
-            <label for="hr">Heart Rate (bpm)</label>
-            <input id="hr" name="hr" type="number" min="0" placeholder="e.g., 76" />
-          </div>
-          <div>
-            <label for="bpSys">Systolic (mmHg)</label>
-            <input id="bpSys" name="bpSys" type="number" min="0" placeholder="e.g., 120" />
-          </div>
-          <div>
-            <label for="bpDia">Diastolic (mmHg)</label>
-            <input id="bpDia" name="bpDia" type="number" min="0" placeholder="e.g., 78" />
-          </div>
-        </div>
-
-        <div class="grid cols-3">
-          <div>
-            <label for="temp">Temperature (°C)</label>
-            <input id="temp" name="temp" type="number" step="0.1" placeholder="e.g., 36.7" />
-          </div>
-          <div>
-            <label for="resp">Respiratory Rate (breaths/min)</label>
-            <input id="resp" name="resp" type="number" min="0" placeholder="e.g., 16" />
-          </div>
-          <div>
-            <label for="spo2">SpO₂ (%)</label>
-            <input id="spo2" name="spo2" type="number" min="0" max="100" placeholder="e.g., 98" />
-          </div>
-        </div>
-
-        <div class="grid cols-3">
-          <div>
-            <label for="glucose">Blood Sugar (mg/dL)</label>
-            <input id="glucose" name="glucose" type="number" min="0" placeholder="e.g., 95" />
-          </div>
-          <div>
-            <label for="weight">Weight (kg) (optional)</label>
-            <input id="weight" name="weight" type="number" step="0.1" placeholder="e.g., 72.5" />
-          </div>
-          <div>
-            <label for="notes">Notes</label>
-            <input id="notes" name="notes" placeholder="Observations, medications..." />
-          </div>
-        </div>
-
-        <div class="actions">
-          <button type="button" class="btn btn-ghost" id="toPatient">Back to Patient Info</button>
-        </div>
-      </form>
-    </section>
-  </main>
-
-  <footer class="no-print">
-    <div>
-      <span class="mini-logo" aria-hidden="true">
-        <svg viewBox="0 0 24 24" fill="none">
-          <path d="M5 8.5C5 6.6 6.6 5 8.5 5h7A3.5 3.5 0 0 1 19 8.5V19a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V8.5Z" stroke="currentColor" stroke-width="1.6"/>
-          <path d="M12 8v3M10.5 9.5h3" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
-        </svg>
-      </span>
-      <strong>Victoria Nurse</strong> — Care Together. Stay Together.
-    </div>
-  </footer>
-
-  <script>
-    // ---------- Enter app: support touch, mouse, and keyboard ----------
-    const hero = document.getElementById('home');
-    const appEl = document.getElementById('app');
-    const tabPatient = document.getElementById('tab-patient');
-    const tabVitals  = document.getElementById('tab-vitals');
-    const panelPatient = document.getElementById('panel-patient');
-    const panelVitals  = document.getElementById('panel-vitals');
-
-    const openApp = () => {
-      appEl.hidden = false;
-      selectTab('patient');
-      panelPatient.scrollIntoView({behavior:'smooth', block:'start'});
-    };
-    hero.addEventListener('pointerdown', openApp, {passive:true});
-    hero.addEventListener('click', openApp, {passive:true});
-    hero.addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.key === ' ') openApp(); });
-
-    // ---------- Tabs ----------
-    function selectTab(which){
-      const isPatient = which === 'patient';
-      tabPatient.setAttribute('aria-selected', String(isPatient));
-      tabVitals.setAttribute('aria-selected', String(!isPatient));
-      panelPatient.hidden = !isPatient;
-      panelVitals.hidden  =  isPatient;
-    }
-    tabPatient.addEventListener('click', ()=>selectTab('patient'));
-    tabVitals.addEventListener('click',  ()=>selectTab('vitals'));
-
-    // Quick nav
-    document.getElementById('toVitals')?.addEventListener('click', ()=>{ selectTab('vitals'); panelVitals.scrollIntoView({behavior:'smooth'}); });
-    document.getElementById('toPatient')?.addEventListener('click', ()=>{ selectTab('patient'); panelPatient.scrollIntoView({behavior:'smooth'}); });
-
-    // Prevent default submits (no persistence)
-    document.getElementById('patientForm')?.addEventListener('submit', (e)=> e.preventDefault());
-    document.getElementById('vitalsForm')?.addEventListener('submit', (e)=> e.preventDefault());
-
-    // ---------- Service worker registration (bump ?v=9 to force same build everywhere) ----------
-    if ('serviceWorker' in navigator) {
-      window.addEventListener('load', () => {
-        navigator.serviceWorker
-          .register('/service-worker.js?v=9', { scope: '/' })
-          .then(reg => reg.update())
-          .catch(console.error);
-      });
-    }
-  </script>
-</body>
-</html>
+    evt.respondWith(caches.match(req).then((r) => r || fetch(req)));
+  });
+})();
