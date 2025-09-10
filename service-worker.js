@@ -1,7 +1,7 @@
 // service-worker.js
 // Subpath-safe SW; fresh HTML on navigations; precache index + icons.
 (() => {
-  const VERSION = 'v14';
+  const VERSION = 'v15';
   const SCOPE_PATH = new URL(self.registration.scope).pathname.replace(/\/$/, '');
   const BASE = SCOPE_PATH === '' ? '/' : SCOPE_PATH + '/';
   const CACHE_NAME = `victoria-nurse-${VERSION}`;
@@ -30,7 +30,7 @@
     );
   });
 
-  // Navigations: always try network first (no-store), fallback to cached index
+  // Navigations: network-first (no-store) → fallback to cached index
   self.addEventListener('fetch', (evt) => {
     const req = evt.request;
     const url = new URL(req.url);
