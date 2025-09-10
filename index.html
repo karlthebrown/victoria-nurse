@@ -2,368 +2,436 @@
 <html lang="en">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Victoria Nurse</title>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;800&display=swap" rel="stylesheet">
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Victoria Nurse — Care Together. Stay Together.</title>
   <style>
     :root{
-      --teal:#16a3a5;
-      --teal-600:#129294;
-      --blue:#2b78e4;
-      --coral:#ff6b5c;
-      --bg:#fffefb;
-      --text-900:#0f172a;
-      --text-700:#334155;
-      --text-500:#64748b;
-      --muted:#eef6f8;
-      --card:#ffffff;
-      --ring:#2bb1c0;
-      --gradient: linear-gradient(135deg, #16a3a5 0%, #2b78e4 100%);
+      --teal-50:#e6f7f6;
+      --teal-100:#c9efec;
+      --teal-200:#92dfd9;
+      --teal-300:#5ecfc6;
+      --teal-400:#31bfb3;
+      --teal-500:#10afa0; /* primary */
+      --teal-600:#0e998c;
+      --teal-700:#0b7f74;
+      --slate-700:#334155;
+      --slate-600:#475569;
+      --slate-500:#64748b;
+      --accent:#ff6b57; /* warm coral for contrast */
+      --bg:#ffffff;
+      --muted:#f8fafc;
+      --ring-shadow: 0 0 0 4px rgba(16,175,160,.12);
+      --gradient: linear-gradient(135deg, var(--teal-500), #3aa9ff);
+      --gradient-2: linear-gradient(135deg, var(--teal-500), #4cc0ff);
     }
 
     *{box-sizing:border-box}
-    html,body{height:100%}
     body{
       margin:0;
-      font-family:"Poppins", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
-      color:var(--text-900);
-      background:var(--bg);
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Ubuntu, "Noto Sans", "Apple Color Emoji","Segoe UI Emoji", sans-serif;
+      color: var(--slate-700);
+      background: var(--bg);
     }
 
-    /* ---------- Landing (Splash) ---------- */
-    .screen{display:none; min-height:100dvh}
-    .screen.active{display:block}
-
-    .landing{
-      position:relative; overflow:hidden; min-height:100dvh; color:var(--text-900);
+    /* ---------- Landing (hero) ---------- */
+    .hero{
+      position:relative;
+      min-height:100dvh;
+      width:100%;
+      display:grid;
+      place-items:center;
+      overflow:hidden;
+      color:#0b3a3a;
     }
-    .landing__bg{
+    .hero__bg{
       position:absolute; inset:0;
       background:
-        radial-gradient(ellipse at 80% 20%, rgba(255,107,92,.08) 0 30%, transparent 31%),
-        radial-gradient(ellipse at 10% 90%, rgba(22,163,165,.10) 0 30%, transparent 31%),
-        url("nurse-hero.jpg") center/cover no-repeat; /* replace with your full-page nurse image */
-      filter:saturate(1.02);
+        radial-gradient(1200px 600px at 50% 110%, #e8fbff 0%, rgba(255,255,255,0.9) 50%, #ffffff 80%),
+        url('https://images.unsplash.com/photo-1576765608610-8e5f244f6f87?q=80&w=1600&auto=format&fit=crop') center/cover no-repeat;
+      filter:saturate(1.05) contrast(1.02);
     }
-    .landing__overlay{
-      position:absolute; inset:0; background:linear-gradient(to top, rgba(255,255,255,.85), rgba(255,255,255,.65));
+    .hero__scrim{
+      position:absolute; inset:0;
+      background:linear-gradient(to top, rgba(255,255,255,.9) 0%, rgba(255,255,255,.2) 60%, rgba(255,255,255,0) 100%);
+    }
+    .hero__card{
+      position:relative; z-index:2; text-align:center; padding:2rem;
       backdrop-filter: blur(2px);
     }
-    .landing__content{
-      position:relative; z-index:2;
-      max-width:1100px; margin:0 auto; padding:clamp(24px, 6vw, 48px);
-      display:flex; flex-direction:column; align-items:center; justify-content:center; min-height:100dvh; text-align:center;
-    }
     .logo{
-      width:80px; height:80px; border-radius:50%;
-      background:var(--gradient);
-      display:grid; place-items:center; color:white; font-weight:800; letter-spacing:.5px; box-shadow:0 12px 30px rgba(30,144,200,.25);
+      width:76px; height:76px; margin:0 auto 1rem auto;
+      background: var(--gradient);
+      border-radius:20px;
+      display:grid; place-items:center;
+      box-shadow: 0 10px 30px rgba(16,175,160,.25);
     }
+    .logo svg{width:40px; height:40px; color:#fff}
     .tagline{
-      margin:28px 0 8px; line-height:1.1; font-weight:800; font-size:clamp(28px, 5.4vw, 56px);
+      margin:0.35rem 0 0.2rem 0;
+      font-size: clamp(1.7rem, 2.2vw + 1rem, 2.6rem);
+      font-weight:800;
+      line-height:1.15;
     }
-    .tagline__care{
-      background:var(--gradient); -webkit-background-clip:text; background-clip:text; color:transparent;
+    .tagline .care{
+      background: var(--gradient); -webkit-background-clip:text; background-clip:text; color:transparent;
+    }
+    .tagline .stay{
+      color: var(--accent);
+    }
+    .subline{
+      max-width: 42rem;
+      margin: .5rem auto 1.25rem;
+      font-size: clamp(1rem, .6vw + .8rem, 1.15rem);
+      color: var(--slate-600);
+    }
+    .btn{
       display:inline-block;
+      padding: .9rem 1.25rem;
+      border-radius: 999px;
+      border: 0;
+      background: var(--gradient);
+      color:#fff; font-weight:700;
+      letter-spacing:.2px;
+      box-shadow: 0 10px 24px rgba(58,169,255,.25), 0 6px 14px rgba(16,175,160,.28);
+      cursor:pointer;
+      transition: transform .12s ease, box-shadow .12s ease, opacity .12s ease;
     }
-    .tagline__stay{ color:var(--coral) }
-    .support{
-      margin:10px auto 36px; max-width:720px; color:var(--text-700); font-weight:400;
-      font-size:clamp(14px, 2.2vw, 18px);
+    .btn:hover{ transform: translateY(-1px); }
+    .btn:active{ transform: translateY(0);}
+    .hero__pulse{
+      position:absolute; left:0; right:0; bottom:2rem; height:56px; opacity:.7;
+      background:
+        linear-gradient(to right, transparent 0%, rgba(16,175,160,.1) 15%, rgba(16,175,160,.1) 85%, transparent 100%);
+      mask: radial-gradient(80% 60% at 50% 50%, #000 60%, transparent 61%);
     }
-    .cta{
-      appearance:none; border:none; padding:14px 22px; border-radius:14px;
-      background:var(--gradient); color:#fff; font-weight:700; font-size:16px; cursor:pointer;
-      box-shadow:0 10px 24px rgba(43,120,228,.25);
-      transition:transform .12s ease, box-shadow .12s ease, opacity .2s ease;
+    .hero__pulse::after{
+      content:"";
+      position:absolute; inset-inline:4vw; top:20px; height:2px; border-radius:2px;
+      background: var(--teal-200);
+      box-shadow: 0 1px 0 rgba(16,175,160,.25);
+      /* heartbeat line */
+      -webkit-mask:
+        linear-gradient(#000 0 0) center/100% 100% no-repeat,
+        radial-gradient(14px 10px at 25% 50%, #000 98%, transparent 100%) no-repeat;
     }
-    .cta:hover{ transform:translateY(-1px); box-shadow:0 14px 28px rgba(43,120,228,.28) }
-    .cta:active{ transform:translateY(0) }
 
-    /* heartbeat line */
-    .heartbeat{
-      position:absolute; left:0; right:0; bottom:0; height:140px; opacity:.7; pointer-events:none;
-      background:linear-gradient(to top, rgba(255,255,255,1) 0%, rgba(255,255,255,.0) 70%);
-    }
-    .heartbeat svg{ position:absolute; left:0; right:0; bottom:10px; width:110%; height:90px }
-    .stroke{ stroke:#a8e4ea; stroke-width:3; fill:none; }
-    .dash{ stroke-dasharray:6 8; animation:dash 3.5s linear infinite }
-    @keyframes dash{
-      to{ stroke-dashoffset:-200 }
-    }
-
-    /* ---------- App Header ---------- */
+    /* ---------- App Shell ---------- */
     .app{
-      min-height:100dvh; display:flex; flex-direction:column;
+      padding: 2rem clamp(1rem, 3vw, 2rem);
+      max-width: 1100px;
+      margin: 0 auto 5rem;
     }
-    header{
-      position:sticky; top:0; z-index:5;
-      background:var(--card); border-bottom:1px solid #e8eef1;
-      padding:14px 18px; display:flex; align-items:center; gap:14px; justify-content:space-between;
+    .tabs{
+      display:flex; gap:.5rem; flex-wrap:wrap; align-items:center; margin-bottom:1rem;
     }
-    .brand{ display:flex; align-items:center; gap:10px }
-    .brand .logo{ width:40px; height:40px; border-radius:12px }
-    .brand h1{
-      margin:0; font-size:18px; font-weight:800; letter-spacing:.3px;
-      background:var(--gradient); -webkit-background-clip:text; background-clip:text; color:transparent;
+    .tab{
+      padding:.65rem 1rem;
+      border-radius: 12px;
+      background: var(--muted);
+      color: var(--slate-600);
+      font-weight:700;
+      border:1px solid #e6eef5;
+      cursor:pointer;
     }
-    .subhead{
-      margin:0; font-size:12px; color:var(--text-500);
+    .tab[aria-selected="true"]{
+      color:#fff; background: var(--gradient-2); border-color: transparent;
+      box-shadow: 0 6px 18px rgba(76,192,255,.25), 0 3px 10px rgba(16,175,160,.18);
     }
 
-    /* ---------- Layout ---------- */
-    main{ width:100%; max-width:1024px; margin:0 auto; padding:22px; }
     .card{
-      background:var(--card); border:1px solid #e8eef1; border-radius:16px;
-      padding:20px; margin-bottom:20px; box-shadow:0 6px 16px rgba(20,120,160,.06);
-    }
-    .card h2{
-      margin:0 0 14px; font-size:18px; font-weight:800; color:var(--text-900);
+      background:#fff;
+      border:1px solid #e6eef5;
+      border-radius: 18px;
+      padding: clamp(1rem, 2vw, 1.5rem);
+      box-shadow: 0 10px 28px rgba(2,8,23,.03);
     }
 
     /* ---------- Form ---------- */
-    form{ display:grid; gap:14px }
-    .row{ display:grid; gap:12px; grid-template-columns:1fr 1fr }
-    @media (max-width:740px){ .row{ grid-template-columns:1fr } }
+    form{ display:grid; gap:1rem;}
+    .grid{ display:grid; gap:1rem;}
+    .cols-2{ grid-template-columns: repeat(2, minmax(0,1fr));}
+    .cols-3{ grid-template-columns: repeat(3, minmax(0,1fr));}
+    @media (max-width: 720px){
+      .cols-2,.cols-3{ grid-template-columns: 1fr; }
+    }
 
-    label{ display:block; font-size:12px; color:var(--text-700); margin-bottom:6px; font-weight:600 }
+    label{
+      display:block; font-size:.9rem; font-weight:700; color:var(--slate-600); margin-bottom:.45rem;
+    }
+    .hint{ font-size:.8rem; color:var(--slate-500); margin-top:.35rem;}
+
     input, select, textarea{
-      width:100%; padding:12px 12px;
-      border:1.5px solid #d7e6ea; border-radius:12px; background:#ffffff;
-      color:var(--text-900); font:inherit; outline:none; transition:border-color .2s, box-shadow .2s;
+      width:100%;
+      padding:.8rem .9rem;
+      border-radius: 12px;
+      border:1.5px solid #e7eef7;
+      background:#fff;
+      color: var(--slate-700);
+      outline:none;
+      transition: border-color .15s ease, box-shadow .15s ease, background .15s ease;
+      box-shadow: inset 0 0 0 0 rgba(0,0,0,0);
     }
-    input::placeholder, textarea::placeholder{ color:#a0b6bf }
+    textarea{ min-height:110px; resize:vertical;}
+
+    /* Focus ring in theme gradient */
     input:focus, select:focus, textarea:focus{
-      border-color:transparent;
+      border-color: transparent;
       box-shadow:
-        0 0 0 1.5px #d7e6ea,
-        0 0 0 3px rgba(22,163,165,.18),
-        0 0 0 6px rgba(43,120,228,.10);
+        var(--ring-shadow),
+        0 0 0 1.5px var(--teal-500),
+        0 0 0 1.5px color(display-p3 0.09 0.6 0.56);
     }
 
-    /* time & week inputs in teal-green look */
-    .tealize select, .tealize input[type="week"]{
-      background-image: none;
-      color:var(--teal-600);
-      border-color:#cdeef0;
+    /* Teal-green styling for Time dropdown and Week-of calendar */
+    select.time, input.weekof{
+      border-color: var(--teal-300);
+      color: var(--teal-700);
+      background:
+        linear-gradient(#fff,#fff) padding-box,
+        linear-gradient(135deg, var(--teal-300), var(--teal-500)) border-box;
+      border:1.5px solid transparent;
     }
-    .tealize select:focus, .tealize input[type="week"]:focus{
-      box-shadow:
-        0 0 0 1.5px #cdeef0,
-        0 0 0 4px rgba(22,163,165,.23);
+    select.time:focus, input.weekof:focus{
+      box-shadow: var(--ring-shadow), 0 0 0 1.5px var(--teal-500);
     }
 
-    .hint{ font-size:12px; color:var(--text-500) }
-
-    /* Buttons (no Preview/Close anywhere) */
-    .btn{
-      display:inline-flex; align-items:center; justify-content:center; gap:8px;
-      padding:12px 16px; border:none; border-radius:12px; font-weight:700; cursor:pointer;
+    .actions{
+      display:flex; gap:.75rem; flex-wrap:wrap; justify-content:flex-end; margin-top:.5rem;
     }
-    .btn--primary{ background:var(--gradient); color:#fff; box-shadow:0 8px 22px rgba(43,120,228,.22) }
-    .btn--ghost{ background:transparent; color:var(--text-700) }
+    .btn-ghost{
+      background:var(--muted); color: var(--slate-700); border:1px solid #e6eef5;
+      box-shadow:none;
+    }
+    .btn-primary{ background: var(--gradient); color:#fff; border:0; }
+    .btn-accent{ background: linear-gradient(135deg, var(--accent), #ff9a8c); color:#fff; }
 
-    footer{ text-align:center; color:var(--text-500); font-size:12px; padding:24px 16px 40px }
+    /* Helper badges / section titles */
+    .section-title{
+      margin: .25rem 0 .75rem; font-size:1.05rem; font-weight:800; color: var(--teal-700);
+    }
   </style>
 </head>
 <body>
 
-  <!-- Splash / Landing -->
-  <section id="landing" class="screen landing active" aria-label="Landing">
-    <div class="landing__bg" aria-hidden="true"></div>
-    <div class="landing__overlay" aria-hidden="true"></div>
+  <!-- ==================== Landing ==================== -->
+  <section class="hero" id="home">
+    <div class="hero__bg" aria-hidden="true"></div>
+    <div class="hero__scrim" aria-hidden="true"></div>
 
-    <div class="landing__content">
-      <div class="logo" aria-hidden="true">VN</div>
+    <div class="hero__card">
+      <div class="logo" aria-hidden="true">
+        <!-- simple nurse cross icon -->
+        <svg viewBox="0 0 24 24" fill="none">
+          <path d="M5 8.5C5 6.6 6.6 5 8.5 5h7A3.5 3.5 0 0 1 19 8.5V19a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V8.5Z" stroke="currentColor" stroke-width="1.6"/>
+          <path d="M12 8v3M10.5 9.5h3" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+        </svg>
+      </div>
 
       <h1 class="tagline">
-        <span class="tagline__care">Care Together.</span><br/>
-        <span class="tagline__stay">Stay Together.</span>
+        <span class="care">Care Together.</span>
+        <span class="stay">Stay Together.</span>
       </h1>
 
-      <p class="support">
-        Share your vitals with family — because health is strongest when we stay together.
+      <p class="subline">
+        Share your vitals with family, because health is strongest when we stay together.
       </p>
 
-      <button class="cta" id="startBtn" type="button">Start</button>
+      <button class="btn" id="startBtn">Start</button>
     </div>
 
-    <!-- gentle heartbeat line -->
-    <div class="heartbeat" aria-hidden="true">
-      <svg viewBox="0 0 1200 200" preserveAspectRatio="none">
-        <path class="stroke" d="M0,100 C80,100 120,100 200,100 S320,100 400,100 520,100 600,100 640,60 660,100 700,180 740,100 780,60 800,100 880,100 960,100 1040,100 1120,100 1160,100 1200,100"/>
-        <path class="stroke dash" d="M0,120 C80,120 120,120 200,120 S320,120 400,120 520,120 600,120 640,80 660,120 700,200 740,120 780,80 800,120 880,120 960,120 1040,120 1120,120 1160,120 1200,120"/>
-      </svg>
-    </div>
+    <div class="hero__pulse" aria-hidden="true"></div>
   </section>
 
-  <!-- Main App -->
-  <section id="app" class="screen app" aria-label="App">
-    <header>
-      <div class="brand">
-        <div class="logo" aria-hidden="true">VN</div>
-        <div>
-          <h1>Care Together. Stay Together.</h1>
-          <p class="subhead">Share your vitals with family — because health is strongest when we stay together.</p>
-        </div>
-      </div>
-      <button class="btn btn--ghost" type="button" onclick="goLanding()">Back</button>
-    </header>
+  <!-- ==================== App ==================== -->
+  <main class="app" id="app" hidden>
+    <div class="tabs" role="tablist" aria-label="Victoria Nurse Sections">
+      <button class="tab" role="tab" aria-selected="true" aria-controls="panel-patient" id="tab-patient">Patient Information</button>
+      <button class="tab" role="tab" aria-selected="false" aria-controls="panel-vitals" id="tab-vitals">Nurse Vital Signs</button>
+    </div>
 
-    <main>
-      <!-- Patient Information (with WhatsApp field added) -->
-      <section class="card" aria-labelledby="pi-title">
-        <h2 id="pi-title">Patient Information</h2>
-        <form id="patientInfo">
-          <div class="row">
-            <div>
-              <label for="patientName">Patient Full Name</label>
-              <input id="patientName" name="patientName" type="text" placeholder="e.g., Ama Mensah" required />
-            </div>
-            <div>
-              <label for="patientId">Patient ID / Folder No.</label>
-              <input id="patientId" name="patientId" type="text" placeholder="Optional" />
-            </div>
-          </div>
-
-          <div class="row">
-            <div>
-              <label for="dob">Date of Birth</label>
-              <input id="dob" name="dob" type="date" />
-            </div>
-            <div class="tealize">
-              <label for="weekOf">Week of</label>
-              <input id="weekOf" name="weekOf" type="week" />
-            </div>
-          </div>
-
-          <div class="row">
-            <div>
-              <label for="contact">Patient Phone</label>
-              <input id="contact" name="contact" type="tel" placeholder="+233 20 000 0000" />
-            </div>
-            <div>
-              <label for="whatsapp">Recipient WhatsApp Number (with country code)</label>
-              <input id="whatsapp" name="whatsapp" type="tel" inputmode="tel"
-                     placeholder="+233 55 123 4567"
-                     pattern="^\+?[0-9\s\-()]{7,}$"
-                     title="Include the country code, e.g., +233..." />
-              <div class="hint">This number will receive shared vitals updates.</div>
-            </div>
-          </div>
-        </form>
-      </section>
-
-      <!-- Nurse Vital Signs (Nurse first/last name instead of initials) -->
-      <section class="card" aria-labelledby="nvs-title">
-        <h2 id="nvs-title">Nurse Vital Signs</h2>
-        <form id="vitalsForm">
-          <div class="row">
-            <div>
-              <label for="nurseFirst">Nurse First Name</label>
-              <input id="nurseFirst" name="nurseFirst" type="text" placeholder="e.g., Victoria" required />
-            </div>
-            <div>
-              <label for="nurseLast">Nurse Last Name</label>
-              <input id="nurseLast" name="nurseLast" type="text" placeholder="e.g., Osei" required />
-            </div>
-          </div>
-
-          <div class="row tealize">
-            <div>
-              <label for="vitalTime">Time</label>
-              <select id="vitalTime" name="vitalTime" required>
-                <option value="" disabled selected>Select time</option>
-                <option>06:00 AM</option><option>07:00 AM</option><option>08:00 AM</option>
-                <option>09:00 AM</option><option>10:00 AM</option><option>11:00 AM</option>
-                <option>12:00 PM</option><option>01:00 PM</option><option>02:00 PM</option>
-                <option>03:00 PM</option><option>04:00 PM</option><option>05:00 PM</option>
-                <option>06:00 PM</option><option>07:00 PM</option><option>08:00 PM</option>
-              </select>
-            </div>
-            <div>
-              <label for="vitalDate">Date</label>
-              <input id="vitalDate" name="vitalDate" type="date" required />
-            </div>
-          </div>
-
-          <div class="row">
-            <div>
-              <label for="heartRate">Heart Rate (bpm)</label>
-              <input id="heartRate" name="heartRate" type="number" inputmode="numeric" placeholder="e.g., 78" />
-            </div>
-            <div>
-              <label for="respRate">Respiratory Rate (rpm)</label>
-              <input id="respRate" name="respRate" type="number" inputmode="numeric" placeholder="e.g., 16" />
-            </div>
-          </div>
-
-          <div class="row">
-            <div>
-              <label for="systolic">Systolic (mmHg)</label>
-              <input id="systolic" name="systolic" type="number" inputmode="numeric" placeholder="e.g., 118" />
-            </div>
-            <div>
-              <label for="diastolic">Diastolic (mmHg)</label>
-              <input id="diastolic" name="diastolic" type="number" inputmode="numeric" placeholder="e.g., 76" />
-            </div>
-          </div>
-
-          <div class="row">
-            <div>
-              <label for="temperature">Temperature (°C)</label>
-              <input id="temperature" name="temperature" type="number" step="0.1" placeholder="e.g., 36.8" />
-            </div>
-            <div>
-              <label for="spo2">SpO₂ (%)</label>
-              <input id="spo2" name="spo2" type="number" inputmode="numeric" placeholder="e.g., 98" />
-            </div>
-          </div>
-
+    <!-- Patient Information (includes WhatsApp recipient + nurse names) -->
+    <section class="card" role="tabpanel" id="panel-patient" aria-labelledby="tab-patient">
+      <h3 class="section-title">Patient Information</h3>
+      <form id="patientForm" autocomplete="on">
+        <div class="grid cols-2">
           <div>
-            <label for="notes">Notes</label>
-            <textarea id="notes" name="notes" rows="3" placeholder="Optional notes..."></textarea>
+            <label for="nurseFirst">Nurse First Name</label>
+            <input id="nurseFirst" name="nurseFirst" placeholder="e.g., Ama" required />
           </div>
-
-          <div style="display:flex; gap:12px; margin-top:4px">
-            <button class="btn btn--primary" type="button" onclick="saveForms()">Save</button>
-            <button class="btn btn--ghost" type="reset">Reset</button>
+          <div>
+            <label for="nurseLast">Nurse Last Name</label>
+            <input id="nurseLast" name="nurseLast" placeholder="e.g., Mensah" required />
           </div>
-        </form>
-      </section>
+        </div>
 
-      <footer>© <span id="year"></span> Victoria Nurse — Connected family care.</footer>
-    </main>
-  </section>
+        <div class="grid cols-2">
+          <div>
+            <label for="patientName">Patient Name</label>
+            <input id="patientName" name="patientName" placeholder="e.g., Kofi Asare" required />
+          </div>
+          <div>
+            <label for="whatsappPatient">Recipient WhatsApp Number (with country code)</label>
+            <input id="whatsappPatient" name="whatsappPatient" inputmode="tel" placeholder="+233xxxxxxxxx" />
+            <div class="hint">Example: +233240000000</div>
+          </div>
+        </div>
+
+        <div class="grid cols-3">
+          <div>
+            <label for="age">Age</label>
+            <input id="age" name="age" type="number" min="0" placeholder="e.g., 58" />
+          </div>
+          <div>
+            <label for="gender">Gender</label>
+            <select id="gender" name="gender">
+              <option value="">Select…</option>
+              <option>Female</option>
+              <option>Male</option>
+              <option>Non-binary</option>
+              <option>Prefer not to say</option>
+            </select>
+          </div>
+          <div>
+            <label for="weekOf">Week of</label>
+            <input id="weekOf" class="weekof" name="weekOf" type="date" />
+          </div>
+        </div>
+
+        <div class="grid cols-3">
+          <div>
+            <label for="timeOfDay">Time</label>
+            <select id="timeOfDay" class="time" name="timeOfDay">
+              <option value="">Select…</option>
+              <option>Morning</option>
+              <option>Afternoon</option>
+              <option>Evening</option>
+              <option>Night</option>
+            </select>
+          </div>
+          <div>
+            <label for="mrn">Medical Record No. (optional)</label>
+            <input id="mrn" name="mrn" placeholder="e.g., MRN-002134" />
+          </div>
+          <div>
+            <label for="allergies">Allergies (optional)</label>
+            <input id="allergies" name="allergies" placeholder="e.g., Penicillin" />
+          </div>
+        </div>
+
+        <div class="actions">
+          <button type="button" class="btn btn-ghost" id="toVitals">Go to Vital Signs</button>
+          <button class="btn btn-primary" type="submit">Save Patient Info</button>
+        </div>
+      </form>
+    </section>
+
+    <!-- Nurse Vital Signs (with WhatsApp recipient) -->
+    <section class="card" role="tabpanel" id="panel-vitals" aria-labelledby="tab-vitals" hidden>
+      <h3 class="section-title">Nurse Vital Signs</h3>
+      <form id="vitalsForm" autocomplete="on">
+        <div class="grid cols-3">
+          <div>
+            <label for="vdate">Date</label>
+            <input id="vdate" name="vdate" type="date" />
+          </div>
+          <div>
+            <label for="vtime" >Time</label>
+            <select id="vtime" class="time" name="vtime">
+              <option value="">Select…</option>
+              <option>AM</option>
+              <option>PM</option>
+            </select>
+          </div>
+          <div>
+            <label for="whatsappVitals">Recipient WhatsApp Number (with country code)</label>
+            <input id="whatsappVitals" name="whatsappVitals" inputmode="tel" placeholder="+233xxxxxxxxx" />
+            <div class="hint">Example: +233240000000</div>
+          </div>
+        </div>
+
+        <div class="grid cols-3">
+          <div>
+            <label for="hr">Heart Rate (bpm)</label>
+            <input id="hr" name="hr" type="number" min="0" placeholder="e.g., 76" />
+          </div>
+          <div>
+            <label for="bpSys">Systolic (mmHg)</label>
+            <input id="bpSys" name="bpSys" type="number" min="0" placeholder="e.g., 120" />
+          </div>
+          <div>
+            <label for="bpDia">Diastolic (mmHg)</label>
+            <input id="bpDia" name="bpDia" type="number" min="0" placeholder="e.g., 78" />
+          </div>
+        </div>
+
+        <div class="grid cols-3">
+          <div>
+            <label for="temp">Temperature (°C)</label>
+            <input id="temp" name="temp" type="number" step="0.1" placeholder="e.g., 36.7" />
+          </div>
+          <div>
+            <label for="resp">Respiratory Rate (breaths/min)</label>
+            <input id="resp" name="resp" type="number" min="0" placeholder="e.g., 16" />
+          </div>
+          <div>
+            <label for="spo2">SpO₂ (%)</label>
+            <input id="spo2" name="spo2" type="number" min="0" max="100" placeholder="e.g., 98" />
+          </div>
+        </div>
+
+        <div>
+          <label for="notes">Notes</label>
+          <textarea id="notes" name="notes" placeholder="Observations, medications, symptoms…"></textarea>
+        </div>
+
+        <div class="actions">
+          <button type="button" class="btn btn-ghost" id="toPatient">Back to Patient Info</button>
+          <button class="btn btn-accent" type="submit">Save Vital Signs</button>
+        </div>
+      </form>
+    </section>
+  </main>
 
   <script>
-    const landing = document.getElementById('landing');
-    const app = document.getElementById('app');
+    // Smooth enter into app
     const startBtn = document.getElementById('startBtn');
-    const year = document.getElementById('year');
-
-    year.textContent = new Date().getFullYear();
-
-    startBtn.addEventListener('click', () => {
-      landing.classList.remove('active');
-      app.classList.add('active');
-      window.scrollTo({ top:0, behavior:'smooth' });
+    const appEl   = document.getElementById('app');
+    startBtn?.addEventListener('click', () => {
+      appEl.hidden = false;
+      document.getElementById('tab-patient').setAttribute('aria-selected','true');
+      document.getElementById('panel-patient').hidden = false;
+      document.getElementById('panel-patient').scrollIntoView({behavior:'smooth', block:'start'});
     });
 
-    function goLanding(){
-      app.classList.remove('active');
-      landing.classList.add('active');
-      window.scrollTo({ top:0, behavior:'smooth' });
-    }
+    // Tabs toggle
+    const tabPatient = document.getElementById('tab-patient');
+    const tabVitals  = document.getElementById('tab-vitals');
+    const panelPatient = document.getElementById('panel-patient');
+    const panelVitals  = document.getElementById('panel-vitals');
 
-    function saveForms(){
-      const pi = Object.fromEntries(new FormData(document.getElementById('patientInfo')).entries());
-      const v  = Object.fromEntries(new FormData(document.getElementById('vitalsForm')).entries());
-      const payload = { patientInfo:pi, vitals:v, savedAt:new Date().toISOString() };
-      // for now, persist locally so you can confirm fields quickly
-      localStorage.setItem('vn_draft', JSON.stringify(payload));
-      alert('Saved locally.\n\n(Implement server/API save + WhatsApp sharing in your app logic.)');
+    function selectTab(which){
+      const isPatient = which === 'patient';
+      tabPatient.setAttribute('aria-selected', String(isPatient));
+      tabVitals.setAttribute('aria-selected', String(!isPatient));
+      panelPatient.hidden = !isPatient;
+      panelVitals.hidden  =  isPatient;
     }
+    tabPatient.addEventListener('click', ()=>selectTab('patient'));
+    tabVitals.addEventListener('click',  ()=>selectTab('vitals'));
+
+    // Quick nav buttons
+    document.getElementById('toVitals')?.addEventListener('click', ()=>{ selectTab('vitals'); panelVitals.scrollIntoView({behavior:'smooth'}); });
+    document.getElementById('toPatient')?.addEventListener('click', ()=>{ selectTab('patient'); panelPatient.scrollIntoView({behavior:'smooth'}); });
+
+    // Simple form handlers (replace with real persistence/share later)
+    document.getElementById('patientForm')?.addEventListener('submit', (e)=>{
+      e.preventDefault();
+      alert('Patient information saved.');
+    });
+    document.getElementById('vitalsForm')?.addEventListener('submit', (e)=>{
+      e.preventDefault();
+      alert('Vital signs saved.');
+    });
   </script>
 </body>
 </html>
