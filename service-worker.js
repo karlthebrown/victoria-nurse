@@ -1,7 +1,7 @@
 // service-worker.js
-// Subpath-safe SW with strict HTML freshness and cache versioning.
+// Subpath-safe SW; fresh HTML on navigations; simple precache.
 (() => {
-  const VERSION = 'v11';
+  const VERSION = 'v12';
   const SCOPE_PATH = new URL(self.registration.scope).pathname.replace(/\/$/, '');
   const BASE = SCOPE_PATH === '' ? '/' : SCOPE_PATH + '/';
   const CACHE_NAME = `victoria-nurse-${VERSION}`;
@@ -9,7 +9,7 @@
   const ASSETS = [
     `${BASE}`,
     `${BASE}index.html`,
-    `${BASE}assets/nurse-hero.jpg`,
+    // (No landing image anymore)
   ];
 
   self.addEventListener('install', (evt) => {
@@ -29,9 +29,8 @@
     );
   });
 
-  // Navigations: network-first (no-store) so HTML is always fresh; fallback to cached index
-  // Static ASSETS: cache-first
-  // Others: cache, else network
+  // Navigations: network-first with no-store; fallback to cached index.
+  // Static ASSETS: cache-first; others: cache, else network.
   self.addEventListener('fetch', (evt) => {
     const req = evt.request;
     const url = new URL(req.url);
