@@ -1,7 +1,7 @@
 // service-worker.js
-// Subpath-safe SW; fresh HTML on navigations; simple precache.
+// Subpath-safe SW; fresh HTML on navigations; precache index + icons.
 (() => {
-  const VERSION = 'v12';
+  const VERSION = 'v13';
   const SCOPE_PATH = new URL(self.registration.scope).pathname.replace(/\/$/, '');
   const BASE = SCOPE_PATH === '' ? '/' : SCOPE_PATH + '/';
   const CACHE_NAME = `victoria-nurse-${VERSION}`;
@@ -9,7 +9,8 @@
   const ASSETS = [
     `${BASE}`,
     `${BASE}index.html`,
-    // (No landing image anymore)
+    `${BASE}icons/icon-192.png`,
+    `${BASE}icons/icon-512.png`,
   ];
 
   self.addEventListener('install', (evt) => {
@@ -29,8 +30,7 @@
     );
   });
 
-  // Navigations: network-first with no-store; fallback to cached index.
-  // Static ASSETS: cache-first; others: cache, else network.
+  // Navigations: always try network first (no-store), fallback to cached index
   self.addEventListener('fetch', (evt) => {
     const req = evt.request;
     const url = new URL(req.url);
