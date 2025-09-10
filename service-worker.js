@@ -1,10 +1,10 @@
 // service-worker.js
-const CACHE_NAME = 'victoria-nurse-v7';
+const CACHE_NAME = 'victoria-nurse-v8';
 const ASSETS = [
-  '/',                  // adjust if hosted under a subpath
+  '/',                 // adjust if hosted under a subpath
   '/index.html',
   '/assets/nurse-hero.jpg',
-  // add other static files if split: '/styles.css', '/app.js', '/favicon.ico', '/manifest.webmanifest'
+  // add more static files if split: '/styles.css', '/app.js', '/favicon.ico', '/manifest.webmanifest'
 ];
 
 self.addEventListener('install', (evt) => {
@@ -20,9 +20,8 @@ self.addEventListener('activate', (evt) => {
   );
 });
 
-// Navigations: network-first (fresh HTML), fallback to cached index
-// Static ASSETS: cache-first
-// Others: cache, else network
+// Navigations: network-first (fresh HTML), fallback to cached index.
+// Static ASSETS: cache-first. Others: cache, else network.
 self.addEventListener('fetch', (evt) => {
   const req = evt.request;
   const url = new URL(req.url);
@@ -40,4 +39,3 @@ self.addEventListener('fetch', (evt) => {
 
   evt.respondWith(caches.match(req).then((cached) => cached || fetch(req)));
 });
-
