@@ -1,7 +1,7 @@
 // service-worker.js
 // Subpath-safe SW; fresh HTML on navigations; precache index + icons.
 (() => {
-  const VERSION = 'v13';
+  const VERSION = 'v14';
   const SCOPE_PATH = new URL(self.registration.scope).pathname.replace(/\/$/, '');
   const BASE = SCOPE_PATH === '' ? '/' : SCOPE_PATH + '/';
   const CACHE_NAME = `victoria-nurse-${VERSION}`;
