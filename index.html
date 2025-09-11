@@ -1,4 +1,3 @@
-
 ---
 
 ### `index.html`
@@ -7,15 +6,18 @@
 <html lang="en">
 <head>
   <meta charset="utf-8"/>
-  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
   <title>Victoria Nurse — Care Together</title>
 
   <!-- PWA -->
-  <link rel="manifest" href="manifest.webmanifest"/>
+  <link rel="manifest" href="./manifest.webmanifest"/>
   <meta name="theme-color" content="#2563eb"/>
 
   <!-- Icons -->
-  <link rel="icon" href="icon/logo-192.png"/>
+  <link rel="icon" type="image/png" href="./icon/logo-192.png"/>
+  <link rel="apple-touch-icon" href="./icon/logo-192.png"/>
+  <link rel="apple-touch-icon" sizes="180x180" href="./icon/logo-192.png"/>
+  <link rel="mask-icon" href="./icon/logo-512.png" color="#2563eb"/>
 
   <!-- Tailwind (CDN) -->
   <script src="https://cdn.tailwindcss.com"></script>
@@ -35,7 +37,7 @@
         <!-- Header -->
         <header class="bg-gradient-to-r from-indigo-600 to-sky-500 p-6">
           <div class="flex items-center gap-4">
-            <img src="icon/logo.png" alt="Victoria Nurse logo" class="h-12 w-12 rounded-xl bg-white/90 p-1 shadow"/>
+            <img src="./icon/logo.png" alt="Victoria Nurse logo" class="h-12 w-12 rounded-xl bg-white/90 p-1 shadow"/>
             <div>
               <h1 class="text-white text-2xl font-extrabold tracking-tight">Victoria Nurse</h1>
               <p class="text-white/90 text-sm">Care Together</p>
@@ -153,7 +155,7 @@
   <!-- Hidden PDF Template -->
   <div id="pdfCanvas" class="hidden p-8 bg-white w-[794px]">
     <div class="flex items-center gap-4 mb-4">
-      <img src="icon/logo.png" alt="Logo" style="width:64px;height:64px;border-radius:12px;border:1px solid #e2e8f0;padding:6px;background:#fff;">
+      <img src="./icon/logo.png" alt="Logo" style="width:64px;height:64px;border-radius:12px;border:1px solid #e2e8f0;padding:6px;background:#fff;">
       <div>
         <div style="font-weight:800;font-size:22px;color:#111827;">Victoria Nurse</div>
         <div style="color:#334155;">Care Together</div>
@@ -166,6 +168,7 @@
   </div>
 
   <script>
+    // Footer year
     document.getElementById('year').textContent = new Date().getFullYear();
 
     function getFormData() {
