@@ -1,5 +1,5 @@
-// Victoria Nurse – Service Worker (GitHub Pages scope-aware)
-const CACHE_NAME = 'victoria-nurse-v3';
+// Victoria Nurse – Service Worker (scope-aware for GitHub Pages)
+const CACHE_NAME = 'victoria-nurse-v4';
 const BASE = '/victoria-nurse/';
 
 const ASSETS = [
