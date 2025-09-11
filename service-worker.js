@@ -1,52 +1,47 @@
-/* PWA shell; no patient data cached */
-const STATIC_CACHE = 'vn-static-v3';
-const PRECACHE = [
-  './',
-  './index.html',
-  './manifest.webmanifest',
-  './icons/icon-192.png',
-  './icons/icon-512.png'
+// Victoria Nurse – Service Worker (GitHub Pages scope-aware)
+const CACHE_NAME = 'victoria-nurse-v2';
+const BASE = '/victoria-nurse/';
+
+const ASSETS = [
+  BASE,
+  BASE + 'index.html',
+  BASE + 'manifest.webmanifest',
+  BASE + 'icons/icon-192.png',
+  BASE + 'icons/icon-512.png'
 ];
 
 self.addEventListener('install', (event) => {
-  event.waitUntil(caches.open(STATIC_CACHE).then((c) => c.addAll(PRECACHE)));
-  self.skipWaiting();
+  event.waitUntil(
+    caches.open(CACHE_NAME).then((cache) => cache.addAll(ASSETS)).then(() => self.skipWaiting())
+  );
 });
 
 self.addEventListener('activate', (event) => {
   event.waitUntil(
-    caches.keys().then(keys =>
-      Promise.all(keys.filter(k => k !== STATIC_CACHE).map(k => caches.delete(k))))
+    caches.keys().then((keys) =>
+      Promise.all(keys.map((k) => (k === CACHE_NAME ? null : caches.delete(k))))
+    ).then(() => self.clients.claim())
   );
-  self.clients.claim();
 });
 
 self.addEventListener('fetch', (event) => {
   const req = event.request;
   const url = new URL(req.url);
-
-  // Avoid caching navigations (prevents stale filled forms)
-  if (req.mode === 'navigate') {
-    event.respondWith(
-      fetch(req, { cache: 'no-store' }).catch(() => caches.match('./index.html'))
-    );
-    return;
-  }
-
-  // Cache-first for static assets only
-  if (/\.(png|svg|ico|css|js|json|webmanifest|woff2?)$/i.test(url.pathname)) {
-    event.respondWith(
-      caches.open(STATIC_CACHE).then(async cache => {
-        const cached = await cache.match(req);
-        if (cached) return cached;
-        const res = await fetch(req, { cache: 'no-store' });
-        cache.put(req, res.clone());
+  const inScope = url.origin === self.location.origin && url.pathname.startsWith(BASE);
+  if (req.method !== 'GET' || !inScope) return;
+  event.respondWith(
+    caches.match(req).then((cached) => {
+      if (cached) return cached;
+      return fetch(req).then((res) => {
+        const clone = res.clone();
+        caches.open(CACHE_NAME).then((cache) => cache.put(req, clone));
         return res;
-      })
-    );
-    return;
-  }
-
-  // Everything else: network only (no-store)
-  event.respondWith(fetch(req, { cache: 'no-store' }));
+      }).catch(() => {
+        if (req.headers.get('accept')?.includes('text/html')) {
+          return caches.match(BASE + 'index.html');
+        }
+      });
+    })
+  );
 });
+  
