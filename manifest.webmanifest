@@ -1,44 +1,22 @@
 {
   "name": "Victoria Nurse",
   "short_name": "Nurse",
-  "description": "Your digital nursing companion for tracking and sharing vitals.",
+  "description": "Capture, preview and share patient vitals.",
   "start_url": "/victoria-nurse/",
   "scope": "/victoria-nurse/",
   "display": "standalone",
   "orientation": "portrait",
   "lang": "en",
-  "background_color": "#1E88E5",
-  "theme_color": "#1E88E5",
+  "background_color": "#0f2748",
+  "theme_color": "#0f2748",
   "icons": [
-    {
-      "src": "icons/icon-192.png",
-      "sizes": "192x192",
-      "type": "image/png",
-      "purpose": "any maskable"
-    },
-    {
-      "src": "icons/icon-512.png",
-      "sizes": "512x512",
-      "type": "image/png",
-      "purpose": "any maskable"
-    }
+    { "src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any maskable" },
+    { "src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable" }
   ],
   "shortcuts": [
-    {
-      "name": "Add Reading",
-      "url": "/victoria-nurse/?action=add-reading"
-    },
-    {
-      "name": "Preview Message",
-      "url": "/victoria-nurse/?action=preview"
-    },
-    {
-      "name": "Export to PDF",
-      "url": "/victoria-nurse/?action=export"
-    },
-    {
-      "name": "Share via WhatsApp",
-      "url": "/victoria-nurse/?action=share"
-    }
+    { "name": "Add Reading", "url": "/victoria-nurse/?action=add-reading" },
+    { "name": "Preview Message", "url": "/victoria-nurse/?action=preview" },
+    { "name": "Email (Print)", "url": "/victoria-nurse/?action=export" },
+    { "name": "Share via WhatsApp", "url": "/victoria-nurse/?action=share" }
   ]
 }
