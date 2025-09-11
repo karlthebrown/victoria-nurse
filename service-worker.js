@@ -1,5 +1,5 @@
 /* Victoria Nurse SW (no user data cached) */
-const STATIC_CACHE = 'static-v1';
+const STATIC_CACHE = 'static-v2';
 const PRECACHE = [
   './',
   './index.html',
@@ -8,13 +8,11 @@ const PRECACHE = [
   './icons/icon-512.png'
 ];
 
-// Install
 self.addEventListener('install', (event) => {
   event.waitUntil(caches.open(STATIC_CACHE).then((c) => c.addAll(PRECACHE)));
   self.skipWaiting();
 });
 
-// Activate
 self.addEventListener('activate', (event) => {
   event.waitUntil(
     caches.keys().then(keys =>
@@ -23,12 +21,11 @@ self.addEventListener('activate', (event) => {
   self.clients.claim();
 });
 
-// Fetch: never cache navigations with content (avoid showing old filled forms)
+// Never cache navigations with potential filled forms; serve shell as fallback
 self.addEventListener('fetch', (event) => {
   const req = event.request;
   const url = new URL(req.url);
 
-  // For navigations always go to network, fallback to cached shell
   if (req.mode === 'navigate') {
     event.respondWith(
       fetch(req, { cache: 'no-store' }).catch(() => caches.match('./index.html'))
@@ -50,6 +47,6 @@ self.addEventListener('fetch', (event) => {
     return;
   }
 
-  // Everything else: network, no-store
+  // Everything else: network only, no-store
   event.respondWith(fetch(req, { cache: 'no-store' }));
 });
