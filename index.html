@@ -9,177 +9,152 @@
   <link rel="manifest" href="manifest.webmanifest">
   <link rel="icon" type="image/x-icon" href="favicon.ico">
   <link rel="icon" type="image/png" sizes="192x192" href="icons/icon-192.png">
-  <link rel="apple-touch-icon" sizes="192x192" href="icons/icon-192.png">
   <link rel="apple-touch-icon" sizes="512x512" href="icons/icon-512.png">
-  <meta name="theme-color" content="#1E88E5" />
+  <meta name="theme-color" content="#0f2748" />
 
   <style>
     :root{
-      --primary:#1E88E5;
-      --primary-2:#26A69A;
-      --bg:#F5F7FA;
-      --card:#FFFFFF;
-      --text:#2C3E50;
-      --muted:#607D8B;
-      --border:#E3E8EF;
-      --shadow: 0 6px 20px rgba(30,136,229,0.10);
+      /* Core palette from mockup */
+      --ink:#e6f5ff;
+      --muted:#c9d7e6;
+      --bg-top:#0ea5e9;    /* teal */
+      --bg-mid:#1E88E5;    /* medical blue */
+      --bg-bot:#4338ca;    /* indigo */
+      --card:#0f2748cc;    /* translucent slate */
+      --border:#2a4466;
+      --focus1: rgba(30,136,229,.35);
+      --focus2: rgba(38,166,154,.25);
       --grad-btn: linear-gradient(135deg, #1E88E5 0%, #26A69A 100%);
-      --grad-header: linear-gradient(90deg, #1E88E5 0%, #26A69A 100%);
-      /* Landing gradient inspired by your screenshot */
-      --grad-welcome: linear-gradient(160deg, #0ea5e9 0%, #1E88E5 35%, #4f46e5 70%, #0b5bd3 100%);
-      --focus: 0 0 0 3px rgba(30,136,229,0.25);
+      --grad-header: linear-gradient(135deg, #1E88E5 0%, #26A69A 100%);
     }
     *{box-sizing:border-box;margin:0;padding:0}
     html,body{height:100%}
     body{
-      font-family:system-ui,-apple-system,Segoe UI,Roboto,Inter,Arial,sans-serif;
-      background:linear-gradient(180deg,#f6f9ff 0%,#eef5ff 100%);
-      color:var(--text)
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Inter, Arial, sans-serif;
+      color:var(--ink);
+      background: linear-gradient(180deg, var(--bg-top) 0%, var(--bg-mid) 48%, var(--bg-bot) 100%);
+      background-attachment: fixed;
     }
 
-    /* ---------- Landing (hero + imaginative panel) ---------- */
+    /* ---------- Landing ---------- */
     #landing{min-height:100svh; display:flex; flex-direction:column;}
     .hero{
-      height:50svh; width:100%;
+      height:48svh; width:100%;
       background:url('assets/nurse-hero.jpg') center/cover no-repeat;
       position:relative;
     }
-    /* subtle wave divider */
-    .hero::after{
-      content:""; position:absolute; left:0; right:0; bottom:-1px; height:80px;
-      background:
-        radial-gradient(120% 100% at 50% 120%, transparent 60%, #0000 61%) top/100% 100%,
-        linear-gradient(to bottom, rgba(255,255,255,0) 0%, rgba(255,255,255,.06) 50%, rgba(255,255,255,0) 100%);
-      pointer-events:none;
-    }
     .welcome{
       flex:1; display:flex; align-items:center; justify-content:center;
-      text-align:center; padding:28px 18px; background:var(--grad-welcome); color:#fff; position:relative;
-      overflow:hidden;
+      padding:24px 18px;
+      position:relative;
     }
-    /* floating shapes for a richer imagination */
-    .welcome::before, .welcome::after{
-      content:""; position:absolute; border-radius:50%;
-      filter: blur(30px); opacity:.25; pointer-events:none;
-    }
-    .welcome::before{ width:280px; height:280px; left:-60px; top:-40px; background:#26A69A; }
-    .welcome::after { width:320px; height:320px; right:-80px; bottom:-60px; background:#1E88E5; }
-
-    .welcome .box{
-      max-width:820px; width:100%;
-      background:rgba(255,255,255,0.08);
-      border:1px solid rgba(255,255,255,0.18);
-      box-shadow:0 18px 50px rgba(0,0,0,0.18);
+    .welcome .panel{
+      width:min(920px, 92vw);
+      background:rgba(255,255,255,.06);
+      border:1px solid rgba(255,255,255,.18);
+      border-radius:22px;
+      box-shadow:0 20px 60px rgba(0,0,0,.25);
       backdrop-filter: blur(8px);
-      border-radius:22px; padding:30px 20px;
+      padding:26px 20px;
+      text-align:center;
     }
-    .welcome h1{
-      font-size:clamp(26px, 5vw, 44px);
-      letter-spacing:.3px; line-height:1.15; margin-bottom:10px;
+    .brand-mark{
+      display:flex; align-items:center; justify-content:center; gap:14px; margin-bottom:6px;
+      color:#fff; text-decoration:none;
     }
-    .welcome p{opacity:.96; margin-bottom:18px; font-size:clamp(14px,2.5vw,16px)}
+    .brand-mark img{width:56px;height:56px;border-radius:14px;box-shadow:0 8px 24px rgba(0,0,0,.25)}
+    .brand-mark h1{font-size:clamp(28px, 6vw, 42px); font-weight:800; letter-spacing:.2px}
+    .slogan{
+      font-size:clamp(13px, 2.6vw, 16px);
+      font-style:italic; color:var(--muted); margin-bottom:16px; margin-top:2px;
+    }
     .start-btn{
       appearance:none; border:none; cursor:pointer;
-      padding:12px 18px; border-radius:14px;
-      font-weight:800; font-size:16px; letter-spacing:.2px;
-      color:#fff; background:var(--grad-btn); box-shadow:var(--shadow);
+      padding:12px 18px; border-radius:16px; color:#fff; font-weight:800; font-size:16px;
+      background:var(--grad-btn); box-shadow:0 10px 28px rgba(0,0,0,.25);
       transition: transform .05s ease, opacity .2s ease;
     }
     .start-btn:active{ transform: translateY(1px); opacity:.95; }
 
-    /* ---------- Header ---------- */
+    /* ---------- App header ---------- */
     .app-header{
-      display:flex;align-items:center;gap:14px;
-      background:var(--grad-header);color:#fff;
-      padding:16px 18px;border-bottom:3px solid #1565C0; display:none;
+      display:none; align-items:center; gap:14px;
+      background:var(--grad-header); color:#fff; padding:14px 16px;
+      border-bottom:2px solid rgba(255,255,255,.25);
     }
-    .brand-link{display:flex; align-items:center; gap:14px; text-decoration:none; color:inherit;}
-    .app-header .logo{ width:44px;height:44px;border-radius:10px;box-shadow:var(--shadow); }
-    .app-header .brand h1{font-size:18px;line-height:1.1;margin:0}
-    .app-header .brand .tagline{margin-top:2px;font-size:11px;opacity:.92}
+    .brand-link{display:flex; align-items:center; gap:12px; color:#fff; text-decoration:none}
+    .app-header .logo{width:44px;height:44px;border-radius:10px;box-shadow:0 8px 22px rgba(0,0,0,.25)}
+    .app-header h1{font-size:18px;margin:0}
+    .app-header .tag{font-size:11px;opacity:.9}
 
-    /* ---------- App Layout ---------- */
+    /* ---------- Cards / layout ---------- */
     #app{display:none}
-    .wrap{max-width:980px;margin:18px auto 24px;padding:0 14px}
+    .wrap{max-width:980px;margin:18px auto 28px;padding:0 14px}
     .card{
-      background:var(--card);border-radius:16px;box-shadow:var(--shadow);
-      padding:18px 16px;margin-top:16px
+      background:var(--card); border:1px solid var(--border);
+      border-radius:20px; padding:18px 16px; box-shadow:0 18px 50px rgba(0,0,0,.28);
+      backdrop-filter: blur(6px); margin-top:16px;
     }
-    h2{font-size:18px;margin-bottom:10px;color:var(--primary)}
-    label{display:block;margin:10px 0 6px;color:var(--muted);font-weight:600}
+    h2{font-size:18px;margin-bottom:10px}
+    label{display:block;margin:10px 0 6px;color:#d9e6f7;font-weight:600}
 
-    /* Inputs with themed focus ring */
+    /* Inputs with gradient glow on focus */
     input,select,textarea{
-      font-size:15px; padding:10px; margin-bottom:8px; width:100%;
-      border:1px solid var(--border); border-radius:10px; background:#fff; transition: box-shadow .15s ease, border-color .15s ease;
+      color:#f2f7ff; background:rgba(255,255,255,.06);
+      border:1px solid rgba(255,255,255,.18);
+      border-radius:14px; padding:12px 12px; width:100%; font-size:15px;
+      transition: box-shadow .15s ease, border-color .15s ease, background .15s ease;
     }
+    input::placeholder, textarea::placeholder{color:#b8c6d8}
     input:focus, select:focus, textarea:focus{
       outline:none; border-color:transparent;
       box-shadow:
-        0 0 0 2px #fff,
-        0 0 0 4px rgba(30,136,229,0.25),
-        0 0 0 8px rgba(38,166,154,0.18);
+        0 0 0 2px rgba(255,255,255,.8) inset,
+        0 0 0 4px var(--focus1),
+        0 0 0 8px var(--focus2);
+      background:rgba(255,255,255,.08);
     }
     textarea{resize:vertical}
+
     .grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
     @media (max-width:820px){.grid{grid-template-columns:1fr}}
 
-    /* Form Mode row (combines Patient Summary + Nurse) */
-    .mode-row{display:flex; gap:10px; align-items:center; flex-wrap:wrap}
-    .mode-row .spacer{flex:1}
-
     /* Table (non-clickable header) */
-    table{width:100%;border-collapse:collapse;margin-top:10px;background:#fff;border:1px solid var(--border);border-radius:12px;overflow:hidden}
-    thead{background:var(--primary);color:#fff; cursor:default; user-select:none;}
-    th,td{padding:10px;border-bottom:1px solid var(--border);text-align:center;font-size:14px}
-    tbody tr:nth-child(odd){background:#fafcff}
-    tbody tr:hover{background:#f3f9ff}
+    table{width:100%;border-collapse:separate;border-spacing:0;margin-top:10px;
+      background:rgba(255,255,255,.04); border:1px solid rgba(255,255,255,.16); border-radius:16px; overflow:hidden}
+    thead{background:rgba(255,255,255,.08); color:#e7f1ff; user-select:none}
+    th,td{padding:10px;border-bottom:1px solid rgba(255,255,255,.12);text-align:center;font-size:14px}
+    tbody tr:nth-child(odd){background:rgba(255,255,255,.03)}
+    tbody tr:hover{background:rgba(255,255,255,.06)}
 
-    /* Buttons (all gradient style) */
+    /* Buttons (gradient, no +) */
     .btn-row{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}
     .btn{
-      flex:1; padding:11px 14px; border:none; border-radius:12px;
+      flex:1; padding:12px 14px; border:none; border-radius:16px;
       color:#fff; font-weight:800; font-size:15px; letter-spacing:.2px;
-      background:var(--grad-btn); box-shadow:var(--shadow);
+      background:var(--grad-btn); box-shadow:0 10px 28px rgba(0,0,0,.25);
       cursor:pointer; transition:transform .05s ease, opacity .2s ease
     }
     .btn:active{transform:translateY(1px);opacity:.95}
-    .ghost{background:#fff;color:var(--primary);border:1px solid var(--primary);box-shadow:none}
+    .ghost{background:rgba(255,255,255,.08); color:#e6f5ff; border:1px solid rgba(255,255,255,.25)}
 
-    footer.signature {
-      font-size:11px;color:#8899aa;text-align:center;margin:18px auto 28px;max-width:980px;
-      padding:8px 0;border-top:1px solid var(--border);font-style:italic;letter-spacing:.5px
-    }
-    footer.signature strong{color:#1E88E5;font-style:normal}
+    footer.signature{font-size:11px;color:#b4c4db;text-align:center;margin:20px auto 28px;max-width:980px;opacity:.9}
 
-    /* Mobile: stack table */
-    @media (max-width:640px){
-      table thead{display:none}
-      table,tbody,tr,td{display:block;width:100%}
-      tr{margin:8px 0;border:1px solid var(--border);border-radius:12px;overflow:hidden;background:#fff}
-      td{text-align:left;padding:8px 10px;border-bottom:1px solid var(--border)}
-      td:last-child{border-bottom:none}
-      td::before{content:attr(data-label);font-weight:700;margin-right:8px;display:inline-block;min-width:120px;color:#2c3e50}
-      .btn{width:100%;font-size:15px;padding:12px}
-    }
-
-    /* Print (Email) includes logo + title header */
+    /* Print header shown for Email (print) */
     @media print{
-      #landing,.btn-row,.modal,.ghost{display:none !important}
-      body{background:#fff}
+      #landing,.app-header,.btn-row,.modal{display:none !important}
+      body{background:#fff; color:#111}
       .print-header{display:flex !important}
-      .wrap{margin:0;padding:0}
-      .card{box-shadow:none;border:none;padding:0}
+      .card{box-shadow:none;border:1px solid #ccc;background:#fff}
       table{border:1px solid #999}
-      th,td{border:1px solid #999}
+      th,td{border-bottom:1px solid #999}
       footer.signature{display:none}
     }
-    .print-header{display:none; align-items:center; gap:12px; margin:0 auto 12px; max-width:980px; padding:6px 0 0}
-    .print-header img{width:42px; height:42px; border-radius:8px}
+    .print-header{display:none; align-items:center; gap:12px; margin:12px auto; max-width:980px}
+    .print-header img{width:42px;height:42px;border-radius:8px}
     .print-header h1{font-size:20px; margin:0; color:#1E88E5}
-    .print-header small{display:block; color:#607D8B}
-    
-    /* Tiny helper classes */
+    .print-header small{display:block; color:#333}
+
     .hidden{display:none !important}
   </style>
 </head>
@@ -189,21 +164,26 @@
   <section id="landing" aria-label="Welcome">
     <div class="hero" role="img" aria-label="Nurse with patient"></div>
     <div class="welcome">
-      <div class="box">
-        <h1>Welcome to <strong>Victoria Nurse</strong></h1>
-        <p>Your digital nursing companion for capturing, previewing, and sharing vitals securely with loved ones and care teams.</p>
+      <div class="panel">
+        <a href="#" class="brand-mark" id="brandTop">
+          <img src="icons/icon-192.png" alt="Victoria Nurse Logo"/>
+          <div>
+            <h1>Victoria Nurse</h1>
+            <div class="slogan">Care Together. Stay Together.</div>
+          </div>
+        </a>
         <button class="start-btn" id="startBtn">Start</button>
       </div>
     </div>
   </section>
 
-  <!-- Header (logo + link to landing) -->
+  <!-- App header (clickable brand returns to landing) -->
   <header class="app-header" id="appHeader">
-    <a href="#" class="brand-link" id="homeLink" title="Back to Welcome">
-      <img src="icons/icon-192.png" alt="Victoria Nurse Logo" class="logo" />
-      <div class="brand">
+    <a href="#" class="brand-link" id="homeLink">
+      <img src="icons/icon-192.png" alt="Logo" class="logo" />
+      <div>
         <h1>Victoria Nurse</h1>
-        <p class="tagline">Your digital nursing companion</p>
+        <div class="tag">Your digital nursing companion</div>
       </div>
     </a>
   </header>
@@ -220,21 +200,21 @@
   <!-- Main App -->
   <main id="app" role="main" aria-label="Main app">
     <div class="wrap">
-      <!-- Combined Form: Patient Summary + Nurse Vital Signs -->
+      <!-- Combined Form -->
       <div class="card">
         <h2>Patient Information</h2>
         <div class="grid">
           <div>
-            <label for="patientName">Patient name / initials</label>
+            <label for="patientName">Patient Name / Initials</label>
             <input id="patientName" placeholder="e.g., A. Mensah">
           </div>
           <div>
-            <label for="weekOf">Week of</label>
+            <label for="weekOf">Week Of</label>
             <input type="date" id="weekOf">
           </div>
         </div>
 
-        <div class="mode-row" style="margin-top:8px">
+        <div class="grid" style="margin-top:6px">
           <div>
             <label for="formMode">Form Section</label>
             <select id="formMode">
@@ -242,53 +222,53 @@
               <option value="nurse">Nurse Vital Signs</option>
             </select>
           </div>
-          <div class="spacer"></div>
+          <div></div>
         </div>
 
-        <!-- Patient-only fields -->
+        <!-- Patient-only -->
         <div id="patientOnly" class="grid" style="margin-top:4px">
           <div>
-            <label for="startWeight">Starting weight (kg)</label>
+            <label for="startWeight">Starting Weight (kg)</label>
             <input id="startWeight" type="number" step="0.1" placeholder="e.g., 72.4">
           </div>
           <div>
-            <label for="endWeight">Ending weight (kg)</label>
+            <label for="endWeight">Ending Weight (kg)</label>
             <input id="endWeight" type="number" step="0.1" placeholder="e.g., 71.9">
           </div>
           <div>
-            <label for="recipient">Recipient WhatsApp number (with country code)</label>
+            <label for="recipient">Recipient WhatsApp (with country code)</label>
             <input id="recipient" placeholder="+23324XXXXXXX">
           </div>
           <div>
-            <label for="note">Optional note</label>
+            <label for="note">Optional Note</label>
             <input id="note" placeholder="Short note (no sensitive identifiers)">
           </div>
         </div>
 
-        <!-- Nurse-only fields -->
+        <!-- Nurse-only -->
         <div id="nurseOnly" class="hidden" style="margin-top:6px">
-          <h3 style="margin:8px 0 6px;color:#1E88E5">Nurse Vital Signs</h3>
+          <h3 style="margin:8px 0 6px">Nurse Vital Signs</h3>
           <div class="grid">
-            <div><label for="clNurse">Nurse initials</label><input id="clNurse" placeholder="e.g., KB"></div>
+            <div><label for="clNurse">Nurse Initials</label><input id="clNurse" placeholder="e.g., KB"></div>
             <div><label for="clTime">Time</label><input id="clTime" type="time"></div>
 
             <div><label>Temperature (°C/°F)</label><input id="clTemp"></div>
             <div><label>Pulse / HR (bpm)</label><input id="clHR" type="number"></div>
-            <div><label>Respiratory rate (breaths/min)</label><input id="clRR" type="number"></div>
+            <div><label>Respiratory Rate (/min)</label><input id="clRR" type="number"></div>
             <div><label>Blood Pressure (mmHg)</label><input id="clBP" placeholder="e.g., 120/80"></div>
-            <div><label>Oxygen saturation (SpO₂ %)</label><input id="clSpO2" type="number"></div>
+            <div><label>Oxygen Saturation (SpO₂ %)</label><input id="clSpO2" type="number"></div>
 
-            <div><label>Pain level (0–10)</label><input id="clPain" type="number" min="0" max="10"></div>
+            <div><label>Pain (0–10)</label><input id="clPain" type="number" min="0" max="10"></div>
             <div><label>LOC (AVPU/GCS)</label><input id="clLOC" placeholder="e.g., Alert / GCS 15"></div>
-            <div><label>Blood glucose</label><input id="clBGL" placeholder="mg/dL or mmol/L"></div>
+            <div><label>Blood Glucose</label><input id="clBGL" placeholder="mg/dL or mmol/L"></div>
             <div><label>Weight (kg)</label><input id="clWt" type="number" step="0.1"></div>
             <div><label>Height (cm)</label><input id="clHt" type="number" step="0.1"></div>
             <div><label>Intake (mL)</label><input id="clIn" type="number"></div>
             <div><label>Output (mL)</label><input id="clOut" type="number"></div>
 
-            <div><label>Pulse characteristics</label><input id="clPulse" placeholder="regular/irregular, strong/weak"></div>
-            <div><label>Skin signs</label><input id="clSkin" placeholder="warm/cool, dry/moist, color"></div>
-            <div><label>Capillary refill (sec)</label><input id="clCap" type="number" step="0.1"></div>
+            <div><label>Pulse Characteristics</label><input id="clPulse" placeholder="regular/irregular, strong/weak"></div>
+            <div><label>Skin Signs</label><input id="clSkin" placeholder="warm/cool, dry/moist, color"></div>
+            <div><label>Capillary Refill (sec)</label><input id="clCap" type="number" step="0.1"></div>
           </div>
 
           <label style="margin-top:10px">Notes</label>
@@ -326,14 +306,14 @@
   </main>
 
   <footer class="signature">
-    Developed by <strong>Karl Brown</strong> © <span id="year"></span>
+    Developed by <strong>Karl Brown</strong> • © <span id="year"></span>
   </footer>
 
   <!-- Preview Modal -->
-  <div class="modal" id="previewModal" aria-modal="true" role="dialog" aria-labelledby="previewTitle">
-    <div class="sheet">
-      <h3 id="previewTitle">Preview message</h3>
-      <pre id="previewText"></pre>
+  <div class="modal hidden" id="previewModal" aria-modal="true" role="dialog" aria-labelledby="previewTitle" style="position:fixed;inset:0;background:rgba(0,0,0,.35);display:flex;align-items:center;justify-content:center;padding:16px;z-index:1000">
+    <div class="sheet" style="background:#0f2748; border:1px solid #2a4466; color:#e6f5ff; border-radius:16px; max-width:680px; width:92vw; box-shadow:0 16px 40px rgba(0,0,0,.35); padding:16px">
+      <h3 id="previewTitle" style="margin-bottom:10px">Preview message</h3>
+      <pre id="previewText" style="white-space:pre-wrap;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.16);border-radius:12px;padding:12px;max-height:50vh;overflow:auto"></pre>
       <div class="btn-row" style="margin-top:12px">
         <button class="btn" onclick="copyPreview()">Copy</button>
         <button class="btn ghost" onclick="closePreview()">Close</button>
@@ -345,27 +325,30 @@
     const $ = (id)=>document.getElementById(id);
 
     /* ---------- Landing / Navigation ---------- */
-    const startBtn = document.getElementById('startBtn');
-    const appHeader = document.getElementById('appHeader');
-    const homeLink = document.getElementById('homeLink');
+    const startBtn = $("startBtn");
+    const appHeader = $("appHeader");
+    const homeLink = $("homeLink");
+    const landing = $("landing");
+    const appMain = $("app");
+
     startBtn.addEventListener('click', () => {
-      document.getElementById('landing').style.display = 'none';
-      document.getElementById('app').style.display = 'block';
+      landing.style.display = 'none';
+      appMain.style.display = 'block';
       appHeader.style.display = 'flex';
       window.scrollTo({top:0, behavior:'smooth'});
     });
     homeLink.addEventListener('click', (e)=>{
       e.preventDefault();
-      document.getElementById('app').style.display = 'none';
+      appMain.style.display = 'none';
       appHeader.style.display = 'none';
-      document.getElementById('landing').style.display = 'block';
+      landing.style.display = 'block';
       window.scrollTo({top:0, behavior:'smooth'});
     });
 
-    /* ---------- Form switcher (combine Patient + Nurse) ---------- */
-    const formMode = document.getElementById('formMode');
-    const patientOnly = document.getElementById('patientOnly');
-    const nurseOnly = document.getElementById('nurseOnly');
+    /* ---------- Form switcher ---------- */
+    const formMode = $("formMode");
+    const patientOnly = $("patientOnly");
+    const nurseOnly = $("nurseOnly");
     formMode.addEventListener('change', ()=>{
       const mode = formMode.value;
       if(mode === 'patient'){ patientOnly.classList.remove('hidden'); nurseOnly.classList.add('hidden'); }
@@ -394,33 +377,33 @@
     function addRowPair(){ addRow({meridiem:'AM'}); addRow({meridiem:'PM'}); }
     function clearTable(){ document.querySelector("#vitalsTable tbody").innerHTML = ""; }
 
-    /* ---------- Build nurse checklist text ---------- */
+    /* ---------- Nurse checklist builder ---------- */
     function clBuildText(){
-      const get = id => (document.getElementById(id)?.value || '').trim();
+      const v = (id)=> (document.getElementById(id)?.value || '').trim();
       const lines = [
-        `Nurse Checklist — ${get('patientName') || 'Patient'}`,
-        `Week of: ${get('weekOf') || ''}  Time: ${get('clTime') || ''}  Nurse: ${get('clNurse') || ''}`,
+        `Nurse Checklist — ${v('patientName') || 'Patient'}`,
+        `Week of: ${v('weekOf') || ''}  Time: ${v('clTime') || ''}  Nurse: ${v('clNurse') || ''}`,
         ``,
         `Core Vitals:`,
-        `• Temp: ${get('clTemp') || '-'}  • HR: ${get('clHR') || '-'} bpm  • RR: ${get('clRR') || '-'} /min`,
-        `• BP: ${get('clBP') || '-'} mmHg  • SpO₂: ${get('clSpO2') || '-'} %`,
+        `• Temp: ${v('clTemp') || '-'}  • HR: ${v('clHR') || '-'} bpm  • RR: ${v('clRR') || '-'} /min`,
+        `• BP: ${v('clBP') || '-'} mmHg  • SpO₂: ${v('clSpO2') || '-'} %`,
         ``,
-        `Extended Checks:`,
-        `• Pain: ${get('clPain') || '-'} /10  • LOC: ${get('clLOC') || '-'}`,
-        `• BGL: ${get('clBGL') || '-'}  • Wt: ${get('clWt') || '-'} kg  • Ht: ${get('clHt') || '-'} cm`,
-        `• Intake: ${get('clIn') || '-'} mL  • Output: ${get('clOut') || '-'} mL`,
+        `Extended:`,
+        `• Pain: ${v('clPain') || '-'} /10  • LOC: ${v('clLOC') || '-'}`,
+        `• BGL: ${v('clBGL') || '-'}  • Wt: ${v('clWt') || '-'} kg  • Ht: ${v('clHt') || '-'} cm`,
+        `• Intake: ${v('clIn') || '-'} mL  • Output: ${v('clOut') || '-'} mL`,
         ``,
         `Observations:`,
-        `• Pulse: ${get('clPulse') || '-'}`,
-        `• Skin: ${get('clSkin') || '-'}`,
-        `• Cap refill: ${get('clCap') || '-'} sec`,
+        `• Pulse: ${v('clPulse') || '-'}`,
+        `• Skin: ${v('clSkin') || '-'}`,
+        `• Cap refill: ${v('clCap') || '-'} sec`,
         ``,
-        `Notes: ${get('clNotes') || ''}`
+        `Notes: ${v('clNotes') || ''}`
       ];
-      return lines.join('\n');
+      return lines.join('\\n');
     }
 
-    /* ---------- Gather weekly summary ---------- */
+    /* ---------- Gather text ---------- */
     function gather(){
       const name = $("patientName").value.trim() || "Patient";
       const week = $("weekOf").value || "(week not set)";
@@ -435,47 +418,59 @@
         const hr   = tr.children[3].querySelector('input').value || '';
         const sys  = tr.children[4].querySelector('input').value || '';
         const dia  = tr.children[5].querySelector('input').value || '';
-        return {day,time,ampm,hr,sys,dia};
+        return `• ${day} ${time} ${ampm} — HR ${hr} bpm, ${sys}/${dia} mmHg`;
       });
 
-      let msg = `Victoria Nurse — ${name}\nWeek of ${week}\n`;
-      if (sw) msg += `Start Wt: ${sw} kg\n`;
-      if (ew) msg += `End Wt: ${ew} kg\n`;
-      msg += `\nReadings:\n`;
-      if (rows.length===0){ msg += `  (no rows yet)\n`; }
-      rows.forEach(r=>{ msg += `• ${r.day} ${r.time} ${r.ampm} — HR ${r.hr} bpm, ${r.sys}/${r.dia} mmHg\n`; });
-      if (note) msg += `\nNote: ${note}\n`;
+      let msg = `Victoria Nurse — ${name}\\nWeek of ${week}\\n`;
+      if (sw) msg += `Start Wt: ${sw} kg\\n`;
+      if (ew) msg += `End Wt: ${ew} kg\\n`;
+      msg += `\\nDaily Vitals:\\n`;
+      msg += rows.length ? rows.join('\\n') + '\\n' : '  (no rows yet)\\n';
+      if (note) msg += `\\nNote: ${note}\\n`;
 
-      // If Nurse section is visible, append it automatically
+      // If Nurse section is visible when sharing, append it
       if (!nurseOnly.classList.contains('hidden')) {
-        msg += `\n————————————\n` + clBuildText();
+        msg += `\\n————————————\\n` + clBuildText();
       }
-
-      return {msg};
+      return msg;
     }
 
-    /* ---------- Preview / Share / Email (Print) ---------- */
+    /* ---------- Clear everything after sharing ---------- */
+    function clearAll(){
+      document.querySelectorAll('input').forEach(el => {
+        if (el.type === 'date' || el.type === 'time' || el.type === 'number' || el.type === 'text') el.value = '';
+      });
+      document.querySelectorAll('textarea').forEach(el => el.value = '');
+      clearTable();
+      // Return to Patient Summary
+      formMode.value = 'patient';
+      patientOnly.classList.remove('hidden'); nurseOnly.classList.add('hidden');
+    }
+
+    /* ---------- Preview / Share / Email ---------- */
     function doPreview(){
-      const {msg} = gather();
-      $("previewText").textContent = msg;
-      $("previewModal").classList.add("show");
+      $("previewText").textContent = gather();
+      $("previewModal").classList.remove('hidden');
     }
-    function closePreview(){ $("previewModal").classList.remove("show"); }
+    function closePreview(){ $("previewModal").classList.add('hidden'); }
     function copyPreview(){
-      const text = $("previewText").textContent;
-      navigator.clipboard.writeText(text).then(()=> alert("Copied!"));
+      navigator.clipboard.writeText($("previewText").textContent).then(()=> alert("Copied!"));
     }
 
     function doShare(){
-      const {msg} = gather();
+      const text = gather();
       const phone = $("recipient")?.value?.trim();
-      const wa = phone ? `https://wa.me/${encodeURIComponent(phone)}?text=${encodeURIComponent(msg)}`
-                       : `https://wa.me/?text=${encodeURIComponent(msg)}`;
+      const wa = phone ? `https://wa.me/${encodeURIComponent(phone)}?text=${encodeURIComponent(text)}`
+                       : `https://wa.me/?text=${encodeURIComponent(text)}`;
       window.open(wa, "_blank");
+      clearAll();
     }
 
-    // "Email" button still uses print-to-PDF for now (user can attach/share via mail apps)
-    function doExportPDF(){ window.print(); }
+    // “Email” still triggers print-to-PDF (user can share/attach)
+    function doExportPDF(){
+      window.print();
+      clearAll();
+    }
 
     /* ---------- Footer year ---------- */
     (function(){ const y=$("year"); if (y) y.textContent = new Date().getFullYear(); })();
