@@ -14,7 +14,7 @@
 
   <style>
     :root{
-      /* Core palette from mockup */
+      /* Dark, premium gradient theme */
       --ink:#e6f5ff;
       --muted:#c9d7e6;
       --bg-top:#0ea5e9;    /* teal */
@@ -45,8 +45,7 @@
     }
     .welcome{
       flex:1; display:flex; align-items:center; justify-content:center;
-      padding:24px 18px;
-      position:relative;
+      padding:24px 18px; position:relative;
     }
     .welcome .panel{
       width:min(920px, 92vw);
@@ -119,7 +118,7 @@
     .grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
     @media (max-width:820px){.grid{grid-template-columns:1fr}}
 
-    /* Table (non-clickable header) */
+    /* Table */
     table{width:100%;border-collapse:separate;border-spacing:0;margin-top:10px;
       background:rgba(255,255,255,.04); border:1px solid rgba(255,255,255,.16); border-radius:16px; overflow:hidden}
     thead{background:rgba(255,255,255,.08); color:#e7f1ff; user-select:none}
@@ -127,7 +126,7 @@
     tbody tr:nth-child(odd){background:rgba(255,255,255,.03)}
     tbody tr:hover{background:rgba(255,255,255,.06)}
 
-    /* Buttons (gradient, no +) */
+    /* Buttons */
     .btn-row{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}
     .btn{
       flex:1; padding:12px 14px; border:none; border-radius:16px;
@@ -177,9 +176,9 @@
     </div>
   </section>
 
-  <!-- App header (clickable brand returns to landing) -->
+  <!-- App header (brand returns to landing) -->
   <header class="app-header" id="appHeader">
-    <a href="#" class="brand-link" id="homeLink">
+    <a href="#" class="brand-link" id="homeLink" title="Back to Welcome">
       <img src="icons/icon-192.png" alt="Logo" class="logo" />
       <div>
         <h1>Victoria Nurse</h1>
@@ -400,7 +399,7 @@
         ``,
         `Notes: ${v('clNotes') || ''}`
       ];
-      return lines.join('\\n');
+      return lines.join('\n');
     }
 
     /* ---------- Gather text ---------- */
@@ -421,16 +420,16 @@
         return `• ${day} ${time} ${ampm} — HR ${hr} bpm, ${sys}/${dia} mmHg`;
       });
 
-      let msg = `Victoria Nurse — ${name}\\nWeek of ${week}\\n`;
-      if (sw) msg += `Start Wt: ${sw} kg\\n`;
-      if (ew) msg += `End Wt: ${ew} kg\\n`;
-      msg += `\\nDaily Vitals:\\n`;
-      msg += rows.length ? rows.join('\\n') + '\\n' : '  (no rows yet)\\n';
-      if (note) msg += `\\nNote: ${note}\\n`;
+      let msg = `Victoria Nurse — ${name}\nWeek of ${week}\n`;
+      if (sw) msg += `Start Wt: ${sw} kg\n`;
+      if (ew) msg += `End Wt: ${ew} kg\n`;
+      msg += `\nDaily Vitals:\n`;
+      msg += rows.length ? rows.join('\n') + '\n' : '  (no rows yet)\n';
+      if (note) msg += `\nNote: ${note}\n`;
 
       // If Nurse section is visible when sharing, append it
       if (!nurseOnly.classList.contains('hidden')) {
-        msg += `\\n————————————\\n` + clBuildText();
+        msg += `\n————————————\n` + clBuildText();
       }
       return msg;
     }
@@ -438,11 +437,10 @@
     /* ---------- Clear everything after sharing ---------- */
     function clearAll(){
       document.querySelectorAll('input').forEach(el => {
-        if (el.type === 'date' || el.type === 'time' || el.type === 'number' || el.type === 'text') el.value = '';
+        if (['date','time','number','text'].includes(el.type)) el.value = '';
       });
       document.querySelectorAll('textarea').forEach(el => el.value = '');
       clearTable();
-      // Return to Patient Summary
       formMode.value = 'patient';
       patientOnly.classList.remove('hidden'); nurseOnly.classList.add('hidden');
     }
@@ -466,7 +464,7 @@
       clearAll();
     }
 
-    // “Email” still triggers print-to-PDF (user can share/attach)
+    // “Email” triggers print-to-PDF (user can share/attach via Mail)
     function doExportPDF(){
       window.print();
       clearAll();
