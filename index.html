@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-  <meta name="theme-color" content="#0E2A35" />
+  <meta name="theme-color" content="#E6F3FF" />
   <meta name="referrer" content="no-referrer">
   <meta http-equiv="Cache-Control" content="no-store, no-cache, must-revalidate" />
   <meta http-equiv="Pragma" content="no-cache" />
@@ -14,140 +14,105 @@
   <link rel="icon" href="icons/icon-192.png" />
   <title>Victoria Nurse</title>
   <style>
-    :root{
-      /* Professional & medical palette (calm blues/greens, clean lines) */
-      --bg-0:#0E2A35;          /* deep blue-teal page background */
-      --bg-1:#113543;
-      --card:#163F50;          /* card surface */
-      --card-2:#1A495C;        /* light gradient stop */
-      --ink:#EAF5F4;           /* primary text */
-      --muted:#BFD6D4;         /* secondary text */
-      --line:#2B5D6F;          /* dividers/lines */
-      --accent:#42C6B8;        /* clinical teal */
-      --accent-2:#5FA8FF;      /* calm blue */
-      --danger:#EF5B5B;        /* alerts */
-      --radius:16px;
-      --shadow:0 10px 28px rgba(0,0,0,.28);
-      --focus:0 0 0 3px rgba(66,198,184,.35);
+    :root {
+      /* Light blue gradient palette */
+      --bg-0:#E6F3FF;        /* light sky background */
+      --bg-1:#F7FBFF;        /* white-blue blend */
+      --card-1:#FFFFFF;
+      --card-2:#F1F8FF;
+      --ink:#083D77;         /* deep navy text */
+      --muted:#52799F;       /* muted blue text */
+      --line:#C2DDF2;        /* soft divider */
+      --accent:#5BA9F2;      /* medium blue accent */
+      --accent-2:#82C4FF;    /* lighter accent */
+      --danger:#E63946;      /* error red */
+      --radius:14px;
+      --shadow:0 4px 18px rgba(0,0,0,.12);
+      --focus:0 0 0 3px rgba(91,169,242,.35);
     }
-    *{box-sizing:border-box}
-    html,body{height:100%}
-    body{
-      margin:0; font-family:ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial;
+    body {
+      margin:0;
+      font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial;
       color:var(--ink);
-      background:
-        radial-gradient(1200px 900px at 50% -200px, #134051 10%, var(--bg-0) 60%) fixed,
-        linear-gradient(180deg, var(--bg-0), var(--bg-1)) fixed;
-      -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale;
+      background:linear-gradient(180deg,var(--bg-0),var(--bg-1));
     }
     .wrap{max-width:640px;margin:0 auto;padding:24px 18px 96px}
-    header{text-align:center;margin:6px 0 18px}
-    .brand{
-      display:flex;gap:12px;align-items:center;justify-content:center;margin-bottom:6px
-    }
+    header{text-align:center;margin-bottom:18px}
     .logo{
-      width:72px;height:72px;border-radius:14px;background:linear-gradient(180deg,#155765,#1F6C7C);
-      display:grid;place-items:center;box-shadow:var(--shadow)
+      width:72px;height:72px;border-radius:50%;background:linear-gradient(180deg,#5BA9F2,#82C4FF);
+      display:grid;place-items:center;margin:0 auto 8px;box-shadow:var(--shadow)
     }
     .logo svg{width:46px;height:46px}
-    h1{margin:0;font-size:32px;letter-spacing:.2px}
-    .slogan{margin-top:6px;color:var(--muted);font-size:15px;font-style:italic}
-    .badge{margin-top:8px;color:var(--muted);font-size:12px}
+    h1{margin:0;font-size:32px}
+    .slogan{margin-top:4px;color:var(--muted);font-size:15px;font-style:italic}
+    .badge{margin-top:6px;color:var(--muted);font-size:12px}
     .card{
-      background:linear-gradient(180deg,var(--card),var(--card-2));
+      background:linear-gradient(180deg,var(--card-1),var(--card-2));
       border-radius:var(--radius);box-shadow:var(--shadow);
       padding:16px;margin:12px 0;border:1px solid var(--line);
     }
-    .section-title{
-      display:flex;align-items:center;gap:8px;font-size:14px;margin-bottom:10px;color:var(--ink);font-weight:600
-    }
-    .divider{height:1px;background:var(--line);margin:10px 0;border-radius:1px}
     label{display:block;font-size:14px;margin:4px 0 8px;color:var(--ink)}
     input, select, textarea{
-      width:100%; border:1px solid var(--line); outline:none; font-size:16px;
-      background:rgba(255,255,255,.05); color:var(--ink);
-      padding:12px 12px; border-radius:12px;
+      width:100%;border:1px solid var(--line);outline:none;font-size:16px;
+      background:#fff;color:var(--ink);
+      padding:12px;border-radius:12px;
     }
-    input:focus, select:focus, textarea:focus{box-shadow:var(--focus);border-color:transparent}
-    textarea{min-height:96px;resize:vertical}
-    .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-    .table-wrap{overflow:auto;border-radius:14px;border:1px solid var(--line)}
-    table{width:100%;border-collapse:separate;border-spacing:0;background:rgba(255,255,255,.03)}
-    thead th{
-      position:sticky;top:0;background:rgba(255,255,255,.06);backdrop-filter:blur(6px);
-      font-size:13px;font-weight:600;padding:10px 8px;text-align:left;border-bottom:1px solid var(--line)
-    }
-    tbody td{padding:6px 6px;border-bottom:1px solid rgba(255,255,255,.05)}
-    .row-input{width:100%;padding:10px 10px;border-radius:10px;border:1px solid var(--line);background:rgba(0,0,0,.15);color:var(--ink)}
-    .row-input:focus{box-shadow:var(--focus);border-color:transparent}
+    input:focus,select:focus,textarea:focus{box-shadow:var(--focus);border-color:transparent}
+    textarea{min-height:90px;resize:vertical}
+    .table-wrap{overflow:auto;border:1px solid var(--line);border-radius:12px}
+    table{width:100%;border-collapse:collapse}
+    thead th{background:#E6F3FF;position:sticky;top:0;font-size:13px;font-weight:600;padding:8px;text-align:left}
+    td{padding:6px;border-bottom:1px solid var(--line)}
+    .row-input{width:100%;padding:8px;border-radius:8px;border:1px solid var(--line);background:#F9FCFF}
     .controls{display:flex;gap:12px;flex-wrap:wrap;margin-top:10px}
     .btn{
-      flex:1 1 auto; min-width:44%; cursor:pointer; border:none; outline:none;
-      padding:13px 16px; border-radius:14px; font-weight:600; font-size:15px; letter-spacing:.2px;
-      color:#06242A; background:linear-gradient(180deg,#49D4C6,#33B7AA); border:1px solid #2F9B90;
+      flex:1 1 auto;cursor:pointer;border:none;outline:none;
+      padding:12px;border-radius:12px;font-weight:600;font-size:15px;
+      color:#fff;background:linear-gradient(180deg,var(--accent),var(--accent-2));
+      box-shadow:var(--shadow)
     }
-    .btn.secondary{color:#061a2a;background:linear-gradient(180deg,#74B9FF,#4A9CF2);border:1px solid #3F81C8}
-    .btn.flat{color:var(--ink);background:transparent;border:1px solid var(--line)}
-    .btn.icon{min-width:auto;padding:8px 10px}
-    .hint{color:var(--muted);font-size:13px;margin-top:6px}
-    .toast{position:fixed;left:50%;bottom:18px;transform:translateX(-50%);
-      background:#0A2B34;color:#E8FBF7;padding:10px 14px;border-radius:10px;box-shadow:var(--shadow);opacity:0;transition:opacity .22s}
-    .toast.show{opacity:1}
+    .btn.secondary{background:linear-gradient(180deg,#A0D2FF,#7CB8F7)}
+    .btn.flat{background:#fff;color:var(--ink);border:1px solid var(--line)}
     .alert{color:var(--danger);font-size:13px;margin-top:6px}
-    .footer-space{height:24px}
+    .toast{position:fixed;left:50%;bottom:18px;transform:translateX(-50%);
+      background:#083D77;color:#fff;padding:10px 14px;border-radius:10px;opacity:0;transition:opacity .25s}
+    .toast.show{opacity:1}
   </style>
 </head>
 <body>
   <div class="wrap">
     <header>
-      <div class="brand">
-        <div class="logo" aria-hidden="true">
-          <!-- medical cross + heartbeat line -->
-          <svg viewBox="0 0 64 64" fill="none" aria-hidden="true">
-            <rect x="8" y="8" width="48" height="48" rx="10" fill="#42C6B8" opacity=".22"/>
-            <path d="M8 34h15l6-16 8 26 6-12h13" stroke="#7DE7DC" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
-          </svg>
-        </div>
-        <div>
-          <h1>Victoria Nurse</h1>
-          <div class="slogan">Calm • Clear • Clinical</div>
-        </div>
+      <div class="logo">
+        <svg viewBox="0 0 64 64" fill="none">
+          <rect x="8" y="8" width="48" height="48" rx="10" fill="#5BA9F2" opacity=".25"/>
+          <path d="M8 34h15l6-16 8 26 6-12h13" stroke="#2A78D2" stroke-width="4" stroke-linecap="round"/>
+        </svg>
       </div>
-      <div class="badge">Privacy-first · No data stored · Clears after sending</div>
+      <h1>Victoria Nurse</h1>
+      <div class="slogan">Care with Clarity</div>
+      <div class="badge">No storage · Clears after send</div>
     </header>
 
-    <section class="card" aria-labelledby="summaryTitle">
-      <div class="section-title" id="summaryTitle">Patient Summary</div>
-      <textarea id="summary" autocomplete="off" inputmode="text" placeholder="Observations / notes (optional)"></textarea>
+    <section class="card">
+      <label for="summary">Patient Summary</label>
+      <textarea id="summary" placeholder="Observations / notes"></textarea>
     </section>
 
     <section class="card">
-      <div class="grid-2">
-        <div>
-          <label for="patient">Patient Name / Initials</label>
-          <input id="patient" autocomplete="off" inputmode="text" placeholder="e.g., J.D. or Jane Doe" />
-        </div>
-        <div>
-          <label for="weekof">Week Of</label>
-          <input id="weekof" type="date" autocomplete="off" />
-          <div id="weekRange" class="hint"></div>
-        </div>
-      </div>
+      <label for="patient">Patient Name / Initials</label>
+      <input id="patient" placeholder="e.g., J.D." />
+      <label for="weekof" style="margin-top:12px">Week Of</label>
+      <input id="weekof" type="date" />
+      <div id="weekRange" style="font-size:13px;color:var(--muted);margin-top:6px"></div>
     </section>
 
-    <section class="card" aria-labelledby="vitalsTitle">
-      <div class="section-title" id="vitalsTitle">Daily Vitals</div>
+    <section class="card">
+      <label>Daily Vitals</label>
       <div class="table-wrap">
-        <table aria-label="Daily vitals table">
+        <table>
           <thead>
             <tr>
-              <th style="min-width:96px">Day</th>
-              <th>Time</th>
-              <th>AM/PM</th>
-              <th>Heart Rate</th>
-              <th>Systolic</th>
-              <th>Diastolic</th>
-              <th></th>
+              <th>Day</th><th>Time</th><th>AM/PM</th><th>HR</th><th>Sys</th><th>Dia</th><th></th>
             </tr>
           </thead>
           <tbody id="rows"></tbody>
@@ -155,218 +120,52 @@
       </div>
       <div class="controls">
         <button class="btn flat" id="addRowBtn">Add Row</button>
-        <button class="btn flat" id="addAmPmBtn">Add AM &amp; PM</button>
-        <button class="btn flat" id="panicClearBtn" title="Clear current sheet now">Clear</button>
+        <button class="btn flat" id="addAmPmBtn">Add AM & PM</button>
+        <button class="btn flat" id="panicClearBtn">Clear</button>
       </div>
-      <div id="valMsg" class="alert" role="alert" aria-live="polite"></div>
+      <div id="valMsg" class="alert"></div>
     </section>
 
     <section class="card">
       <div class="controls">
-        <button class="btn" id="shareBtn" aria-label="Share via email or apps">Share / Email (CSV)</button>
+        <button class="btn" id="shareBtn">Share / Email (CSV)</button>
         <button class="btn secondary" id="downloadBtn">Download CSV</button>
       </div>
     </section>
-
-    <div class="footer-space"></div>
   </div>
-
-  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <div class="toast" id="toast"></div>
 
   <script>
-    // ------------------- In-memory state (no storage) -------------------------
-    const $ = (sel)=>document.querySelector(sel);
-    const rowsEl = $('#rows');
-    const weekInput = $('#weekof');
-    const weekRange = $('#weekRange');
-    const toast = $('#toast');
-    const valMsg = $('#valMsg');
+    const $ = (s)=>document.querySelector(s);
+    const rowsEl = $('#rows'); const weekInput=$('#weekof'); const weekRange=$('#weekRange');
+    const toast=$('#toast'); const valMsg=$('#valMsg');
+    const state={rows:[],weekOf:null};
 
-    const state = { summary:'', patient:'', weekOf:null, rows:[] };
-
-    const showToast = (msg)=>{ toast.textContent = msg; toast.classList.add('show'); setTimeout(()=>toast.classList.remove('show'), 2200); };
-
-    const startOfWeek = (d)=>{ const dt = new Date(d); const day=(dt.getDay()+6)%7; dt.setDate(dt.getDate()-day); dt.setHours(0,0,0,0); return dt; };
-    const endOfWeek = (d)=>{ const s=startOfWeek(d); const e=new Date(s); e.setDate(e.getDate()+6); return e; };
-    const fmtISO = (d)=> d.toISOString().slice(0,10);
-    const dayName = (d)=> d.toLocaleDateString(undefined,{weekday:'short'});
+    const showToast=(m)=>{toast.textContent=m;toast.classList.add('show');setTimeout(()=>toast.classList.remove('show'),2200);};
+    const fmtISO=(d)=>d.toISOString().slice(0,10);
+    const dayName=(d)=>d.toLocaleDateString(undefined,{weekday:'short'});
+    const startOfWeek=(d)=>{const dt=new Date(d);const day=(dt.getDay()+6)%7;dt.setDate(dt.getDate()-day);return dt;};
+    const endOfWeek=(d)=>{const s=startOfWeek(d);const e=new Date(s);e.setDate(e.getDate()+6);return e;};
 
     function updateWeekRange(){
-      if(!weekInput.value){ weekRange.textContent=''; state.weekOf=null; return; }
-      const s=startOfWeek(weekInput.value), e=endOfWeek(weekInput.value);
-      weekRange.textContent = `Week: ${s.toLocaleDateString()} – ${e.toLocaleDateString()}`;
-      state.weekOf = fmtISO(s);
+      if(!weekInput.value){weekRange.textContent='';return;}
+      const s=startOfWeek(weekInput.value),e=endOfWeek(weekInput.value);
+      weekRange.textContent=`${s.toLocaleDateString()} – ${e.toLocaleDateString()}`;
+      state.weekOf=fmtISO(s);
     }
-
-    function newRow(dayISO, time="07:00"){
-      const hour = parseInt(time.split(':')[0],10);
-      const mer = hour < 12 ? 'AM' : 'PM';
-      return { id: crypto.randomUUID(), dayISO, time24h: time, meridiem: mer, heartRate:'', systolic:'', diastolic:'' };
-    }
-
-    function addOneRow(){
-      const dayISO = state.weekOf || fmtISO(new Date());
-      const now = new Date(); const t = now.toTimeString().slice(0,5);
-      state.rows.push(newRow(dayISO, t));
-      renderRows();
-    }
-
-    function seedAmPm(){
-      if(!weekInput.value){ showToast('Select "Week Of" first'); return; }
-      const s = startOfWeek(weekInput.value);
-      for(let i=0;i<7;i++){
-        const d = new Date(s); d.setDate(s.getDate()+i);
-        state.rows.push(newRow(fmtISO(d), "07:00"));
-        state.rows.push(newRow(fmtISO(d), "19:00"));
-      }
-      renderRows();
-    }
-
-    function delRow(id){ state.rows = state.rows.filter(r=>r.id!==id); renderRows(); }
-
-    function renderRows(){
-      rowsEl.innerHTML = '';
-      state.rows.forEach((r)=>{
-        const tr = document.createElement('tr');
-        tr.innerHTML = `
-          <td>${dayName(new Date(r.dayISO))}
-            <div class="hint" aria-hidden="true">${r.dayISO}</div>
-          </td>
-          <td><input class="row-input" type="time" value="${r.time24h}" aria-label="time"></td>
-          <td>
-            <select class="row-input" aria-label="am/pm">
-              <option ${r.meridiem==='AM'?'selected':''}>AM</option>
-              <option ${r.meridiem==='PM'?'selected':''}>PM</option>
-            </select>
-          </td>
-          <td><input class="row-input" inputmode="numeric" pattern="[0-9]*" placeholder="bpm" value="${r.heartRate}"></td>
-          <td><input class="row-input" inputmode="numeric" pattern="[0-9]*" placeholder="mmHg" value="${r.systolic}"></td>
-          <td><input class="row-input" inputmode="numeric" pattern="[0-9]*" placeholder="mmHg" value="${r.diastolic}"></td>
-          <td><button class="btn flat icon" aria-label="delete row">✕</button></td>
-        `;
-        const [timeEl, merEl, hrEl, sysEl, diaEl, delBtn] = tr.querySelectorAll('input,select,button');
-        timeEl.addEventListener('change', e=>{
-          r.time24h = e.target.value;
-          const h = parseInt(r.time24h.split(':')[0],10);
-          r.meridiem = (h<12)?'AM':'PM'; merEl.value = r.meridiem;
-        });
-        merEl.addEventListener('change', e=> r.meridiem = e.target.value);
-        hrEl.addEventListener('input', e=> r.heartRate = e.target.value.replace(/\D/g,''));
-        sysEl.addEventListener('input', e=> r.systolic  = e.target.value.replace(/\D/g,''));
-        diaEl.addEventListener('input', e=> r.diastolic = e.target.value.replace(/\D/g,''));
-        delBtn.addEventListener('click', ()=>delRow(r.id));
-        rowsEl.appendChild(tr);
-      });
-    }
-
-    function validate(){
-      valMsg.textContent='';
-      for(const r of state.rows){
-        if(!r.heartRate && !r.systolic && !r.diastolic) continue;
-        const hr=+r.heartRate, sys=+r.systolic, dia=+r.diastolic;
-        if(hr && (hr<30 || hr>220)){ valMsg.textContent='Heart rate out of range (30–220).'; return false; }
-        if(sys && (sys<60 || sys>250)){ valMsg.textContent='Systolic out of range (60–250).'; return false; }
-        if(dia && (dia<30 || dia>150)){ valMsg.textContent='Diastolic out of range (30–150).'; return false; }
-        if(sys && dia && sys<=dia){ valMsg.textContent='Systolic must be greater than diastolic.'; return false; }
-      }
-      return true;
-    }
-
-    function toCSV(){
-      const header = ['dayISO','time24h','AM/PM','heartRate','systolic','diastolic'];
-      const lines = [header.join(',')];
-      const sorted = [...state.rows].sort((a,b)=> (a.dayISO+b.time24h).localeCompare(b.dayISO+b.time24h));
-      for(const r of sorted){
-        lines.push([r.dayISO, r.time24h, r.meridiem, r.heartRate||'', r.systolic||'', r.diastolic||''].join(','));
-      }
-      return lines.join('\r\n');
-    }
-
-    const filename = (prefix, ext)=>{
-      const dt = new Date();
-      const tag = dt.toISOString().replace(/[-:]/g,'').slice(0,15);
-      const name = ($('#patient').value||'patient').replace(/\s+/g,'_');
-      const wk = (state.weekOf||'week');
-      return `${prefix}_${name}_${wk}_${tag}.${ext}`;
-    };
-
-    async function shareCSV(){
-      if(!validate()) return;
-      if(state.rows.length===0){ showToast('Add at least one row'); return; }
-
-      const csv = toCSV();
-      const blob = new Blob([csv], {type:'text/csv'});
-      const f = new File([blob], filename('victoria-nurse','csv'), {type:'text/csv'});
-
-      try{
-        if(navigator.share && navigator.canShare && navigator.canShare({ files:[f] })){
-          await navigator.share({
-            files:[f],
-            title:'Victoria Nurse Vitals',
-            text: buildShareText()
-          });
-          clearAll(true); // only on success
-          showToast('Sent. This sheet was cleared.');
-        }else{
-          downloadBlob(blob, f.name);
-          window.location.href = buildMailto();
-          showToast('CSV saved. Attach to your email/WhatsApp.');
-        }
-      }catch(err){
-        console.warn('Share canceled or failed', err);
-        showToast('Share canceled');
-      }
-    }
-
-    function buildShareText(){
-      const pt = $('#patient').value ? `Patient: ${$('#patient').value}\n` : '';
-      const wk = state.weekOf ? `Week of ${state.weekOf}\n` : '';
-      const sm = $('#summary').value ? `Summary: ${$('#summary').value}\n` : '';
-      return `${pt}${wk}${sm}`.trim();
-    }
-
-    function buildMailto(){
-      const subject = encodeURIComponent('Victoria Nurse – Weekly Vitals CSV');
-      const body = encodeURIComponent(buildShareText()+'\n\n(Attach the CSV you just saved.)');
-      return `mailto:?subject=${subject}&body=${body}`;
-    }
-
-    function downloadBlob(blob, name){
-      const a = document.createElement('a');
-      a.href = URL.createObjectURL(blob);
-      a.download = name;
-      document.body.appendChild(a); a.click(); a.remove();
-      setTimeout(()=>URL.revokeObjectURL(a.href), 1000);
-    }
-
-    function clearAll(resetWeek=false){
-      state.summary=''; state.patient=''; if(resetWeek) state.weekOf=null; state.rows=[];
-      $('#summary').value=''; $('#patient').value='';
-      if(resetWeek){ weekInput.value=''; weekRange.textContent=''; }
-      renderRows();
-      history.replaceState(null,'',location.pathname);
-    }
-
-    // ------------------- Wire up UI ------------------------------------------
-    $('#addRowBtn').addEventListener('click', addOneRow);
-    $('#addAmPmBtn').addEventListener('click', seedAmPm);
-    $('#panicClearBtn').addEventListener('click', ()=>{ clearAll(true); showToast('Cleared'); });
-
-    weekInput.addEventListener('change', updateWeekRange);
-    $('#summary').addEventListener('input', e=> state.summary = e.target.value);
-    $('#patient').addEventListener('input', e=> state.patient = e.target.value);
-
-    $('#shareBtn').addEventListener('click', shareCSV);
-    $('#downloadBtn').addEventListener('click', ()=>{
-      if(!validate()) return;
-      if(state.rows.length===0){ showToast('Add at least one row'); return; }
-      const csv = toCSV();
-      downloadBlob(new Blob([csv],{type:'text/csv'}), filename('victoria-nurse','csv'));
-      showToast('CSV downloaded');
-    });
-
-    // PWA registration
-    if('serviceWorker' in navigator){ navigator.serviceWorker.register('./sw.js'); }
+    function newRow(dayISO,t="07:00"){const h=parseInt(t.split(':')[0],10);const mer=h<12?'AM':'PM';return{id:crypto.randomUUID(),dayISO,time24h:t,meridiem:mer,heartRate:'',systolic:'',diastolic:''};}
+    function addRow(){const d=state.weekOf||fmtISO(new Date());state.rows.push(newRow(d,new Date().toTimeString().slice(0,5)));renderRows();}
+    function seed(){if(!weekInput.value){showToast("Pick week");return;}const s=startOfWeek(weekInput.value);for(let i=0;i<7;i++){const d=new Date(s);d.setDate(s.getDate()+i);state.rows.push(newRow(fmtISO(d),"07:00"));state.rows.push(newRow(fmtISO(d),"19:00"));}renderRows();}
+    function del(id){state.rows=state.rows.filter(r=>r.id!==id);renderRows();}
+    function renderRows(){rowsEl.innerHTML='';state.rows.forEach(r=>{const tr=document.createElement('tr');tr.innerHTML=`<td>${dayName(new Date(r.dayISO))}</td><td><input class="row-input" type="time" value="${r.time24h}"></td><td><select class="row-input"><option ${r.meridiem==='AM'?'selected':''}>AM</option><option ${r.meridiem==='PM'?'selected':''}>PM</option></select></td><td><input class="row-input" value="${r.heartRate}"></td><td><input class="row-input" value="${r.systolic}"></td><td><input class="row-input" value="${r.diastolic}"></td><td><button class="btn flat">✕</button></td>`;const [t,m,h,s,d,b]=tr.querySelectorAll('input,select,button');t.onchange=e=>{r.time24h=e.target.value;};m.onchange=e=>r.meridiem=e.target.value;h.oninput=e=>r.heartRate=e.target.value.replace(/\D/g,'');s.oninput=e=>r.systolic=e.target.value.replace(/\D/g,'');d.oninput=e=>r.diastolic=e.target.value.replace(/\D/g,'');b.onclick=()=>del(r.id);rowsEl.appendChild(tr);});}
+    function validate(){valMsg.textContent='';for(const r of state.rows){if(!r.heartRate&&!r.systolic&&!r.diastolic)continue;const hr=+r.heartRate,sys=+r.systolic,dia=+r.diastolic;if(hr&&(hr<30||hr>220)){valMsg.textContent="HR out of range";return false;}if(sys&&(sys<60||sys>250)){valMsg.textContent="Sys out of range";return false;}if(dia&&(dia<30||dia>150)){valMsg.textContent="Dia out of range";return false;}if(sys&&dia&&sys<=dia){valMsg.textContent="Sys must > Dia";return false;}}return true;}
+    function toCSV(){const header="dayISO,time24h,AM/PM,HR,Sys,Dia";const lines=[header];state.rows.forEach(r=>lines.push([r.dayISO,r.time24h,r.meridiem,r.heartRate,r.systolic,r.diastolic].join(",")));return lines.join("\\n");}
+    function filename(ext){return`victoria-nurse_${Date.now()}.${ext}`;}
+    async function share(){if(!validate())return;const csv=toCSV();const blob=new Blob([csv],{type:'text/csv'});const f=new File([blob],filename('csv'),{type:'text/csv'});try{if(navigator.share&&navigator.canShare({files:[f]})){await navigator.share({files:[f],title:"Victoria Nurse"});clear();showToast("Sent & cleared");}else{download(blob);showToast("CSV saved");}}catch{showToast("Share canceled");}}
+    function download(b){const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download=filename('csv');a.click();URL.revokeObjectURL(a.href);}
+    function clear(){state.rows=[];$('#summary').value='';$('#patient').value='';weekInput.value='';weekRange.textContent='';renderRows();}
+    $('#addRowBtn').onclick=addRow;$('#addAmPmBtn').onclick=seed;$('#panicClearBtn').onclick=clear;weekInput.onchange=updateWeekRange;$('#shareBtn').onclick=share;$('#downloadBtn').onclick=()=>download(new Blob([toCSV()],{type:'text/csv'}));
+    if('serviceWorker'in navigator)navigator.serviceWorker.register('./sw.js');
   </script>
 </body>
 </html>
