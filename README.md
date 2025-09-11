@@ -1,44 +1,32 @@
 # Victoria Nurse
 
-A modern, mobile-friendly web app to capture **Patient Summary**, **Daily Vitals**, and a **Nurse Vital Signs Checklist**, then **Preview / Share via WhatsApp / Export to PDF**.
+_A modern, sleek PWA for homecare nurses to record vital signs and share summaries via WhatsApp and email (with PDF export)._
 
-## ✨ Features
-- **Landing page** with nurse hero image and welcoming gradient.
-- **Patient Summary** (week, weights, recipient, note).
-- **Daily Vitals** table (add AM/PM rows fast).
-- **Nurse Checklist** (core + extended vitals, observations, notes).
-- **Preview** the compiled message.
-- **Share to WhatsApp** (with or without a phone number).
-- **Print / Export to PDF** (uses browser print).
-- **PWA installable**: add to home screen (Android/iOS).
+- **App name:** Victoria Nurse  
+- **Tagline:** Care Together  
+- **Footer:** _Powered by: karlthebrown_  
+- **Hosting:** GitHub Pages  
+- **Icons/Logo:** place assets in `icon/` (e.g., `icon/logo.png`, `icon/logo-192.png`, `icon/logo-512.png`, optional maskables)
 
-## 🚀 Quick Start (GitHub Pages)
-1. Upload all files in this folder to your GitHub repo (root).
-2. Ensure icons at `icons/icon-192.png` and `icons/icon-512.png`.
-3. Enable **Settings → Pages** → Source: `main` → `/ (root)`.
-4. Open: `https://<your-username>.github.io/victoria-nurse/`
+## Capture Order
+1. Patient Name  
+2. Temperature  
+3. Pulse (Heart Rate)  
+4. Respiratory Rate  
+5. Blood Pressure  
+6. Oxygen Saturation (SpO₂)  
+7. Blood Sugar Level  
+8. Pain Assessment  
+9. Medication – Morning  
+10. Medication – Afternoon  
+11. Medication – Evening  
+12. Notes  
+13. Nurse’s Name (who performed the checks)
 
-## 📁 Project Structure
-```
-index.html
-manifest.webmanifest
-service-worker.js
-favicon.ico
-icons/
- ├─ icon-192.png
- └─ icon-512.png
-assets/
- └─ nurse-hero.jpg
-```
-
-## 📱 Install to Home Screen
-- **Android/Chrome**: open the site → ⋮ menu → *Install app*.
-- **iPhone/Safari**: share icon → *Add to Home Screen*.
-
-## 🔧 Development Tips
-- When you change icons or HTML, bump the cache in `service-worker.js` (e.g., `victoria-nurse-v2`) so updates appear immediately.
-- To share to a specific number, enter full international format (e.g., `+23324…`). If left blank, WhatsApp opens with the text to pick a contact.
-- Avoid sharing sensitive identifiers in notes.
+## Local Run
+```bash
+python -m http.server 8080
+# open http://localhost:8080 (service worker requires localhost/https)
 
 ---
 
