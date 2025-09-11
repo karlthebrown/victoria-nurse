@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-  <meta name="theme-color" content="#E6F3FF" />
+  <meta name="theme-color" content="#f0f6ff" />
   <meta name="referrer" content="no-referrer">
   <meta http-equiv="Cache-Control" content="no-store, no-cache, must-revalidate" />
   <meta http-equiv="Pragma" content="no-cache" />
@@ -14,158 +14,359 @@
   <link rel="icon" href="icons/icon-192.png" />
   <title>Victoria Nurse</title>
   <style>
-    :root {
-      /* Light blue gradient palette */
-      --bg-0:#E6F3FF;        /* light sky background */
-      --bg-1:#F7FBFF;        /* white-blue blend */
-      --card-1:#FFFFFF;
-      --card-2:#F1F8FF;
-      --ink:#083D77;         /* deep navy text */
-      --muted:#52799F;       /* muted blue text */
-      --line:#C2DDF2;        /* soft divider */
-      --accent:#5BA9F2;      /* medium blue accent */
-      --accent-2:#82C4FF;    /* lighter accent */
-      --danger:#E63946;      /* error red */
+    :root{
+      /* Sleek gradient theme (airy light blues/purples) */
+      --bg-0:#f0f6ff;
+      --bg-1:#ffffff;
+      --grad-a:#c5d9ff;     /* light periwinkle */
+      --grad-b:#9fd6ff;     /* light sky */
+      --grad-c:#e7d4ff;     /* light lavender */
+      --ink:#0d2a4a;
+      --muted:#5b7594;
+      --line:#d8e6f7;
+      --accent:#5a9bff;
+      --accent-2:#8ab6ff;
+      --danger:#e74c3c;
       --radius:14px;
-      --shadow:0 4px 18px rgba(0,0,0,.12);
-      --focus:0 0 0 3px rgba(91,169,242,.35);
+      --shadow:0 6px 24px rgba(21,34,60,.12);
+      --focus:0 0 0 3px rgba(90,155,255,.35);
     }
-    body {
+    html,body{height:100%}
+    body{
       margin:0;
       font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial;
       color:var(--ink);
-      background:linear-gradient(180deg,var(--bg-0),var(--bg-1));
+      background:
+        radial-gradient(1200px 900px at 50% -200px, var(--grad-c) 10%, var(--bg-0) 60%) fixed,
+        linear-gradient(180deg, var(--bg-0), var(--bg-1)) fixed;
     }
-    .wrap{max-width:640px;margin:0 auto;padding:24px 18px 96px}
-    header{text-align:center;margin-bottom:18px}
+    .wrap{max-width:760px;margin:0 auto;padding:20px 16px 96px}
+    header{display:flex;align-items:center;gap:14px;margin:4px 0 16px}
     .logo{
-      width:72px;height:72px;border-radius:50%;background:linear-gradient(180deg,#5BA9F2,#82C4FF);
-      display:grid;place-items:center;margin:0 auto 8px;box-shadow:var(--shadow)
+      width:64px;height:64px;border-radius:16px;
+      background:linear-gradient(135deg, var(--grad-a), var(--grad-b));
+      display:grid;place-items:center;box-shadow:var(--shadow)
     }
-    .logo svg{width:46px;height:46px}
-    h1{margin:0;font-size:32px}
-    .slogan{margin-top:4px;color:var(--muted);font-size:15px;font-style:italic}
-    .badge{margin-top:6px;color:var(--muted);font-size:12px}
+    .logo img{width:40px;height:40px;border-radius:10px}
+    h1{margin:0;font-size:28px;letter-spacing:.2px}
     .card{
-      background:linear-gradient(180deg,var(--card-1),var(--card-2));
-      border-radius:var(--radius);box-shadow:var(--shadow);
-      padding:16px;margin:12px 0;border:1px solid var(--line);
+      background:linear-gradient(180deg,#fff, #f6f9ff);
+      border:1px solid var(--line); border-radius:var(--radius); box-shadow:var(--shadow);
+      padding:16px; margin:10px 0;
     }
-    label{display:block;font-size:14px;margin:4px 0 8px;color:var(--ink)}
+    .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+    .grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px}
+    label{display:block;font-size:14px;margin:4px 0 6px}
     input, select, textarea{
-      width:100%;border:1px solid var(--line);outline:none;font-size:16px;
-      background:#fff;color:var(--ink);
-      padding:12px;border-radius:12px;
+      width:100%; border:1px solid var(--line); outline:none; font-size:16px;
+      background:#fff; color:var(--ink); padding:12px; border-radius:12px;
     }
-    input:focus,select:focus,textarea:focus{box-shadow:var(--focus);border-color:transparent}
+    input:focus, select:focus, textarea:focus{box-shadow:var(--focus);border-color:transparent}
     textarea{min-height:90px;resize:vertical}
-    .table-wrap{overflow:auto;border:1px solid var(--line);border-radius:12px}
-    table{width:100%;border-collapse:collapse}
-    thead th{background:#E6F3FF;position:sticky;top:0;font-size:13px;font-weight:600;padding:8px;text-align:left}
-    td{padding:6px;border-bottom:1px solid var(--line)}
-    .row-input{width:100%;padding:8px;border-radius:8px;border:1px solid var(--line);background:#F9FCFF}
-    .controls{display:flex;gap:12px;flex-wrap:wrap;margin-top:10px}
+    .section-title{font-size:15px;font-weight:700;margin-bottom:10px}
+    .hint{font-size:12px;color:var(--muted);margin-top:6px}
+    .controls{display:flex;gap:12px;flex-wrap:wrap;margin-top:12px}
     .btn{
-      flex:1 1 auto;cursor:pointer;border:none;outline:none;
-      padding:12px;border-radius:12px;font-weight:600;font-size:15px;
-      color:#fff;background:linear-gradient(180deg,var(--accent),var(--accent-2));
+      flex:1 1 auto; min-width:44%; cursor:pointer; border:none; outline:none;
+      padding:12px 14px; border-radius:12px; font-weight:700; font-size:15px;
+      color:#0b2344; background:linear-gradient(180deg, var(--grad-b), var(--grad-a));
       box-shadow:var(--shadow)
     }
-    .btn.secondary{background:linear-gradient(180deg,#A0D2FF,#7CB8F7)}
-    .btn.flat{background:#fff;color:var(--ink);border:1px solid var(--line)}
+    .btn.secondary{background:linear-gradient(180deg, var(--grad-a), var(--grad-c))}
+    .btn.flat{background:#fff;border:1px solid var(--line);color:var(--ink)}
+    .btn.icon{min-width:auto;padding:9px 11px}
+    .med-row{display:grid;grid-template-columns:2fr 1fr 1fr 1fr 1fr auto;gap:8px;align-items:center;margin-bottom:8px}
     .alert{color:var(--danger);font-size:13px;margin-top:6px}
-    .toast{position:fixed;left:50%;bottom:18px;transform:translateX(-50%);
-      background:#083D77;color:#fff;padding:10px 14px;border-radius:10px;opacity:0;transition:opacity .25s}
-    .toast.show{opacity:1}
+    footer{margin-top:18px;text-align:center;color:var(--muted);font-size:13px}
   </style>
 </head>
 <body>
   <div class="wrap">
     <header>
-      <div class="logo">
-        <svg viewBox="0 0 64 64" fill="none">
-          <rect x="8" y="8" width="48" height="48" rx="10" fill="#5BA9F2" opacity=".25"/>
-          <path d="M8 34h15l6-16 8 26 6-12h13" stroke="#2A78D2" stroke-width="4" stroke-linecap="round"/>
-        </svg>
+      <div class="logo" aria-hidden="true">
+        <!-- Use repo icons for logo -->
+        <img src="icons/icon-192.png" alt="" />
       </div>
-      <h1>Victoria Nurse</h1>
-      <div class="slogan">Care with Clarity</div>
-      <div class="badge">No storage · Clears after send</div>
+      <div>
+        <h1>Victoria Nurse</h1>
+      </div>
     </header>
 
-    <section class="card">
-      <label for="summary">Patient Summary</label>
-      <textarea id="summary" placeholder="Observations / notes"></textarea>
-    </section>
+    <!-- One-page patient form (no storage) -->
+    <form id="sheet" autocomplete="off">
+      <!-- Patient Info -->
+      <section class="card" aria-labelledby="piTitle">
+        <div class="section-title" id="piTitle">Patient Information</div>
+        <div class="grid-2">
+          <div>
+            <label for="patientName">Patient Name / Initials</label>
+            <input id="patientName" placeholder="e.g., J.D. or Jane Doe" />
+          </div>
+          <div>
+            <label for="patientId">Patient ID (optional)</label>
+            <input id="patientId" placeholder="e.g., MRN / Ghana Card" />
+          </div>
+        </div>
+        <div class="grid-3" style="margin-top:10px">
+          <div>
+            <label for="dob">Date of Birth</label>
+            <input id="dob" type="date" />
+          </div>
+          <div>
+            <label for="sex">Sex</label>
+            <select id="sex">
+              <option value="">Select…</option>
+              <option>Female</option>
+              <option>Male</option>
+              <option>Intersex</option>
+              <option>Prefer not to say</option>
+            </select>
+          </div>
+          <div>
+            <label for="sheetDate">Date</label>
+            <input id="sheetDate" type="date" />
+          </div>
+        </div>
+        <label for="notes" style="margin-top:10px">Clinical Notes / Observations</label>
+        <textarea id="notes" placeholder="Brief summary, complaints, observations…"></textarea>
+      </section>
 
-    <section class="card">
-      <label for="patient">Patient Name / Initials</label>
-      <input id="patient" placeholder="e.g., J.D." />
-      <label for="weekof" style="margin-top:12px">Week Of</label>
-      <input id="weekof" type="date" />
-      <div id="weekRange" style="font-size:13px;color:var(--muted);margin-top:6px"></div>
-    </section>
+      <!-- Vital Signs (six core) + Sugar level -->
+      <section class="card" aria-labelledby="vsTitle">
+        <div class="section-title" id="vsTitle">Vital Signs</div>
+        <div class="grid-3">
+          <div>
+            <label for="temp">Temperature (°C)</label>
+            <input id="temp" type="number" step="0.1" inputmode="decimal" placeholder="e.g., 36.8" />
+            <div class="hint">Typical: 36.1–37.2 °C</div>
+          </div>
+          <div>
+            <label for="pulse">Pulse / Heart Rate (bpm)</label>
+            <input id="pulse" type="number" inputmode="numeric" placeholder="e.g., 78" />
+          </div>
+          <div>
+            <label for="resp">Respiratory Rate (breaths/min)</label>
+            <input id="resp" type="number" inputmode="numeric" placeholder="e.g., 16" />
+          </div>
+        </div>
+        <div class="grid-3" style="margin-top:10px">
+          <div>
+            <label for="bpSys">Blood Pressure – Systolic (mmHg)</label>
+            <input id="bpSys" type="number" inputmode="numeric" placeholder="e.g., 118" />
+          </div>
+          <div>
+            <label for="bpDia">Blood Pressure – Diastolic (mmHg)</label>
+            <input id="bpDia" type="number" inputmode="numeric" placeholder="e.g., 76" />
+          </div>
+          <div>
+            <label for="spo2">Oxygen Saturation (SpO₂ %)</label>
+            <input id="spo2" type="number" inputmode="numeric" placeholder="e.g., 98" />
+          </div>
+        </div>
+        <div class="grid-3" style="margin-top:10px">
+          <div>
+            <label for="pain">Pain Level (0–10)</label>
+            <input id="pain" type="number" min="0" max="10" inputmode="numeric" placeholder="e.g., 3" />
+          </div>
+          <div>
+            <label for="glucose">Blood Glucose (mg/dL)</label>
+            <input id="glucose" type="number" inputmode="numeric" placeholder="e.g., 95" />
+            <div class="hint">If mmol/L, multiply by 18 to get mg/dL</div>
+          </div>
+          <div>
+            <label for="timeTaken">Time Taken</label>
+            <input id="timeTaken" type="time" />
+          </div>
+        </div>
+        <div id="valMsg" class="alert" role="alert" aria-live="polite"></div>
+      </section>
 
-    <section class="card">
-      <label>Daily Vitals</label>
-      <div class="table-wrap">
-        <table>
-          <thead>
-            <tr>
-              <th>Day</th><th>Time</th><th>AM/PM</th><th>HR</th><th>Sys</th><th>Dia</th><th></th>
-            </tr>
-          </thead>
-          <tbody id="rows"></tbody>
-        </table>
-      </div>
-      <div class="controls">
-        <button class="btn flat" id="addRowBtn">Add Row</button>
-        <button class="btn flat" id="addAmPmBtn">Add AM & PM</button>
-        <button class="btn flat" id="panicClearBtn">Clear</button>
-      </div>
-      <div id="valMsg" class="alert"></div>
-    </section>
+      <!-- Medications administered today -->
+      <section class="card" aria-labelledby="medTitle">
+        <div class="section-title" id="medTitle">Medications Administered Today</div>
+        <div id="meds"></div>
+        <div class="controls">
+          <button type="button" class="btn flat" id="addMed">Add Medication</button>
+          <button type="button" class="btn flat" id="clearMeds">Clear Medications</button>
+        </div>
+        <div class="hint">Record each medication with dose, route, and time given.</div>
+      </section>
 
-    <section class="card">
-      <div class="controls">
-        <button class="btn" id="shareBtn">Share / Email (CSV)</button>
-        <button class="btn secondary" id="downloadBtn">Download CSV</button>
-      </div>
-    </section>
+      <!-- Actions -->
+      <section class="card">
+        <div class="controls">
+          <button type="button" class="btn" id="shareBtn">Share / Email (CSV)</button>
+          <button type="button" class="btn secondary" id="downloadBtn">Download CSV</button>
+          <button type="button" class="btn flat" id="panicClear">Clear Form</button>
+        </div>
+      </section>
+    </form>
+
+    <footer>Powered by: <em>karlthebrown</em></footer>
   </div>
-  <div class="toast" id="toast"></div>
 
   <script>
+    // In-memory only; no storage
     const $ = (s)=>document.querySelector(s);
-    const rowsEl = $('#rows'); const weekInput=$('#weekof'); const weekRange=$('#weekRange');
-    const toast=$('#toast'); const valMsg=$('#valMsg');
-    const state={rows:[],weekOf:null};
+    const medsEl = $('#meds');
+    const valMsg = $('#valMsg');
 
-    const showToast=(m)=>{toast.textContent=m;toast.classList.add('show');setTimeout(()=>toast.classList.remove('show'),2200);};
-    const fmtISO=(d)=>d.toISOString().slice(0,10);
-    const dayName=(d)=>d.toLocaleDateString(undefined,{weekday:'short'});
-    const startOfWeek=(d)=>{const dt=new Date(d);const day=(dt.getDay()+6)%7;dt.setDate(dt.getDate()-day);return dt;};
-    const endOfWeek=(d)=>{const s=startOfWeek(d);const e=new Date(s);e.setDate(e.getDate()+6);return e;};
-
-    function updateWeekRange(){
-      if(!weekInput.value){weekRange.textContent='';return;}
-      const s=startOfWeek(weekInput.value),e=endOfWeek(weekInput.value);
-      weekRange.textContent=`${s.toLocaleDateString()} – ${e.toLocaleDateString()}`;
-      state.weekOf=fmtISO(s);
+    function medRow(data={}){
+      const wrap = document.createElement('div');
+      wrap.className='med-row';
+      wrap.innerHTML = `
+        <input placeholder="Medication name" value="${data.name||''}">
+        <input placeholder="Dose" value="${data.dose||''}">
+        <input placeholder="Route" value="${data.route||''}">
+        <input type="time" placeholder="Time" value="${data.time||''}">
+        <input placeholder="Notes" value="${data.notes||''}">
+        <button type="button" class="btn flat icon" aria-label="remove">✕</button>
+      `;
+      // remove handler
+      wrap.querySelector('button').onclick = ()=> wrap.remove();
+      return wrap;
     }
-    function newRow(dayISO,t="07:00"){const h=parseInt(t.split(':')[0],10);const mer=h<12?'AM':'PM';return{id:crypto.randomUUID(),dayISO,time24h:t,meridiem:mer,heartRate:'',systolic:'',diastolic:''};}
-    function addRow(){const d=state.weekOf||fmtISO(new Date());state.rows.push(newRow(d,new Date().toTimeString().slice(0,5)));renderRows();}
-    function seed(){if(!weekInput.value){showToast("Pick week");return;}const s=startOfWeek(weekInput.value);for(let i=0;i<7;i++){const d=new Date(s);d.setDate(s.getDate()+i);state.rows.push(newRow(fmtISO(d),"07:00"));state.rows.push(newRow(fmtISO(d),"19:00"));}renderRows();}
-    function del(id){state.rows=state.rows.filter(r=>r.id!==id);renderRows();}
-    function renderRows(){rowsEl.innerHTML='';state.rows.forEach(r=>{const tr=document.createElement('tr');tr.innerHTML=`<td>${dayName(new Date(r.dayISO))}</td><td><input class="row-input" type="time" value="${r.time24h}"></td><td><select class="row-input"><option ${r.meridiem==='AM'?'selected':''}>AM</option><option ${r.meridiem==='PM'?'selected':''}>PM</option></select></td><td><input class="row-input" value="${r.heartRate}"></td><td><input class="row-input" value="${r.systolic}"></td><td><input class="row-input" value="${r.diastolic}"></td><td><button class="btn flat">✕</button></td>`;const [t,m,h,s,d,b]=tr.querySelectorAll('input,select,button');t.onchange=e=>{r.time24h=e.target.value;};m.onchange=e=>r.meridiem=e.target.value;h.oninput=e=>r.heartRate=e.target.value.replace(/\D/g,'');s.oninput=e=>r.systolic=e.target.value.replace(/\D/g,'');d.oninput=e=>r.diastolic=e.target.value.replace(/\D/g,'');b.onclick=()=>del(r.id);rowsEl.appendChild(tr);});}
-    function validate(){valMsg.textContent='';for(const r of state.rows){if(!r.heartRate&&!r.systolic&&!r.diastolic)continue;const hr=+r.heartRate,sys=+r.systolic,dia=+r.diastolic;if(hr&&(hr<30||hr>220)){valMsg.textContent="HR out of range";return false;}if(sys&&(sys<60||sys>250)){valMsg.textContent="Sys out of range";return false;}if(dia&&(dia<30||dia>150)){valMsg.textContent="Dia out of range";return false;}if(sys&&dia&&sys<=dia){valMsg.textContent="Sys must > Dia";return false;}}return true;}
-    function toCSV(){const header="dayISO,time24h,AM/PM,HR,Sys,Dia";const lines=[header];state.rows.forEach(r=>lines.push([r.dayISO,r.time24h,r.meridiem,r.heartRate,r.systolic,r.diastolic].join(",")));return lines.join("\\n");}
-    function filename(ext){return`victoria-nurse_${Date.now()}.${ext}`;}
-    async function share(){if(!validate())return;const csv=toCSV();const blob=new Blob([csv],{type:'text/csv'});const f=new File([blob],filename('csv'),{type:'text/csv'});try{if(navigator.share&&navigator.canShare({files:[f]})){await navigator.share({files:[f],title:"Victoria Nurse"});clear();showToast("Sent & cleared");}else{download(blob);showToast("CSV saved");}}catch{showToast("Share canceled");}}
-    function download(b){const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download=filename('csv');a.click();URL.revokeObjectURL(a.href);}
-    function clear(){state.rows=[];$('#summary').value='';$('#patient').value='';weekInput.value='';weekRange.textContent='';renderRows();}
-    $('#addRowBtn').onclick=addRow;$('#addAmPmBtn').onclick=seed;$('#panicClearBtn').onclick=clear;weekInput.onchange=updateWeekRange;$('#shareBtn').onclick=share;$('#downloadBtn').onclick=()=>download(new Blob([toCSV()],{type:'text/csv'}));
-    if('serviceWorker'in navigator)navigator.serviceWorker.register('./sw.js');
+
+    // Seed one empty med row by default
+    medsEl.appendChild(medRow());
+
+    $('#addMed').onclick = ()=> medsEl.appendChild(medRow());
+    $('#clearMeds').onclick = ()=> { medsEl.innerHTML=''; medsEl.appendChild(medRow()); };
+
+    // Validation for vitals
+    function validate(){
+      valMsg.textContent='';
+      const t = parseFloat($('#temp').value);
+      const hr = parseInt($('#pulse').value,10);
+      const rr = parseInt($('#resp').value,10);
+      const sys = parseInt($('#bpSys').value,10);
+      const dia = parseInt($('#bpDia').value,10);
+      const spo2 = parseInt($('#spo2').value,10);
+      const pain = parseInt($('#pain').value,10);
+      const glu = parseInt($('#glucose').value,10);
+
+      if(!isNaN(t) && (t<30 || t>43)){ valMsg.textContent='Temperature out of range (30–43 °C).'; return false; }
+      if(!isNaN(hr) && (hr<30 || hr>220)){ valMsg.textContent='Heart rate out of range (30–220 bpm).'; return false; }
+      if(!isNaN(rr) && (rr<5 || rr>60)){ valMsg.textContent='Respiratory rate out of range (5–60).'; return false; }
+      if(!isNaN(sys) && (sys<60 || sys>250)){ valMsg.textContent='Systolic out of range (60–250 mmHg).'; return false; }
+      if(!isNaN(dia) && (dia<30 || dia>150)){ valMsg.textContent='Diastolic out of range (30–150 mmHg).'; return false; }
+      if(!isNaN(sys) && !isNaN(dia) && sys <= dia){ valMsg.textContent='Systolic must be greater than diastolic.'; return false; }
+      if(!isNaN(spo2) && (spo2<50 || spo2>100)){ valMsg.textContent='SpO₂ must be 50–100%.'; return false; }
+      if(!isNaN(pain) && (pain<0 || pain>10)){ valMsg.textContent='Pain must be between 0 and 10.'; return false; }
+      if(!isNaN(glu) && (glu<30 || glu>800)){ valMsg.textContent='Glucose appears out of range (30–800 mg/dL).'; return false; }
+      return true;
+    }
+
+    function collect(){
+      const meds = [...medsEl.children].map(row=>{
+        const [name,dose,route,time,notes] = row.querySelectorAll('input');
+        return {name:name.value.trim(), dose:dose.value.trim(), route:route.value.trim(), time:time.value, notes:notes.value.trim()};
+      }).filter(x => x.name || x.dose || x.route || x.time || x.notes);
+
+      return {
+        patientName: $('#patientName').value.trim(),
+        patientId: $('#patientId').value.trim(),
+        dob: $('#dob').value,
+        sex: $('#sex').value,
+        date: $('#sheetDate').value,
+        notes: $('#notes').value.trim(),
+        vitals: {
+          temp: $('#temp').value.trim(),
+          pulse: $('#pulse').value.trim(),
+          resp: $('#resp').value.trim(),
+          bpSys: $('#bpSys').value.trim(),
+          bpDia: $('#bpDia').value.trim(),
+          spo2: $('#spo2').value.trim(),
+          pain: $('#pain').value.trim(),
+          glucose: $('#glucose').value.trim(),
+          timeTaken: $('#timeTaken').value
+        },
+        meds
+      };
+    }
+
+    function toCSV(data){
+      // Vitals CSV (one row)
+      const vCols = ['date','time','patientName','patientId','dob','sex','temp_C','pulse_bpm','resp_bpm','bp_sys','bp_dia','spo2_pct','pain_0_10','glucose_mgdl','notes'];
+      const vRow = [
+        data.date, data.vitals.timeTaken, data.patientName, data.patientId, data.dob, data.sex,
+        data.vitals.temp, data.vitals.pulse, data.vitals.resp, data.vitals.bpSys, data.vitals.bpDia,
+        data.vitals.spo2, data.vitals.pain, data.vitals.glucose, data.notes?.replace(/\r?\n/g,' ')
+      ];
+      const vitalsCSV = vCols.join(',') + '\r\n' + vRow.join(',');
+
+      // Meds CSV (multiple rows)
+      const mCols = ['date','patientName','medication','dose','route','time','notes'];
+      const medsCSV = [mCols.join(',')].concat(
+        (data.meds.length ? data.meds : [{name:'',dose:'',route:'',time:'',notes:''}]).map(m =>
+          [data.date, data.patientName, m.name, m.dose, m.route, m.time, (m.notes||'').replace(/\r?\n/g,' ')].join(',')
+        )
+      ).join('\r\n');
+
+      return { vitalsCSV, medsCSV };
+    }
+
+    function filename(base, ext){
+      const stamp = new Date().toISOString().replace(/[-:]/g,'').slice(0,15);
+      return `${base}_${stamp}.${ext}`;
+    }
+
+    async function share(){
+      if(!validate()) return;
+      const data = collect();
+      const { vitalsCSV, medsCSV } = toCSV(data);
+      const vitalsFile = new File([new Blob([vitalsCSV],{type:'text/csv'})], filename('vitals','csv'), {type:'text/csv'});
+      const medsFile = new File([new Blob([medsCSV],{type:'text/csv'})], filename('medications','csv'), {type:'text/csv'});
+
+      try{
+        if(navigator.share && navigator.canShare && navigator.canShare({ files:[vitalsFile, medsFile] })){
+          await navigator.share({
+            files:[vitalsFile, medsFile],
+            title:'Victoria Nurse – Patient Sheet',
+            text:`Patient: ${data.patientName || 'N/A'}\nDate: ${data.date || ''}`
+          });
+          clearForm(); // clear only on successful share
+          alert('Sent. The form has been cleared.');
+        }else{
+          // Fallback: download both CSVs
+          downloadBlob(vitalsFile, vitalsFile.name);
+          downloadBlob(medsFile, medsFile.name);
+          alert('CSV files saved. Attach them to your email/WhatsApp.');
+        }
+      }catch(e){
+        console.warn('Share canceled or failed', e);
+        alert('Share canceled');
+      }
+    }
+
+    function downloadBlob(fileOrBlob, name){
+      const blob = fileOrBlob instanceof Blob ? fileOrBlob : new Blob([fileOrBlob],{type:'application/octet-stream'});
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = name;
+      document.body.appendChild(a); a.click(); a.remove();
+      setTimeout(()=>URL.revokeObjectURL(a.href), 1000);
+    }
+
+    function clearForm(){
+      document.getElementById('sheet').reset();
+      medsEl.innerHTML=''; medsEl.appendChild(medRow());
+      history.replaceState(null,'',location.pathname);
+    }
+
+    document.getElementById('shareBtn').onclick = share;
+    document.getElementById('downloadBtn').onclick = ()=>{
+      if(!validate()) return;
+      const data = collect();
+      const { vitalsCSV, medsCSV } = toCSV(data);
+      downloadBlob(new Blob([vitalsCSV],{type:'text/csv'}), filename('vitals','csv'));
+      downloadBlob(new Blob([medsCSV],{type:'text/csv'}), filename('medications','csv'));
+      alert('CSV files downloaded');
+    };
+    document.getElementById('panicClear').onclick = clearForm;
+
+    // PWA
+    if('serviceWorker' in navigator){ navigator.serviceWorker.register('./sw.js'); }
   </script>
 </body>
 </html>
