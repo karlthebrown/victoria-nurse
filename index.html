@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-  <meta name="theme-color" content="#0B2230" />
+  <meta name="theme-color" content="#0E2A35" />
   <meta name="referrer" content="no-referrer">
   <meta http-equiv="Cache-Control" content="no-store, no-cache, must-revalidate" />
   <meta http-equiv="Pragma" content="no-cache" />
@@ -15,112 +15,133 @@
   <title>Victoria Nurse</title>
   <style>
     :root{
-      --bg-0:#0B2230; --text-1:#E7F2F2; --text-2:#B7C6C8;
-      --card-0:#274A57; --card-1:#3A6C73;
-      --accent:#3AD1C4; --accent-2:#66B3FF; --danger:#F05252;
-      --shadow:0 10px 30px rgba(0,0,0,.35);
-      --radius:18px;
+      /* Professional & medical palette (calm blues/greens, clean lines) */
+      --bg-0:#0E2A35;          /* deep blue-teal page background */
+      --bg-1:#113543;
+      --card:#163F50;          /* card surface */
+      --card-2:#1A495C;        /* light gradient stop */
+      --ink:#EAF5F4;           /* primary text */
+      --muted:#BFD6D4;         /* secondary text */
+      --line:#2B5D6F;          /* dividers/lines */
+      --accent:#42C6B8;        /* clinical teal */
+      --accent-2:#5FA8FF;      /* calm blue */
+      --danger:#EF5B5B;        /* alerts */
+      --radius:16px;
+      --shadow:0 10px 28px rgba(0,0,0,.28);
+      --focus:0 0 0 3px rgba(66,198,184,.35);
     }
     *{box-sizing:border-box}
     html,body{height:100%}
     body{
-      margin:0; font-family:ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
-      color:var(--text-1);
-      background: radial-gradient(1200px 1200px at 50% -200px, #123242 10%, var(--bg-0) 60%, #081923 100%);
+      margin:0; font-family:ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial;
+      color:var(--ink);
+      background:
+        radial-gradient(1200px 900px at 50% -200px, #134051 10%, var(--bg-0) 60%) fixed,
+        linear-gradient(180deg, var(--bg-0), var(--bg-1)) fixed;
       -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale;
     }
-    .wrap{max-width:520px;margin:0 auto;padding:24px 20px 80px}
-    header{
-      text-align:center;margin-top:8px;margin-bottom:18px;
+    .wrap{max-width:640px;margin:0 auto;padding:24px 18px 96px}
+    header{text-align:center;margin:6px 0 18px}
+    .brand{
+      display:flex;gap:12px;align-items:center;justify-content:center;margin-bottom:6px
     }
     .logo{
-      width:78px;height:78px;margin:0 auto 8px;border-radius:16px;
-      display:grid;place-items:center;background:linear-gradient(180deg,#1E4B58,#2E767E);
-      box-shadow:var(--shadow)
+      width:72px;height:72px;border-radius:14px;background:linear-gradient(180deg,#155765,#1F6C7C);
+      display:grid;place-items:center;box-shadow:var(--shadow)
     }
-    .logo svg{width:54px;height:54px}
-    h1{margin:0;font-size:34px;letter-spacing:.2px}
-    .slogan{margin-top:6px;color:var(--text-2);font-style:italic;font-size:16px}
-    .badge{margin-top:10px;font-size:12px;color:var(--text-2)}
+    .logo svg{width:46px;height:46px}
+    h1{margin:0;font-size:32px;letter-spacing:.2px}
+    .slogan{margin-top:6px;color:var(--muted);font-size:15px;font-style:italic}
+    .badge{margin-top:8px;color:var(--muted);font-size:12px}
     .card{
-      background:linear-gradient(180deg,var(--card-0),var(--card-1));
-      border-radius:var(--radius); box-shadow:var(--shadow);
-      padding:14px 14px; margin:12px 0;
+      background:linear-gradient(180deg,var(--card),var(--card-2));
+      border-radius:var(--radius);box-shadow:var(--shadow);
+      padding:16px;margin:12px 0;border:1px solid var(--line);
     }
-    label{display:block;font-size:14px;margin:4px 0 8px;color:var(--text-1)}
+    .section-title{
+      display:flex;align-items:center;gap:8px;font-size:14px;margin-bottom:10px;color:var(--ink);font-weight:600
+    }
+    .divider{height:1px;background:var(--line);margin:10px 0;border-radius:1px}
+    label{display:block;font-size:14px;margin:4px 0 8px;color:var(--ink)}
     input, select, textarea{
-      width:100%; border:none; outline:none; font-size:16px;
-      background:rgba(255,255,255,.08); color:var(--text-1);
-      padding:14px 12px; border-radius:12px;
+      width:100%; border:1px solid var(--line); outline:none; font-size:16px;
+      background:rgba(255,255,255,.05); color:var(--ink);
+      padding:12px 12px; border-radius:12px;
     }
-    textarea{min-height:90px;resize:vertical}
-    .table{
-      width:100%; border-collapse:separate; border-spacing:0; overflow:hidden;
-      border-radius:14px; background:rgba(255,255,255,.06);
+    input:focus, select:focus, textarea:focus{box-shadow:var(--focus);border-color:transparent}
+    textarea{min-height:96px;resize:vertical}
+    .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+    .table-wrap{overflow:auto;border-radius:14px;border:1px solid var(--line)}
+    table{width:100%;border-collapse:separate;border-spacing:0;background:rgba(255,255,255,.03)}
+    thead th{
+      position:sticky;top:0;background:rgba(255,255,255,.06);backdrop-filter:blur(6px);
+      font-size:13px;font-weight:600;padding:10px 8px;text-align:left;border-bottom:1px solid var(--line)
     }
-    .table thead th{
-      position:sticky; top:0; background:rgba(255,255,255,.08); backdrop-filter:blur(6px);
-      font-weight:600; font-size:13px; padding:10px 8px; text-align:left;
-    }
-    .table td{padding:6px 6px}
-    .row-input{width:100%;padding:10px 10px;border-radius:10px;background:rgba(0,0,0,.18);color:var(--text-1);border:none}
-    .controls{display:flex;gap:12px;flex-wrap:wrap;margin-top:8px}
+    tbody td{padding:6px 6px;border-bottom:1px solid rgba(255,255,255,.05)}
+    .row-input{width:100%;padding:10px 10px;border-radius:10px;border:1px solid var(--line);background:rgba(0,0,0,.15);color:var(--ink)}
+    .row-input:focus{box-shadow:var(--focus);border-color:transparent}
+    .controls{display:flex;gap:12px;flex-wrap:wrap;margin-top:10px}
     .btn{
       flex:1 1 auto; min-width:44%; cursor:pointer; border:none; outline:none;
-      padding:14px 16px; border-radius:16px; font-weight:600; font-size:15px; letter-spacing:.2px;
-      background:linear-gradient(180deg,#2AA8A2,#158A95); color:#0a2126; box-shadow:var(--shadow)
+      padding:13px 16px; border-radius:14px; font-weight:600; font-size:15px; letter-spacing:.2px;
+      color:#06242A; background:linear-gradient(180deg,#49D4C6,#33B7AA); border:1px solid #2F9B90;
     }
-    .btn.secondary{background:linear-gradient(180deg,#2D77C8,#1E55A7); color:#061a2a}
-    .btn.flat{background:transparent;border:1px solid rgba(255,255,255,.2); color:var(--text-1)}
+    .btn.secondary{color:#061a2a;background:linear-gradient(180deg,#74B9FF,#4A9CF2);border:1px solid #3F81C8}
+    .btn.flat{color:var(--ink);background:transparent;border:1px solid var(--line)}
+    .btn.icon{min-width:auto;padding:8px 10px}
+    .hint{color:var(--muted);font-size:13px;margin-top:6px}
     .toast{position:fixed;left:50%;bottom:18px;transform:translateX(-50%);
-      background:#06232C;color:#E8FBF7;padding:10px 14px;border-radius:10px;box-shadow:var(--shadow);opacity:0;transition:opacity .25s}
+      background:#0A2B34;color:#E8FBF7;padding:10px 14px;border-radius:10px;box-shadow:var(--shadow);opacity:0;transition:opacity .22s}
     .toast.show{opacity:1}
-    .danger{color:var(--danger);font-size:13px;margin-top:6px}
-    .footer-space{height:18px}
+    .alert{color:var(--danger);font-size:13px;margin-top:6px}
+    .footer-space{height:24px}
   </style>
 </head>
 <body>
   <div class="wrap">
     <header>
-      <div class="logo" aria-hidden="true">
-        <!-- cross + heartbeat -->
-        <svg viewBox="0 0 64 64" fill="none">
-          <rect x="12" y="6" width="40" height="52" rx="10" ry="10" fill="#2FC4B4" opacity=".25"/>
-          <path d="M10 33h14l6-16 8 28 6-12h10" stroke="#6BE7DC" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
-        </svg>
+      <div class="brand">
+        <div class="logo" aria-hidden="true">
+          <!-- medical cross + heartbeat line -->
+          <svg viewBox="0 0 64 64" fill="none" aria-hidden="true">
+            <rect x="8" y="8" width="48" height="48" rx="10" fill="#42C6B8" opacity=".22"/>
+            <path d="M8 34h15l6-16 8 26 6-12h13" stroke="#7DE7DC" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <div>
+          <h1>Victoria Nurse</h1>
+          <div class="slogan">Calm • Clear • Clinical</div>
+        </div>
       </div>
-      <h1>Victoria Nurse</h1>
-      <div class="slogan">Care Together. Stay Together.</div>
       <div class="badge">Privacy-first · No data stored · Clears after sending</div>
     </header>
 
-    <!-- Patient Summary -->
-    <section class="card">
-      <label for="summary">Patient Summary</label>
+    <section class="card" aria-labelledby="summaryTitle">
+      <div class="section-title" id="summaryTitle">Patient Summary</div>
       <textarea id="summary" autocomplete="off" inputmode="text" placeholder="Observations / notes (optional)"></textarea>
     </section>
 
-    <!-- Name / initials -->
     <section class="card">
-      <label for="patient">Patient Name / Initials</label>
-      <input id="patient" autocomplete="off" inputmode="text" placeholder="e.g., J.D. or Jane Doe" />
+      <div class="grid-2">
+        <div>
+          <label for="patient">Patient Name / Initials</label>
+          <input id="patient" autocomplete="off" inputmode="text" placeholder="e.g., J.D. or Jane Doe" />
+        </div>
+        <div>
+          <label for="weekof">Week Of</label>
+          <input id="weekof" type="date" autocomplete="off" />
+          <div id="weekRange" class="hint"></div>
+        </div>
+      </div>
     </section>
 
-    <!-- Week of -->
-    <section class="card">
-      <label for="weekof">Week Of</label>
-      <input id="weekof" type="date" autocomplete="off" />
-      <div id="weekRange" style="margin-top:8px;color:var(--text-2);font-size:13px;"></div>
-    </section>
-
-    <!-- Daily Vitals -->
-    <section class="card">
-      <label>Daily Vitals</label>
-      <div style="overflow:auto; border-radius:14px;">
-        <table class="table" id="vitalsTbl" aria-label="Daily vitals table">
+    <section class="card" aria-labelledby="vitalsTitle">
+      <div class="section-title" id="vitalsTitle">Daily Vitals</div>
+      <div class="table-wrap">
+        <table aria-label="Daily vitals table">
           <thead>
             <tr>
-              <th>Day</th>
+              <th style="min-width:96px">Day</th>
               <th>Time</th>
               <th>AM/PM</th>
               <th>Heart Rate</th>
@@ -137,12 +158,12 @@
         <button class="btn flat" id="addAmPmBtn">Add AM &amp; PM</button>
         <button class="btn flat" id="panicClearBtn" title="Clear current sheet now">Clear</button>
       </div>
-      <div id="valMsg" class="danger" role="alert" aria-live="polite"></div>
+      <div id="valMsg" class="alert" role="alert" aria-live="polite"></div>
     </section>
 
     <section class="card">
       <div class="controls">
-        <button class="btn" id="emailBtn" aria-label="Share via email or apps">Share / Email (CSV)</button>
+        <button class="btn" id="shareBtn" aria-label="Share via email or apps">Share / Email (CSV)</button>
         <button class="btn secondary" id="downloadBtn">Download CSV</button>
       </div>
     </section>
@@ -153,7 +174,7 @@
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
   <script>
-    // ---- Utilities (no persistence; in-memory only) -------------------------
+    // ------------------- In-memory state (no storage) -------------------------
     const $ = (sel)=>document.querySelector(sel);
     const rowsEl = $('#rows');
     const weekInput = $('#weekof');
@@ -161,23 +182,18 @@
     const toast = $('#toast');
     const valMsg = $('#valMsg');
 
-    const state = {
-      summary: '', patient:'', weekOf:null, rows:[]
-    };
+    const state = { summary:'', patient:'', weekOf:null, rows:[] };
 
-    function showToast(msg){ toast.textContent = msg; toast.classList.add('show'); setTimeout(()=>toast.classList.remove('show'), 2500); }
+    const showToast = (msg)=>{ toast.textContent = msg; toast.classList.add('show'); setTimeout(()=>toast.classList.remove('show'), 2200); };
 
-    function startOfWeek(d){ // Monday as start
-      const dt = new Date(d); const day = (dt.getDay()+6)%7; dt.setDate(dt.getDate()-day); dt.setHours(0,0,0,0); return dt;
-    }
-    function endOfWeek(d){ const s = startOfWeek(d); const e = new Date(s); e.setDate(e.getDate()+6); return e; }
-    function fmtISO(d){ return d.toISOString().slice(0,10); }
-    function dayName(d){ return d.toLocaleDateString(undefined,{weekday:'short'}); }
+    const startOfWeek = (d)=>{ const dt = new Date(d); const day=(dt.getDay()+6)%7; dt.setDate(dt.getDate()-day); dt.setHours(0,0,0,0); return dt; };
+    const endOfWeek = (d)=>{ const s=startOfWeek(d); const e=new Date(s); e.setDate(e.getDate()+6); return e; };
+    const fmtISO = (d)=> d.toISOString().slice(0,10);
+    const dayName = (d)=> d.toLocaleDateString(undefined,{weekday:'short'});
 
     function updateWeekRange(){
-      if(!weekInput.value){ weekRange.textContent=''; return; }
-      const s = startOfWeek(weekInput.value);
-      const e = endOfWeek(weekInput.value);
+      if(!weekInput.value){ weekRange.textContent=''; state.weekOf=null; return; }
+      const s=startOfWeek(weekInput.value), e=endOfWeek(weekInput.value);
       weekRange.textContent = `Week: ${s.toLocaleDateString()} – ${e.toLocaleDateString()}`;
       state.weekOf = fmtISO(s);
     }
@@ -188,34 +204,34 @@
       return { id: crypto.randomUUID(), dayISO, time24h: time, meridiem: mer, heartRate:'', systolic:'', diastolic:'' };
     }
 
+    function addOneRow(){
+      const dayISO = state.weekOf || fmtISO(new Date());
+      const now = new Date(); const t = now.toTimeString().slice(0,5);
+      state.rows.push(newRow(dayISO, t));
+      renderRows();
+    }
+
     function seedAmPm(){
       if(!weekInput.value){ showToast('Select "Week Of" first'); return; }
       const s = startOfWeek(weekInput.value);
       for(let i=0;i<7;i++){
         const d = new Date(s); d.setDate(s.getDate()+i);
-        state.rows.push(newRow(fmtISO(d),"07:00"));
-        state.rows.push(newRow(fmtISO(d),"19:00"));
+        state.rows.push(newRow(fmtISO(d), "07:00"));
+        state.rows.push(newRow(fmtISO(d), "19:00"));
       }
       renderRows();
     }
 
-    function addOneRow(){
-      const dayISO = state.weekOf || fmtISO(new Date());
-      state.rows.push(newRow(dayISO, new Date().toTimeString().slice(0,5)));
-      renderRows();
-    }
-
-    function delRow(id){
-      state.rows = state.rows.filter(r=>r.id!==id);
-      renderRows();
-    }
+    function delRow(id){ state.rows = state.rows.filter(r=>r.id!==id); renderRows(); }
 
     function renderRows(){
       rowsEl.innerHTML = '';
       state.rows.forEach((r)=>{
         const tr = document.createElement('tr');
         tr.innerHTML = `
-          <td style="min-width:90px">${dayName(new Date(r.dayISO))} <div style="color:var(--text-2);font-size:12px">${r.dayISO}</div></td>
+          <td>${dayName(new Date(r.dayISO))}
+            <div class="hint" aria-hidden="true">${r.dayISO}</div>
+          </td>
           <td><input class="row-input" type="time" value="${r.time24h}" aria-label="time"></td>
           <td>
             <select class="row-input" aria-label="am/pm">
@@ -226,7 +242,7 @@
           <td><input class="row-input" inputmode="numeric" pattern="[0-9]*" placeholder="bpm" value="${r.heartRate}"></td>
           <td><input class="row-input" inputmode="numeric" pattern="[0-9]*" placeholder="mmHg" value="${r.systolic}"></td>
           <td><input class="row-input" inputmode="numeric" pattern="[0-9]*" placeholder="mmHg" value="${r.diastolic}"></td>
-          <td><button class="btn flat" style="min-width:unset;padding:8px 10px" aria-label="delete row">✕</button></td>
+          <td><button class="btn flat icon" aria-label="delete row">✕</button></td>
         `;
         const [timeEl, merEl, hrEl, sysEl, diaEl, delBtn] = tr.querySelectorAll('input,select,button');
         timeEl.addEventListener('change', e=>{
@@ -246,8 +262,8 @@
     function validate(){
       valMsg.textContent='';
       for(const r of state.rows){
-        if(!r.heartRate && !r.systolic && !r.diastolic) continue; // allow blank row
-        const hr = +r.heartRate, sys = +r.systolic, dia = +r.diastolic;
+        if(!r.heartRate && !r.systolic && !r.diastolic) continue;
+        const hr=+r.heartRate, sys=+r.systolic, dia=+r.diastolic;
         if(hr && (hr<30 || hr>220)){ valMsg.textContent='Heart rate out of range (30–220).'; return false; }
         if(sys && (sys<60 || sys>250)){ valMsg.textContent='Systolic out of range (60–250).'; return false; }
         if(dia && (dia<30 || dia>150)){ valMsg.textContent='Diastolic out of range (30–150).'; return false; }
@@ -266,19 +282,18 @@
       return lines.join('\r\n');
     }
 
-    function filename(prefix, ext){
+    const filename = (prefix, ext)=>{
       const dt = new Date();
       const tag = dt.toISOString().replace(/[-:]/g,'').slice(0,15);
       const name = ($('#patient').value||'patient').replace(/\s+/g,'_');
       const wk = (state.weekOf||'week');
       return `${prefix}_${name}_${wk}_${tag}.${ext}`;
-    }
+    };
 
     async function shareCSV(){
-      if(!validate()){ return; }
+      if(!validate()) return;
       if(state.rows.length===0){ showToast('Add at least one row'); return; }
 
-      // build CSV blob entirely in memory
       const csv = toCSV();
       const blob = new Blob([csv], {type:'text/csv'});
       const f = new File([blob], filename('victoria-nurse','csv'), {type:'text/csv'});
@@ -290,14 +305,11 @@
             title:'Victoria Nurse Vitals',
             text: buildShareText()
           });
-          clearAll(true); // success → clear immediately
+          clearAll(true); // only on success
           showToast('Sent. This sheet was cleared.');
         }else{
-          // Fallback: download then open mailto (cannot auto-attach in mailto)
           downloadBlob(blob, f.name);
-          const url = buildMailto();
-          window.location.href = url;
-          // Do NOT clear automatically since we cannot verify send success
+          window.location.href = buildMailto();
           showToast('CSV saved. Attach to your email/WhatsApp.');
         }
       }catch(err){
@@ -328,16 +340,14 @@
     }
 
     function clearAll(resetWeek=false){
-      // wipe in-memory state + inputs
       state.summary=''; state.patient=''; if(resetWeek) state.weekOf=null; state.rows=[];
       $('#summary').value=''; $('#patient').value='';
       if(resetWeek){ weekInput.value=''; weekRange.textContent=''; }
       renderRows();
-      // also prevent bfcache resurrecting inputs
       history.replaceState(null,'',location.pathname);
     }
 
-    // ---- Wire up UI ----------------------------------------------------------
+    // ------------------- Wire up UI ------------------------------------------
     $('#addRowBtn').addEventListener('click', addOneRow);
     $('#addAmPmBtn').addEventListener('click', seedAmPm);
     $('#panicClearBtn').addEventListener('click', ()=>{ clearAll(true); showToast('Cleared'); });
@@ -346,7 +356,7 @@
     $('#summary').addEventListener('input', e=> state.summary = e.target.value);
     $('#patient').addEventListener('input', e=> state.patient = e.target.value);
 
-    $('#emailBtn').addEventListener('click', shareCSV);
+    $('#shareBtn').addEventListener('click', shareCSV);
     $('#downloadBtn').addEventListener('click', ()=>{
       if(!validate()) return;
       if(state.rows.length===0){ showToast('Add at least one row'); return; }
@@ -355,11 +365,7 @@
       showToast('CSV downloaded');
     });
 
-    // extra safety: clear in-memory when page backgrounded or unloading
-    document.addEventListener('visibilitychange', ()=>{ if(document.hidden){ /* ephemeral only */ } });
-    window.addEventListener('beforeunload', ()=>{ /* nothing to persist; ephemeral */ });
-
-    // PWA
+    // PWA registration
     if('serviceWorker' in navigator){ navigator.serviceWorker.register('./sw.js'); }
   </script>
 </body>
