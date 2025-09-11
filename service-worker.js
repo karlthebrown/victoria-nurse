@@ -1,5 +1,5 @@
 /* Victoria Nurse — Service Worker */
-const CACHE_NAME = 'victoria-nurse-v1';
+const CACHE_NAME = 'victoria-nurse-v2'; // bump on assets change
 const ASSETS = [
   './',
   './index.html',
@@ -32,7 +32,7 @@ self.addEventListener('fetch', (event) => {
 
   const url = new URL(req.url);
 
-  // Same-origin: cache-first with network update
+  // Same-origin: cache-first with background update
   if (url.origin === location.origin) {
     event.respondWith(
       caches.match(req).then((cached) => {
