@@ -1,12 +1,18 @@
 # Victoria Nurse
 
-_A modern, sleek PWA for homecare nurses to record vital signs and share summaries via WhatsApp and email (with PDF export)._
+A sleek PWA for homecare nurses to record vital signs and share summaries via WhatsApp and email (with PDF export).
 
 - **App name:** Victoria Nurse  
 - **Tagline:** Care Together  
 - **Footer:** _Powered by: karlthebrown_  
-- **Hosting:** GitHub Pages  
-- **Icons/Logo:** place assets in `icon/` (e.g., `icon/logo.png`, `icon/logo-192.png`, `icon/logo-512.png`, optional maskables)
+- **Hosting:** GitHub Pages
+
+## Privacy (Stateless Mode)
+- **No patient information is stored** on the device or in the cloud.
+- After sharing (PDF/WhatsApp/email), the app **clears all fields** automatically.
+- Optional **3-second “Undo clear”** toast lets you restore once, in-memory only.
+- Inputs use **autocomplete off** to reduce autofill.
+- The service worker **does not cache** `index.html` or dynamic requests.
 
 ## Capture Order
 1. Patient Name  
@@ -23,10 +29,18 @@ _A modern, sleek PWA for homecare nurses to record vital signs and share summari
 12. Notes  
 13. Nurse’s Name (who performed the checks)
 
+## Visual & PDF Updates
+- **PDF** now mimics a **neon vitals dashboard** (dark background, colored labels & values like the sample image).  
+- **“Victoria Nurse”** text in the PDF header uses a **themed color** (not black).  
+- **Tagline** styled with a display font.  
+- **Input focus rings** match the app theme (no black ring).  
+- **Powered by: karlthebrown** uses a themed color.
+
 ## Local Run
 ```bash
 python -m http.server 8080
-# open http://localhost:8080 (service worker requires localhost/https)
+# open http://localhost:8080
+
 
 ---
 
