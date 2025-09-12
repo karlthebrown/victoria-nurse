@@ -10,8 +10,9 @@ A sleek PWA for homecare nurses to record vital signs and share summaries via Wh
 ## Privacy (Stateless Mode)
 - **No patient information is stored** on the device or in the cloud.
 - After sharing (PDF/WhatsApp/email), the app **clears all fields** automatically.
-- Optional **3-second “Undo clear”** toast lets you restore once (memory only).
-- Inputs use **autocomplete off** to reduce autofill.
+- **Undo clear (3 seconds)**: transient in-memory snapshot lets you restore once.
+- **Send confirmation** dialog appears before actions.
+- Inputs use **autocomplete off** and **theme-colored focus rings**.
 - The service worker **does not cache** `index.html` or dynamic requests.
 
 ## Capture Order
@@ -30,16 +31,16 @@ A sleek PWA for homecare nurses to record vital signs and share summaries via Wh
 13. Nurse’s Name (who performed the checks)
 
 ## Visual & PDF Updates
-- **PDF** mimics a **neon vitals dashboard** (dark background with colored chips & values).
-- **“Victoria Nurse”** header in PDF uses theme color (not black).
-- **Unit labels** added in PDF: **bpm**, **mmHg**, **%**, **rpm**, **°C**.
-- **Tagline** uses a display font.
-- **Input focus rings** match theme (no black ring).
-- **Powered by: karlthebrown** uses theme color.
+- **Neon vitals dashboard** PDF (dark background, colored chips & values).
+- **“Victoria Nurse”** in PDF uses **indigo** (`#6366f1`) instead of black.
+- **Unit labels** shown in PDF: **bpm**, **mmHg**, **%**, **rpm**, **°C**.
+- **Tagline** styled with display font.
+- **Powered by: karlthebrown** uses indigo to match theme (in-app + PDF).
 
 ## Local Run
 ```bash
 python -m http.server 8080
+# open http://localhost:8080
 
 ---
 
