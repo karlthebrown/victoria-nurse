@@ -1,9 +1,9 @@
 /* Victoria Nurse — Service Worker (privacy hardened) */
-const CACHE_NAME = 'victoria-nurse-v6';
+const CACHE_NAME = 'victoria-nurse-v7';
 const ASSETS = [
-  './manifest.webmanifest?v=2025-09-12-02',
-  './icons/icon-192.png?v=2025-09-12-02',
-  './icons/icon-512.png?v=2025-09-12-02'
+  './manifest.webmanifest?v=2025-09-12-03',
+  './icons/icon-192.png?v=2025-09-12-03',
+  './icons/icon-512.png?v=2025-09-12-03'
 ];
 
 self.addEventListener('install', (event) => {
@@ -28,17 +28,16 @@ self.addEventListener('fetch', (event) => {
 
   // Never cache HTML
   if (isHTML || url.pathname.endsWith('/') || url.pathname.endsWith('/index.html')) {
-    event.respondWith(fetch(req).catch(() => caches.match('./manifest.webmanifest?v=2025-09-12-02')));
+    event.respondWith(fetch(req).catch(() => caches.match('./manifest.webmanifest?v=2025-09-12-03')));
     return;
   }
 
-  // Same-origin static assets (whitelisted)
+  // Same-origin static assets (whitelisted only)
   if (url.origin === location.origin) {
     event.respondWith(
       caches.match(req).then((cached) => {
         if (cached) return cached;
         return fetch(req).then((res) => {
-          // Only cache our explicit ASSETS list (with versioned URLs)
           const path = url.pathname + (url.search || '');
           const normalized = path.startsWith('.') ? path : '.' + path;
           if (ASSETS.includes(normalized)) {
