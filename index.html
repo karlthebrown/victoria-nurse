@@ -1,24 +1,23 @@
-
----
-
-# `index.html`
-```html
 <!doctype html>
 <html lang="en">
 <head>
   <meta charset="utf-8"/>
+  <meta http-equiv="Cache-Control" content="no-store, max-age=0"/>
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
   <title>Victoria Nurse — Care Together</title>
 
+  <!-- VERSION (update to bust caches across the app) -->
+  <script>window.__VN_VER__ = "2025-09-12-01";</script>
+
   <!-- PWA -->
-  <link rel="manifest" href="./manifest.webmanifest"/>
+  <link rel="manifest" href="./manifest.webmanifest?v=2025-09-12-01"/>
   <meta name="theme-color" content="#6366f1"/>
 
-  <!-- Icons -->
-  <link rel="icon" type="image/png" href="./icon/logo-192.png"/>
-  <link rel="apple-touch-icon" href="./icon/logo-192.png"/>
-  <link rel="apple-touch-icon" sizes="180x180" href="./icon/logo-192.png"/>
-  <link rel="mask-icon" href="./icon/logo-512.png" color="#6366f1"/>
+  <!-- Icons (cache-busted) -->
+  <link rel="icon" type="image/png" href="./icon/logo-192.png?v=2025-09-12-01"/>
+  <link rel="apple-touch-icon" href="./icon/logo-192.png?v=2025-09-12-01"/>
+  <link rel="apple-touch-icon" sizes="180x180" href="./icon/logo-192.png?v=2025-09-12-01"/>
+  <link rel="mask-icon" href="./icon/logo-512.png?v=2025-09-12-01" color="#6366f1"/>
 
   <!-- Fonts (tagline) -->
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&display=swap" rel="stylesheet"/>
@@ -32,14 +31,8 @@
 
   <style>
     :root{
-      --vn-sky:#38bdf8;      /* sky-400 */
-      --vn-indigo:#6366f1;   /* indigo-500 */
-      --vn-fuchsia:#d946ef;  /* fuchsia-500 */
-      --vn-chip-hr:#ef38c0;  /* neon pink */
-      --vn-chip-bp:#ffb703;  /* amber */
-      --vn-chip-o2:#32e875;  /* green */
-      --vn-chip-rr:#38bdf8;  /* sky */
-      --vn-chip-temp:#ff4d4d;/* red */
+      --vn-sky:#38bdf8; --vn-indigo:#6366f1; --vn-fuchsia:#d946ef;
+      --vn-chip-hr:#ef38c0; --vn-chip-bp:#ffb703; --vn-chip-o2:#32e875; --vn-chip-rr:#38bdf8; --vn-chip-temp:#ff4d4d;
     }
     /* Theme focus rings (no black rings) */
     input, textarea { caret-color: var(--vn-indigo); outline: none !important; }
@@ -48,7 +41,7 @@
     /* Tagline font */
     .vn-tagline{ font-family:"Playfair Display",ui-serif,Georgia,serif; letter-spacing:.2px; }
 
-    /* PDF styles (html2canvas friendly) */
+    /* PDF styles */
     .pdf-card{background:#000; color:#fff; width:794px; padding:28px;}
     .pdf-row{display:flex; align-items:center; gap:18px; margin:14px 0;}
     .pdf-lead{font-size:52px; font-weight:800; min-width:110px; text-align:right;}
@@ -64,7 +57,13 @@
         <!-- Header -->
         <header class="bg-gradient-to-r from-indigo-600 to-sky-500 p-6">
           <div class="flex items-center gap-4">
-            <img src="./icon/logo.png" alt="Victoria Nurse logo" class="h-12 w-12 rounded-xl bg-white/90 p-1 shadow"/>
+            <!-- Resilient logo: try logo.png, then logo-192, then fallback text -->
+            <picture>
+              <source srcset="./icon/logo.png?v=2025-09-12-01" type="image/png">
+              <img id="appLogo" src="./icon/logo-192.png?v=2025-09-12-01" alt="Victoria Nurse logo"
+                   class="h-12 w-12 rounded-xl bg-white/90 p-1 shadow"
+                   onerror="(function(el){el.onerror=null; el.src='./icon/logo-512.png?v='+window.__VN_VER__;})(this)"/>
+            </picture>
             <div>
               <h1 class="text-white text-2xl font-extrabold tracking-tight">Victoria Nurse</h1>
               <p class="vn-tagline text-white/95 text-sm">Care Together</p>
@@ -186,7 +185,9 @@
     <div class="pdf-card" id="pdfRoot">
       <!-- Header -->
       <div style="display:flex;align-items:center;gap:16px;margin-bottom:10px;">
-        <img src="./icon/logo.png" alt="Logo" style="width:56px;height:56px;border-radius:12px;border:1px solid #1f2937;padding:6px;background:#fff;">
+        <img src="./icon/logo.png?v=2025-09-12-01" alt="Logo"
+             style="width:56px;height:56px;border-radius:12px;border:1px solid #1f2937;padding:6px;background:#fff;"
+             onerror="this.onerror=null;this.src='./icon/logo-192.png?v='+window.__VN_VER__;">
         <div>
           <div style="font-weight:900;font-size:22px;color:#6366f1;">Victoria Nurse</div>
           <div class="vn-tagline" style="color:#38bdf8;font-size:13px;">Care Together</div>
@@ -273,6 +274,29 @@
   <script>
     document.getElementById('year').textContent = new Date().getFullYear();
 
+    // ---- ONE-TIME MIGRATION: purge old SW + caches (handles previous version that cached HTML) ----
+    (async () => {
+      try {
+        const key = 'vn_migrated_v2';
+        if (!localStorage.getItem(key)) {
+          // Unregister ANY existing service workers under this scope
+          if ('serviceWorker' in navigator) {
+            const regs = await navigator.serviceWorker.getRegistrations();
+            await Promise.all(regs.map(r => r.unregister()));
+          }
+          // Nuke all caches for this origin (safe for stateless app)
+          if (window.caches && caches.keys) {
+            const names = await caches.keys();
+            await Promise.all(names.map(n => caches.delete(n)));
+          }
+          localStorage.setItem(key, '1');
+          // Soft reload so new SW/manifest take over
+          location.reload();
+        }
+      } catch (e) { /* ignore */ }
+    })();
+
+    // ---- App logic (unchanged) ----
     const form = document.getElementById('formVitals');
     const toast = document.getElementById('undoToast');
     const btnUndo = document.getElementById('btnUndo');
@@ -285,13 +309,11 @@
     let pendingTimer = null;
     let lastSnapshot = null;
 
-    // Confirm dialog
     let pendingAction = null; // 'pdf' | 'whatsapp' | 'email'
     function openConfirm(action){ pendingAction = action; confirmOverlay.classList.remove('hidden'); }
     function closeConfirm(){ confirmOverlay.classList.add('hidden'); pendingAction = null; }
     confirmCancel.addEventListener('click', closeConfirm);
 
-    // Snapshot / Restore / Clear
     function snapshotForm(){
       return ['patientName','temperature','pulse','respiratoryRate','bloodPressure','oxygenSaturation','bloodSugar','pain','medMorning','medAfternoon','medEvening','notes','nurseName']
         .reduce((o,id)=>{ o[id]=document.getElementById(id).value; return o; },{});
@@ -313,7 +335,6 @@
     btnUndo.addEventListener('click', ()=>{ if(pendingTimer){clearTimeout(pendingTimer); pendingTimer=null;} hideUndoToast(); if(lastSnapshot) restoreForm(lastSnapshot); lastSnapshot=null; });
     btnDismiss.addEventListener('click', ()=>{ if(pendingTimer){clearTimeout(pendingTimer); pendingTimer=null;} hideUndoToast(); lastSnapshot=null; });
 
-    // Data helpers
     function getFormData(){
       return {
         patientName: document.getElementById('patientName').value.trim(),
@@ -351,9 +372,7 @@
       ].join('\n');
     }
 
-    // PDF builder (neon dashboard)
     async function generateNeonPDF(d){
-      // Fill the neon dashboard values
       document.getElementById('pdfPulseVal').textContent = d.pulse || '--';
       document.getElementById('pdfBPVal').textContent    = d.bloodPressure || '--';
       document.getElementById('pdfO2Val').textContent    = d.oxygenSaturation || '--';
@@ -371,7 +390,6 @@
       const imgHeight = canvas.height * (imgWidth / canvas.width);
 
       pdf.addImage(imgData,'PNG',20,20,imgWidth,imgHeight,'','FAST');
-
       const safe = (d.patientName || 'patient').replace(/[^\w\-]+/g,'_');
       const fileName = `Victoria_Nurse_${safe}_${new Date().toISOString().slice(0,10)}.pdf`;
       pdf.save(fileName);
@@ -379,12 +397,10 @@
 
     function afterSendFlow(){ lastSnapshot = snapshotForm(); scheduleClearWithUndo(); }
 
-    // Buttons -> confirmation
     document.getElementById('btnPreview').addEventListener('click', ()=>openConfirm('pdf'));
     document.getElementById('btnWhatsApp').addEventListener('click', ()=>openConfirm('whatsapp'));
     document.getElementById('btnEmail').addEventListener('click', ()=>openConfirm('email'));
 
-    // Confirm actions
     confirmOk.addEventListener('click', async ()=>{
       const d = getFormData(); closeConfirm();
 
@@ -412,9 +428,12 @@
       }
     });
 
-    // SW
-    if('serviceWorker' in navigator){
-      window.addEventListener('load', ()=>{ navigator.serviceWorker.register('./service-worker.js',{scope:'./'}).catch(()=>{}); });
+    // Register SW with versioned URL (helps bust the old script URL)
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        const v = window.__VN_VER__;
+        navigator.serviceWorker.register(`./service-worker.js?v=${v}`, { scope: './' }).catch(() => {});
+      });
     }
   </script>
 </body>
