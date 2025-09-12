@@ -1,8 +1,6 @@
-/* Victoria Nurse — Service Worker */
-const CACHE_NAME = 'victoria-nurse-v2'; // bump on assets change
+/* Victoria Nurse — Service Worker (privacy hardened) */
+const CACHE_NAME = 'victoria-nurse-v4';
 const ASSETS = [
-  './',
-  './index.html',
   './manifest.webmanifest',
   './icon/logo.png',
   './icon/logo-192.png',
@@ -12,9 +10,7 @@ const ASSETS = [
 ];
 
 self.addEventListener('install', (event) => {
-  event.waitUntil(
-    caches.open(CACHE_NAME).then((c) => c.addAll(ASSETS))
-  );
+  event.waitUntil(caches.open(CACHE_NAME).then((c) => c.addAll(ASSETS)));
   self.skipWaiting();
 });
 
@@ -31,28 +27,32 @@ self.addEventListener('fetch', (event) => {
   if (req.method !== 'GET') return;
 
   const url = new URL(req.url);
+  const isHTML = req.destination === 'document' || req.headers.get('accept')?.includes('text/html');
 
-  // Same-origin: cache-first with background update
+  // Never cache HTML or form pages
+  if (isHTML || url.pathname.endsWith('/') || url.pathname.endsWith('/index.html')) {
+    event.respondWith(fetch(req).catch(() => caches.match('./manifest.webmanifest')));
+    return;
+  }
+
+  // Same-origin static assets (whitelisted)
   if (url.origin === location.origin) {
     event.respondWith(
       caches.match(req).then((cached) => {
-        const fetchPromise = fetch(req).then((res) => {
-          const clone = res.clone();
-          caches.open(CACHE_NAME).then((c) => c.put(req, clone));
+        if (cached) return cached;
+        return fetch(req).then((res) => {
+          const path = url.pathname.startsWith('/') ? `.${url.pathname}` : url.pathname;
+          if (ASSETS.includes(path)) {
+            const clone = res.clone();
+            caches.open(CACHE_NAME).then((c) => c.put(req, clone));
+          }
           return res;
-        }).catch(() => cached);
-        return cached || fetchPromise;
+        });
       })
     );
     return;
   }
 
-  // Cross-origin (CDNs): network-first, fallback to cache
-  event.respondWith(
-    fetch(req).then((res) => {
-      const clone = res.clone();
-      caches.open(CACHE_NAME).then((c) => c.put(req, clone));
-      return res;
-    }).catch(() => caches.match(req))
-  );
+  // Cross-origin: network-first, no cache
+  event.respondWith(fetch(req).catch(() => new Response('', { status: 504 })));
 });
