@@ -1,12 +1,14 @@
 {
   "name": "Victoria Nurse",
   "short_name": "Victoria Nurse",
-  "description": "Care Together — Record and share patient vital signs with PDF export.",
+  "description": "Care Together — Record and share patient vital signs with loved ones via WhatsApp, Email, and PDF.",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",
-  "background_color": "#ffffff",
-  "theme_color": "#2563eb",
+  "background_color": "#0f172a",
+  "theme_color": "#6366f1",
+  "categories": ["health", "medical", "utilities"],
+  "orientation": "portrait",
   "icons": [
     { "src": "./icon/logo-192.png", "sizes": "192x192", "type": "image/png" },
     { "src": "./icon/logo-512.png", "sizes": "512x512", "type": "image/png" },
