@@ -1,12 +1,12 @@
 /* Victoria Nurse — Service Worker (privacy hardened) */
-const CACHE_NAME = 'victoria-nurse-v4';
+const CACHE_NAME = 'victoria-nurse-v5';
 const ASSETS = [
-  './manifest.webmanifest',
-  './icon/logo.png',
-  './icon/logo-192.png',
-  './icon/logo-512.png',
-  './icon/maskable-192.png',
-  './icon/maskable-512.png'
+  './manifest.webmanifest?v=2025-09-12-01',
+  './icon/logo.png?v=2025-09-12-01',
+  './icon/logo-192.png?v=2025-09-12-01',
+  './icon/logo-512.png?v=2025-09-12-01',
+  './icon/maskable-192.png?v=2025-09-12-01',
+  './icon/maskable-512.png?v=2025-09-12-01'
 ];
 
 self.addEventListener('install', (event) => {
@@ -29,9 +29,9 @@ self.addEventListener('fetch', (event) => {
   const url = new URL(req.url);
   const isHTML = req.destination === 'document' || req.headers.get('accept')?.includes('text/html');
 
-  // Never cache HTML or form pages
+  // Never cache HTML
   if (isHTML || url.pathname.endsWith('/') || url.pathname.endsWith('/index.html')) {
-    event.respondWith(fetch(req).catch(() => caches.match('./manifest.webmanifest')));
+    event.respondWith(fetch(req).catch(() => caches.match('./manifest.webmanifest?v=2025-09-12-01')));
     return;
   }
 
@@ -41,8 +41,8 @@ self.addEventListener('fetch', (event) => {
       caches.match(req).then((cached) => {
         if (cached) return cached;
         return fetch(req).then((res) => {
-          const path = url.pathname.startsWith('/') ? `.${url.pathname}` : url.pathname;
-          if (ASSETS.includes(path)) {
+          const path = url.pathname + (url.search || '');
+          if (ASSETS.includes(path.startsWith('.') ? path : '.' + path)) {
             const clone = res.clone();
             caches.open(CACHE_NAME).then((c) => c.put(req, clone));
           }
