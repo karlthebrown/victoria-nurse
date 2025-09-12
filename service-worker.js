@@ -1,12 +1,9 @@
 /* Victoria Nurse — Service Worker (privacy hardened) */
-const CACHE_NAME = 'victoria-nurse-v5';
+const CACHE_NAME = 'victoria-nurse-v6';
 const ASSETS = [
-  './manifest.webmanifest?v=2025-09-12-01',
-  './icon/logo.png?v=2025-09-12-01',
-  './icon/logo-192.png?v=2025-09-12-01',
-  './icon/logo-512.png?v=2025-09-12-01',
-  './icon/maskable-192.png?v=2025-09-12-01',
-  './icon/maskable-512.png?v=2025-09-12-01'
+  './manifest.webmanifest?v=2025-09-12-02',
+  './icons/icon-192.png?v=2025-09-12-02',
+  './icons/icon-512.png?v=2025-09-12-02'
 ];
 
 self.addEventListener('install', (event) => {
@@ -31,7 +28,7 @@ self.addEventListener('fetch', (event) => {
 
   // Never cache HTML
   if (isHTML || url.pathname.endsWith('/') || url.pathname.endsWith('/index.html')) {
-    event.respondWith(fetch(req).catch(() => caches.match('./manifest.webmanifest?v=2025-09-12-01')));
+    event.respondWith(fetch(req).catch(() => caches.match('./manifest.webmanifest?v=2025-09-12-02')));
     return;
   }
 
@@ -41,8 +38,10 @@ self.addEventListener('fetch', (event) => {
       caches.match(req).then((cached) => {
         if (cached) return cached;
         return fetch(req).then((res) => {
+          // Only cache our explicit ASSETS list (with versioned URLs)
           const path = url.pathname + (url.search || '');
-          if (ASSETS.includes(path.startsWith('.') ? path : '.' + path)) {
+          const normalized = path.startsWith('.') ? path : '.' + path;
+          if (ASSETS.includes(normalized)) {
             const clone = res.clone();
             caches.open(CACHE_NAME).then((c) => c.put(req, clone));
           }
