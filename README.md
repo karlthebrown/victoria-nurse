@@ -1,5 +1,7 @@
 # Victoria Nurse
 
+[![Deploy Victoria Nurse to GitHub Pages](https://github.com/karlthebrown/victoria-nurse/actions/workflows/gh-pages.yml/badge.svg)](https://github.com/karlthebrown/victoria-nurse/actions/workflows/gh-pages.yml)
+
 A sleek PWA for homecare nurses to record vital signs and share summaries via WhatsApp and email (with PDF export).
 
 - **App name:** Victoria Nurse  
