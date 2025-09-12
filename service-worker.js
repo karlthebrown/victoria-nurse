@@ -1,9 +1,9 @@
 /* Victoria Nurse — Service Worker (privacy hardened) */
-const CACHE_NAME = 'victoria-nurse-v7';
+const CACHE_NAME = 'victoria-nurse-v8';
 const ASSETS = [
-  './manifest.webmanifest?v=2025-09-12-03',
-  './icons/icon-192.png?v=2025-09-12-03',
-  './icons/icon-512.png?v=2025-09-12-03'
+  './manifest.webmanifest?v=2025-09-12-05',
+  './icons/icon-192.png?v=2025-09-12-05',
+  './icons/favicon.png?v=2025-09-12-05'
 ];
 
 self.addEventListener('install', (event) => {
@@ -28,11 +28,11 @@ self.addEventListener('fetch', (event) => {
 
   // Never cache HTML
   if (isHTML || url.pathname.endsWith('/') || url.pathname.endsWith('/index.html')) {
-    event.respondWith(fetch(req).catch(() => caches.match('./manifest.webmanifest?v=2025-09-12-03')));
+    event.respondWith(fetch(req).catch(() => caches.match('./manifest.webmanifest?v=2025-09-12-05')));
     return;
   }
 
-  // Same-origin static assets (whitelisted only)
+  // Same-origin static assets (whitelisted)
   if (url.origin === location.origin) {
     event.respondWith(
       caches.match(req).then((cached) => {
