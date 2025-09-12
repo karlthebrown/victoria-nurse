@@ -1,7 +1,7 @@
 
 ---
 
-### `index.html` (with unit labels in PDF + all prior features)
+# `index.html`
 ```html
 <!doctype html>
 <html lang="en">
@@ -12,13 +12,13 @@
 
   <!-- PWA -->
   <link rel="manifest" href="./manifest.webmanifest"/>
-  <meta name="theme-color" content="#2563eb"/>
+  <meta name="theme-color" content="#6366f1"/>
 
   <!-- Icons -->
   <link rel="icon" type="image/png" href="./icon/logo-192.png"/>
   <link rel="apple-touch-icon" href="./icon/logo-192.png"/>
   <link rel="apple-touch-icon" sizes="180x180" href="./icon/logo-192.png"/>
-  <link rel="mask-icon" href="./icon/logo-512.png" color="#2563eb"/>
+  <link rel="mask-icon" href="./icon/logo-512.png" color="#6366f1"/>
 
   <!-- Fonts (tagline) -->
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&display=swap" rel="stylesheet"/>
@@ -175,7 +175,7 @@
         <!-- Footer -->
         <footer class="px-6 py-4 bg-white/70 text-sm flex items-center justify-between">
           <span class="text-slate-700">&copy; <span id="year"></span> Victoria Nurse</span>
-          <span class="italic" style="color:var(--vn-sky)">Powered by: karlthebrown</span>
+          <span class="italic" style="color:#6366f1">Powered by: karlthebrown</span>
         </footer>
       </div>
     </main>
@@ -188,8 +188,8 @@
       <div style="display:flex;align-items:center;gap:16px;margin-bottom:10px;">
         <img src="./icon/logo.png" alt="Logo" style="width:56px;height:56px;border-radius:12px;border:1px solid #1f2937;padding:6px;background:#fff;">
         <div>
-          <div style="font-weight:900;font-size:22px;color:var(--vn-sky);">Victoria Nurse</div>
-          <div class="vn-tagline" style="color:#9dbffa;font-size:13px;">Care Together</div>
+          <div style="font-weight:900;font-size:22px;color:#6366f1;">Victoria Nurse</div>
+          <div class="vn-tagline" style="color:#38bdf8;font-size:13px;">Care Together</div>
         </div>
       </div>
       <hr style="border:none;border-top:1px solid #1f2937;margin:8px 0 16px;">
@@ -235,7 +235,9 @@
       </div>
 
       <hr style="border:none;border-top:1px solid #1f2937;margin:18px 0;">
-      <div style="font-size:12px;color:#9ca3af;text-align:right;"><em style="color:var(--vn-sky)">Powered by: karlthebrown</em></div>
+      <div style="font-size:12px;color:#9ca3af;text-align:right;">
+        <em style="color:#6366f1">Powered by: karlthebrown</em>
+      </div>
     </div>
   </div>
 
@@ -269,7 +271,7 @@
   </div>
 
   <script>
-    document.getElementById('year')?.textContent = new Date().getFullYear();
+    document.getElementById('year').textContent = new Date().getFullYear();
 
     const form = document.getElementById('formVitals');
     const toast = document.getElementById('undoToast');
