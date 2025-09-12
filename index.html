@@ -6,41 +6,36 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
   <title>Victoria Nurse — Care Together</title>
 
-  <!-- VERSION: v11 -->
-  <script>window.__VN_VER__ = "2025-09-12-11";</script>
+  <!-- VERSION: v11a -->
+  <script>window.__VN_VER__ = "2025-09-12-11a";</script>
 
   <!-- PWA -->
-  <link rel="manifest" href="./manifest.webmanifest?v=2025-09-12-11"/>
+  <link rel="manifest" href="./manifest.webmanifest?v=2025-09-12-11a"/>
   <meta name="theme-color" content="#6366f1"/>
 
   <!-- Icons -->
-  <link rel="icon" type="image/png" href="./icons/favicon.png?v=2025-09-12-11"/>
-  <link rel="apple-touch-icon" href="./icons/icon-192.png?v=2025-09-12-11"/>
-  <link rel="apple-touch-icon" sizes="180x180" href="./icons/icon-192.png?v=2025-09-12-11"/>
-  <link rel="mask-icon" href="./icons/icon-192.png?v=2025-09-12-11" color="#6366f1"/>
+  <link rel="icon" type="image/png" href="./icons/favicon.png?v=2025-09-12-11a"/>
+  <link rel="apple-touch-icon" href="./icons/icon-192.png?v=2025-09-12-11a"/>
+  <link rel="apple-touch-icon" sizes="180x180" href="./icons/icon-192.png?v=2025-09-12-11a"/>
+  <link rel="mask-icon" href="./icons/icon-192.png?v=2025-09-12-11a" color="#6366f1"/>
 
   <!-- Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&display=swap" rel="stylesheet"/>
 
   <!-- Tailwind -->
-  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.tailwindcss.com" defer></script>
 
   <!-- PDF libs -->
-  <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js" defer></script>
 
   <style>
     :root{
       --vn-sky:#38bdf8;       /* ring + field text + labels */
       --vn-indigo:#6366f1;    /* brand */
       --vn-fuchsia:#d946ef;
-      --vn-chip-hr:#ef38c0; --vn-chip-bp:#ffb703; --vn-chip-o2:#32e875; --vn-chip-rr:#38bdf8; --vn-chip-temp:#ff4d4d;
     }
-
-    /* Labels: use same blue as focus ring */
     label { color: var(--vn-sky); }
-
-    /* Bigger, consistent inputs */
     .vn-field{
       color: var(--vn-sky);
       padding: 0.95rem 1.1rem;
@@ -49,28 +44,11 @@
       line-height: 1.6rem;
       background: #ffffff;
     }
-    .vn-field:focus{
-      outline: none;
-      box-shadow: 0 0 0 2px var(--vn-sky);
-      border-color: var(--vn-sky);
-    }
-    .vn-field::placeholder{
-      color: #9fb6c8;
-      opacity: 0.85;
-    }
-    .vn-input{ height: 3.5rem; }   /* single-line height */
-    .vn-textarea{ min-height: 3.5rem; }
-
-    /* Tagline font */
+    .vn-field:focus{ outline: none; box-shadow: 0 0 0 2px var(--vn-sky); border-color: var(--vn-sky); }
+    .vn-field::placeholder{ color:#9fb6c8; opacity:.85; }
+    .vn-input{ height:3.5rem; }
+    .vn-textarea{ min-height:3.5rem; }
     .vn-tagline{ font-family:"Playfair Display",ui-serif,Georgia,serif; letter-spacing:.2px; }
-
-    /* PDF styles (neon panel) */
-    .pdf-card{background:#000; color:#fff; width:794px; padding:28px;}
-    .pdf-row{display:flex; align-items:center; gap:18px; margin:14px 0;}
-    .pdf-lead{font-size:52px; font-weight:800; min-width:110px; text-align:right;}
-    .pdf-chip{padding:8px 14px; border-radius:999px; font-weight:700; font-size:16px; color:#000;}
-    .pdf-chip--unit{ background:#fff; color:#111827; }
-    .pdf-wave{height:36px; width:120px; opacity:.9;}
   </style>
 </head>
 <body class="min-h-screen bg-gradient-to-br from-sky-500 via-indigo-600 to-fuchsia-600 text-slate-900 antialiased">
@@ -80,7 +58,7 @@
         <!-- Header -->
         <header class="bg-gradient-to-r from-indigo-600 to-sky-500 p-6">
           <div class="flex items-center gap-4">
-            <img src="./icons/icon-192.png?v=2025-09-12-11" alt="Victoria Nurse logo"
+            <img src="./icons/icon-192.png?v=2025-09-12-11a" alt="Victoria Nurse logo"
                  class="h-14 w-14 rounded-2xl shadow"
                  onerror="this.onerror=null;this.src='./icons/icon-192.png?v='+window.__VN_VER__;">
             <div>
@@ -99,7 +77,7 @@
               <input id="patientName" type="text" placeholder="Enter full name" class="vn-field vn-input w-full"/>
             </div>
 
-            <!-- 2–8. Vitals (ALL FIELDS INCLUDED) -->
+            <!-- 2–8. Vitals -->
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
                 <label for="temperature" class="block text-sm font-semibold mb-1">Temperature (°C)</label>
@@ -147,7 +125,7 @@
               </div>
             </div>
 
-            <!-- 12. Notes (bigger) -->
+            <!-- 12. Notes -->
             <div>
               <label for="notes" class="block text-sm font-semibold mb-1">Notes</label>
               <textarea id="notes" rows="8" placeholder="Observations, symptoms, instructions" class="vn-field vn-textarea w-full"></textarea>
@@ -162,14 +140,17 @@
             <!-- Actions -->
             <div class="flex flex-col sm:flex-row gap-3">
               <button id="btnPreview" type="button"
+                onclick="window.VN_onPreview();"
                 class="flex-1 inline-flex items-center justify-center rounded-xl px-4 py-3 font-semibold text-white bg-gradient-to-r from-indigo-600 via-sky-500 to-fuchsia-500 hover:opacity-95 shadow-lg">
                 Preview & Generate PDF
               </button>
               <button id="btnWhatsApp" type="button"
+                onclick="window.VN_onWhatsApp();"
                 class="flex-1 inline-flex items-center justify-center rounded-xl px-4 py-3 font-semibold text-white bg-gradient-to-r from-indigo-600 via-sky-500 to-fuchsia-500 hover:opacity-95 shadow-lg">
                 Share via WhatsApp
               </button>
               <button id="btnEmail" type="button"
+                onclick="window.VN_onEmail();"
                 class="flex-1 inline-flex items-center justify-center rounded-xl px-4 py-3 font-semibold text-white bg-gradient-to-r from-indigo-600 via-sky-500 to-fuchsia-500 hover:opacity-95 shadow-lg">
                 Share via Email (PDF)
               </button>
@@ -186,11 +167,11 @@
     </main>
   </div>
 
-  <!-- PDF Template (neon summary) -->
+  <!-- Hidden PDF summary panel (kept from v11) -->
   <div id="pdfCanvas" class="hidden">
     <div class="pdf-card" id="pdfRoot">
       <div style="display:flex;align-items:center;gap:16px;margin-bottom:10px;">
-        <img src="./icons/icon-192.png?v=2025-09-12-11" alt="Logo"
+        <img src="./icons/icon-192.png?v=2025-09-12-11a" alt="Logo"
              style="width:56px;height:56px;border-radius:14px;"
              onerror="this.onerror=null;this.src='./icons/icon-192.png?v='+window.__VN_VER__;">
         <div>
@@ -200,40 +181,11 @@
       </div>
       <hr style="border:none;border-top:1px solid #1f2937;margin:8px 0 16px;">
 
-      <div class="pdf-row">
-        <img class="pdf-wave" src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='120' height='36'><polyline points='0,25 15,10 30,20 45,8 60,24 75,12 90,20 105,10 120,22' fill='none' stroke='%23ef38c0' stroke-width='3'/></svg>"/>
-        <div class="pdf-lead" style="color:#ff4bd2" id="pdfPulseVal">--</div>
-        <div class="pdf-chip" style="background:var(--vn-chip-hr)">Heart Rate</div>
-        <div class="pdf-chip pdf-chip--unit">bpm</div>
-      </div>
-
-      <div class="pdf-row">
-        <img class="pdf-wave" src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='120' height='36'><polyline points='0,20 20,18 40,22 60,19 80,23 100,18 120,20' fill='none' stroke='%23ffb703' stroke-width='3'/></svg>"/>
-        <div class="pdf-lead" style="color:#ffd166" id="pdfBPVal">--</div>
-        <div class="pdf-chip" style="background:var(--vn-chip-bp)">Blood Pressure</div>
-        <div class="pdf-chip pdf-chip--unit">mmHg</div>
-      </div>
-
-      <div class="pdf-row">
-        <img class="pdf-wave" src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='120' height='36'><polyline points='0,28 15,18 30,22 45,14 60,26 75,18 90,25 105,15 120,26' fill='none' stroke='%2332e875' stroke-width='3'/></svg>"/>
-        <div class="pdf-lead" style="color:#57ff9b" id="pdfO2Val">--</div>
-        <div class="pdf-chip" style="background:var(--vn-chip-o2)">Oxygen Saturation</div>
-        <div class="pdf-chip pdf-chip--unit">%</div>
-      </div>
-
-      <div class="pdf-row">
-        <img class="pdf-wave" src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='120' height='36'><polyline points='0,22 18,10 36,28 54,12 72,26 90,14 108,24 120,16' fill='none' stroke='%2338bdf8' stroke-width='3'/></svg>"/>
-        <div class="pdf-lead" style="color:#7ad3ff" id="pdfRRVal">--</div>
-        <div class="pdf-chip" style="background:var(--vn-chip-rr)">Respiration</div>
-        <div class="pdf-chip pdf-chip--unit">rpm</div>
-      </div>
-
-      <div class="pdf-row">
-        <img class="pdf-wave" src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='120' height='36'><polyline points='0,24 20,14 40,28 60,16 80,26 100,12 120,24' fill='none' stroke='%23ff4d4d' stroke-width='3'/></svg>"/>
-        <div class="pdf-lead" style="color:#ff7a7a" id="pdfTempVal">--</div>
-        <div class="pdf-chip" style="background:var(--vn-chip-temp)">Temperature</div>
-        <div class="pdf-chip pdf-chip--unit">°C</div>
-      </div>
+      <div class="pdf-row"><div class="pdf-lead" id="pdfTempVal">--</div><div>Temperature (°C)</div></div>
+      <div class="pdf-row"><div class="pdf-lead" id="pdfPulseVal">--</div><div>Heart Rate (bpm)</div></div>
+      <div class="pdf-row"><div class="pdf-lead" id="pdfRRVal">--</div><div>Respiratory Rate</div></div>
+      <div class="pdf-row"><div class="pdf-lead" id="pdfBPVal">--</div><div>Blood Pressure (mmHg)</div></div>
+      <div class="pdf-row"><div class="pdf-lead" id="pdfO2Val">--</div><div>Oxygen Saturation (%)</div></div>
 
       <hr style="border:none;border-top:1px solid #1f2937;margin:18px 0;">
       <div style="font-size:12px;color:#9ca3af;text-align:right;">
@@ -243,99 +195,90 @@
   </div>
 
   <script>
+    // Ensure date shows
     document.getElementById('year').textContent = new Date().getFullYear();
 
-    const ids = ['patientName','temperature','pulse','respiratoryRate','bloodPressure','oxygenSaturation','bloodSugar','pain','medMorning','medAfternoon','medEvening','notes','nurseName'];
-    const el = id => document.getElementById(id);
+    // App logic encapsulated and exposed on window for inline fallbacks
+    (function(){
+      const ids = ['patientName','temperature','pulse','respiratoryRate','bloodPressure','oxygenSaturation','bloodSugar','pain','medMorning','medAfternoon','medEvening','notes','nurseName'];
+      const $ = (id)=>document.getElementById(id);
+      const getData = ()=> ids.reduce((o,k)=> (o[k]=($(k)?.value||'').trim(), o), {});
 
-    function getData(){
-      const d = {};
-      ids.forEach(k => d[k] = (el(k)?.value || '').trim());
-      return d;
-    }
+      function formatWhatsApp(d){
+        const lines = [
+          '🩺 *Victoria Nurse — Care Together*',
+          '——————————————',
+          `*Patient*: ${d.patientName || '-'}`,
+          '',
+          '*Vitals*',
+          `• Temperature (°C): ${d.temperature || '-'}`,
+          `• Pulse (bpm): ${d.pulse || '-'}`,
+          `• Respiratory Rate: ${d.respiratoryRate || '-'}`,
+          `• Blood Pressure: ${d.bloodPressure || '-'}`,
+          `• Oxygen Saturation: ${d.oxygenSaturation || '-'}`,
+          `• Blood Sugar (mg/dL): ${d.bloodSugar || '-'}`,
+          `• Pain (0–10): ${d.pain || '-'}`,
+          '',
+          '*Medication*',
+          `• Morning: ${d.medMorning || '-'}`,
+          `• Afternoon: ${d.medAfternoon || '-'}`,
+          `• Evening: ${d.medEvening || '-'}`,
+          '',
+          `*Notes*: ${d.notes || '-'}`,
+          `*Nurse*: ${d.nurseName || '-'}`,
+          '——————————————',
+          'Sent via Victoria Nurse'
+        ];
+        return lines.join('\\n');
+      }
 
-    // Clean WhatsApp formatting with headings & line breaks
-    function formatWhatsApp(d){
-      const lines = [
-        '🩺 *Victoria Nurse — Care Together*',
-        '——————————————',
-        `*Patient*: ${d.patientName || '-'}`,
-        '',
-        '*Vitals*',
-        `• Temperature (°C): ${d.temperature || '-'}`,
-        `• Pulse (bpm): ${d.pulse || '-'}`,
-        `• Respiratory Rate: ${d.respiratoryRate || '-'}`,
-        `• Blood Pressure: ${d.bloodPressure || '-'}`,
-        `• Oxygen Saturation: ${d.oxygenSaturation || '-'}`,
-        `• Blood Sugar (mg/dL): ${d.bloodSugar || '-'}`,
-        `• Pain (0–10): ${d.pain || '-'}`,
-        '',
-        '*Medication*',
-        `• Morning: ${d.medMorning || '-'}`,
-        `• Afternoon: ${d.medAfternoon || '-'}`,
-        `• Evening: ${d.medEvening || '-'}`,
-        '',
-        `*Notes*: ${d.notes || '-'}`,
-        `*Nurse*: ${d.nurseName || '-'}`,
-        '——————————————',
-        'Sent via Victoria Nurse'
-      ];
-      return lines.join('\n');
-    }
+      async function generateNeonPDF(d){
+        // Map to PDF panel
+        $('pdfTempVal').textContent = d.temperature || '--';
+        $('pdfPulseVal').textContent = d.pulse || '--';
+        $('pdfRRVal').textContent    = d.respiratoryRate || '--';
+        $('pdfBPVal').textContent    = d.bloodPressure || '--';
+        $('pdfO2Val').textContent    = d.oxygenSaturation || '--';
 
-    // Populate PDF widgets then render neon panel
-    async function generateNeonPDF(d){
-      // Map values to the neon header panel
-      document.getElementById('pdfPulseVal').textContent = d.pulse || '--';
-      document.getElementById('pdfBPVal').textContent    = d.bloodPressure || '--';
-      document.getElementById('pdfO2Val').textContent    = d.oxygenSaturation || '--';
-      document.getElementById('pdfRRVal').textContent    = d.respiratoryRate || '--';
-      document.getElementById('pdfTempVal').textContent  = d.temperature || '--';
+        // Wait for libraries if they’re still loading
+        if (!window.html2canvas) await new Promise(r => setTimeout(r, 50));
+        if (!window.jspdf) await new Promise(r => setTimeout(r, 50));
 
-      const node = document.getElementById('pdfRoot');
-      const canvas = await html2canvas(node, { scale: 2, backgroundColor: '#000000' });
-      const imgData = canvas.toDataURL('image/png');
+        const node = $('pdfRoot');
+        const canvas = await html2canvas(node, { scale: 2, backgroundColor: '#000000' });
+        const imgData = canvas.toDataURL('image/png');
 
-      const { jsPDF } = window.jspdf;
-      const pdf = new jsPDF('p','pt','a4');
-      const pageWidth = pdf.internal.pageSize.getWidth();
-      const imgWidth = pageWidth - 40;
-      const imgHeight = canvas.height * (imgWidth / canvas.width);
-      pdf.addImage(imgData,'PNG',20,20,imgWidth,imgHeight,'','FAST');
+        const { jsPDF } = window.jspdf;
+        const pdf = new jsPDF('p','pt','a4');
+        const pageWidth = pdf.internal.pageSize.getWidth();
+        const imgWidth = pageWidth - 40;
+        const imgHeight = canvas.height * (imgWidth / canvas.width);
+        pdf.addImage(imgData,'PNG',20,20,imgWidth,imgHeight,'','FAST');
 
-      const safe = (d.patientName || 'patient').replace(/[^\w\-]+/g,'_');
-      pdf.save(`Victoria_Nurse_${safe}_${new Date().toISOString().slice(0,10)}.pdf`);
-    }
+        const safe = (d.patientName || 'patient').replace(/[^\w\-]+/g,'_');
+        pdf.save(`Victoria_Nurse_${safe}_${new Date().toISOString().slice(0,10)}.pdf`);
+      }
 
-    function clearAll(){ ids.forEach(k => { if(el(k)) el(k).value = ''; }); }
+      function clearAll(){ ids.forEach(k=>{ const e=$(k); if(e) e.value=''; }); }
 
-    // Button handlers
-    document.getElementById('btnPreview').addEventListener('click', async ()=>{
-      const d = getData();
-      await generateNeonPDF(d);
-      clearAll();
-    });
+      // Expose handlers for inline onclick fallbacks
+      window.VN_onPreview  = async function(){ const d=getData(); await generateNeonPDF(d); clearAll(); };
+      window.VN_onWhatsApp = function(){ const d=getData(); const url=`https://wa.me/?text=${encodeURIComponent(formatWhatsApp(d))}`; window.open(url,'_blank','noopener'); clearAll(); };
+      window.VN_onEmail    = async function(){ const d=getData(); await generateNeonPDF(d); const subject=`Patient Vitals — ${d.patientName || 'Unnamed'} — Victoria Nurse`; const body=formatWhatsApp(d).replace(/\*/g,''); window.location.href=`mailto:?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`; clearAll(); };
 
-    document.getElementById('btnWhatsApp').addEventListener('click', ()=>{
-      const d = getData();
-      const url = `https://wa.me/?text=${encodeURIComponent(formatWhatsApp(d))}`;
-      window.open(url,'_blank');
-      clearAll();
-    });
-
-    document.getElementById('btnEmail').addEventListener('click', async ()=>{
-      const d = getData();
-      await generateNeonPDF(d); // Save a local PDF; email body is structured text.
-      const subject = `Patient Vitals — ${d.patientName || 'Unnamed'} — Victoria Nurse`;
-      const body = formatWhatsApp(d).replace(/\*/g,''); // plain text for email
-      window.location.href = `mailto:?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-      clearAll();
-    });
+      // ALSO bind via JS after DOM is ready
+      document.addEventListener('DOMContentLoaded', () => {
+        const b1=$('btnPreview'), b2=$('btnWhatsApp'), b3=$('btnEmail');
+        if(b1) b1.addEventListener('click', window.VN_onPreview);
+        if(b2) b2.addEventListener('click', window.VN_onWhatsApp);
+        if(b3) b3.addEventListener('click', window.VN_onEmail);
+      });
+    })();
 
     // One-time hard refresh for stale clients
     (async () => {
       try {
-        const key = 'vn_migrated_v7';
+        const key = 'vn_migrated_v8';
         if (!localStorage.getItem(key)) {
           if ('serviceWorker' in navigator) {
             const regs = await navigator.serviceWorker.getRegistrations();
@@ -354,8 +297,7 @@
     // Register SW with versioned URL
     if ('serviceWorker' in navigator) {
       window.addEventListener('load', () => {
-        const v = window.__VN_VER__;
-        navigator.serviceWorker.register(`./service-worker.js?v=${v}`, { scope: './' }).catch(()=>{});
+        navigator.serviceWorker.register(`./service-worker.js?v=${window.__VN_VER__}`, { scope: './' }).catch(()=>{});
       });
     }
   </script>
