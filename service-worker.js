@@ -1,5 +1,5 @@
 /* Victoria Nurse — Service Worker (privacy hardened) */
-const CACHE_NAME = 'victoria-nurse-v8';
+const CACHE_NAME = 'victoria-nurse-v9';
 const ASSETS = [
   './manifest.webmanifest?v=2025-09-12-05',
   './icons/icon-192.png?v=2025-09-12-05',
