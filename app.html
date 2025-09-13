@@ -1,1 +1,332 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta http-equiv="Cache-Control" content="no-store, max-age=0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
+  <title>Victoria Nurse — Care Together</title>
 
+  <!-- VERSION: v11 -->
+  <script>window.__VN_VER__ = "2025-09-12-11";</script>
+
+  <!-- PWA -->
+  <link rel="manifest" href="./manifest.webmanifest?v=2025-09-12-11"/>
+  <meta name="theme-color" content="#6366f1"/>
+
+  <!-- Icons -->
+  <link rel="icon" type="image/png" href="./icons/favicon.png?v=2025-09-12-11"/>
+  <link rel="apple-touch-icon" sizes="180x180" href="./icons/icon-180.png?v=2025-09-12-11"/>
+  <link rel="apple-touch-icon" href="./icons/icon-192.png?v=2025-09-12-11"/>
+  <link rel="mask-icon" href="./icons/icon-192.png?v=2025-09-12-11" color="#6366f1"/>
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&display=swap" rel="stylesheet"/>
+
+  <!-- Tailwind -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- PDF libs -->
+  <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
+
+  <style>
+    :root{
+      --vn-sky:#38bdf8;       /* ring + field text + labels */
+      --vn-indigo:#6366f1;    /* brand */
+      --vn-fuchsia:#d946ef;
+      --vn-chip-hr:#ef38c0; --vn-chip-bp:#ffb703; --vn-chip-o2:#32e875; --vn-chip-rr:#38bdf8; --vn-chip-temp:#ff4d4d;
+    }
+    label { color: var(--vn-sky); }
+    .vn-field{
+      color: var(--vn-sky);
+      padding: 0.95rem 1.1rem;
+      border-radius: 0.9rem;
+      border: 1px solid #cbd5e1;
+      line-height: 1.6rem;
+      background: #ffffff;
+    }
+    .vn-field:focus{ outline: none; box-shadow: 0 0 0 2px var(--vn-sky); border-color: var(--vn-sky); }
+    .vn-field::placeholder{ color: #9fb6c8; opacity: 0.85; }
+    .vn-input{ height: 3.5rem; }
+    .vn-textarea{ min-height: 3.5rem; }
+    .vn-tagline{ font-family:"Playfair Display",ui-serif,Georgia,serif; letter-spacing:.2px; }
+
+    /* Shimmer title */
+    @keyframes shimmerText { 0%{background-position:-200% center} 100%{background-position:200% center} }
+    .shimmer-title{
+      display:inline-block;
+      background: linear-gradient(90deg, #ffffff, #a5f3fc, #ffffff);
+      background-size: 200% auto;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation: shimmerText 4s linear infinite;
+    }
+
+    /* PDF neon panel */
+    .pdf-card{background:#000; color:#fff; width:794px; padding:28px;}
+    .pdf-row{display:flex; align-items:center; gap:18px; margin:14px 0;}
+    .pdf-lead{font-size:52px; font-weight:800; min-width:110px; text-align:right;}
+    .pdf-chip{padding:8px 14px; border-radius:999px; font-weight:700; font-size:16px; color:#000;}
+    .pdf-chip--unit{ background:#fff; color:#111827; }
+    .pdf-wave{height:36px; width:120px; opacity:.9;}
+  </style>
+</head>
+<body class="min-h-screen bg-gradient-to-br from-sky-500 via-indigo-600 to-fuchsia-600 text-slate-900 antialiased">
+  <div class="min-h-screen p-4 flex items-center justify-center">
+    <main class="w-full max-w-3xl">
+      <div class="bg-white/85 backdrop-blur-xl shadow-2xl rounded-3xl overflow-hidden ring-1 ring-white/40">
+        <!-- Header -->
+        <header class="bg-gradient-to-r from-indigo-600 to-sky-500 p-6">
+          <div class="flex items-center gap-4">
+            <img src="./icons/icon-192.png?v=2025-09-12-11" alt="Victoria Nurse logo"
+                 class="h-14 w-14 rounded-2xl shadow"
+                 onerror="this.onerror=null;this.src='./icons/icon-192.png?v='+window.__VN_VER__;">
+            <div>
+              <h1 class="shimmer-title text-2xl font-extrabold tracking-tight">Victoria Nurse</h1>
+              <p class="vn-tagline text-white/95 text-sm">Care Together</p>
+            </div>
+          </div>
+        </header>
+
+        <!-- Form -->
+        <section class="p-6 grid gap-6" role="form" aria-label="Patient Vitals Form">
+          <form id="formVitals" autocomplete="off" autocapitalize="none" spellcheck="false" class="grid gap-6" novalidate>
+            <div>
+              <label for="patientName" class="block text-sm font-semibold mb-1">Patient Name</label>
+              <input id="patientName" type="text" placeholder="Enter full name" class="vn-field vn-input w-full"/>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label for="temperature" class="block text-sm font-semibold mb-1">Temperature (°C)</label>
+                <input id="temperature" type="number" step="0.1" inputmode="decimal" placeholder="e.g., 36.8" class="vn-field vn-input w-full"/>
+              </div>
+              <div>
+                <label for="pulse" class="block text-sm font-semibold mb-1">Pulse (bpm)</label>
+                <input id="pulse" type="number" inputmode="numeric" placeholder="e.g., 80" class="vn-field vn-input w-full"/>
+              </div>
+              <div>
+                <label for="respiratoryRate" class="block text-sm font-semibold mb-1">Respiratory Rate (breaths/min)</label>
+                <input id="respiratoryRate" type="number" inputmode="numeric" placeholder="e.g., 16" class="vn-field vn-input w-full"/>
+              </div>
+              <div>
+                <label for="bloodPressure" class="block text-sm font-semibold mb-1">Blood Pressure (mmHg)</label>
+                <input id="bloodPressure" type="text" placeholder="e.g., 108/68" class="vn-field vn-input w-full"/>
+              </div>
+              <div>
+                <label for="oxygenSaturation" class="block text-sm font-semibold mb-1">Oxygen Saturation (SpO₂ %)</label>
+                <input id="oxygenSaturation" type="number" inputmode="numeric" placeholder="e.g., 98" class="vn-field vn-input w-full"/>
+              </div>
+              <div>
+                <label for="bloodSugar" class="block text-sm font-semibold mb-1">Blood Sugar Level (mg/dL)</label>
+                <input id="bloodSugar" type="number" step="0.1" inputmode="decimal" placeholder="e.g., 95" class="vn-field vn-input w-full"/>
+              </div>
+              <div class="md:col-span-2">
+                <label for="pain" class="block text-sm font-semibold mb-1">Pain Assessment (0–10)</label>
+                <input id="pain" type="number" min="0" max="10" inputmode="numeric" placeholder="e.g., 3" class="vn-field vn-input w-full"/>
+              </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div>
+                <label for="medMorning" class="block text-sm font-semibold mb-1">Medication – Morning</label>
+                <textarea id="medMorning" rows="3" placeholder="Name, dosage, time" class="vn-field vn-textarea w-full"></textarea>
+              </div>
+              <div>
+                <label for="medAfternoon" class="block text-sm font-semibold mb-1">Medication – Afternoon</label>
+                <textarea id="medAfternoon" rows="3" placeholder="Name, dosage, time" class="vn-field vn-textarea w-full"></textarea>
+              </div>
+              <div>
+                <label for="medEvening" class="block text-sm font-semibold mb-1">Medication – Evening</label>
+                <textarea id="medEvening" rows="3" placeholder="Name, dosage, time" class="vn-field vn-textarea w-full"></textarea>
+              </div>
+            </div>
+
+            <div>
+              <label for="notes" class="block text-sm font-semibold mb-1">Notes</label>
+              <textarea id="notes" rows="8" placeholder="Observations, symptoms, instructions" class="vn-field vn-textarea w-full"></textarea>
+            </div>
+
+            <div>
+              <label for="nurseName" class="block text-sm font-semibold mb-1">Nurse’s Name (who performed the checks)</label>
+              <input id="nurseName" type="text" placeholder="Enter nurse's full name" class="vn-field vn-input w-full"/>
+            </div>
+
+            <div class="flex flex-col sm:flex-row gap-3">
+              <button id="btnPreview" type="button" class="flex-1 inline-flex items-center justify-center rounded-xl px-4 py-3 font-semibold text-white bg-gradient-to-r from-indigo-600 via-sky-500 to-fuchsia-500 hover:opacity-95 shadow-lg">
+                Preview & Generate PDF
+              </button>
+              <button id="btnWhatsApp" type="button" class="flex-1 inline-flex items-center justify-center rounded-xl px-4 py-3 font-semibold text-white bg-gradient-to-r from-indigo-600 via-sky-500 to-fuchsia-500 hover:opacity-95 shadow-lg">
+                Share via WhatsApp
+              </button>
+              <button id="btnEmail" type="button" class="flex-1 inline-flex items-center justify-center rounded-xl px-4 py-3 font-semibold text-white bg-gradient-to-r from-indigo-600 via-sky-500 to-fuchsia-500 hover:opacity-95 shadow-lg">
+                Share via Email (PDF)
+              </button>
+            </div>
+          </form>
+        </section>
+
+        <footer class="px-6 py-4 bg-white/70 text-sm flex items-center justify-between">
+          <span class="font-medium" style="color:#6366f1">&copy; <span id="year"></span> Victoria Nurse</span>
+          <span class="italic" style="color:#6366f1">Powered by: karlthebrown</span>
+        </footer>
+      </div>
+    </main>
+  </div>
+
+  <!-- PDF Template -->
+  <div id="pdfCanvas" class="hidden">
+    <div class="pdf-card" id="pdfRoot">
+      <div style="display:flex;align-items:center;gap:16px;margin-bottom:10px;">
+        <img src="./icons/icon-192.png?v=2025-09-12-11" alt="Logo" style="width:56px;height:56px;border-radius:14px;" onerror="this.onerror=null;this.src='./icons/icon-192.png?v='+window.__VN_VER__;">
+        <div>
+          <div style="font-weight:900;font-size:22px;color:#6366f1;">Victoria Nurse</div>
+          <div class="vn-tagline" style="color:#38bdf8;font-size:13px;">Care Together</div>
+        </div>
+      </div>
+      <hr style="border:none;border-top:1px solid #1f2937;margin:8px 0 16px;">
+
+      <div class="pdf-row">
+        <img class="pdf-wave" src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='120' height='36'><polyline points='0,25 15,10 30,20 45,8 60,24 75,12 90,20 105,10 120,22' fill='none' stroke='%23ef38c0' stroke-width='3'/></svg>"/>
+        <div class="pdf-lead" style="color:#ff4bd2" id="pdfPulseVal">--</div>
+        <div class="pdf-chip" style="background:var(--vn-chip-hr)">Heart Rate</div>
+        <div class="pdf-chip pdf-chip--unit">bpm</div>
+      </div>
+
+      <div class="pdf-row">
+        <img class="pdf-wave" src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='120' height='36'><polyline points='0,20 20,18 40,22 60,19 80,23 100,18 120,20' fill='none' stroke='%23ffb703' stroke-width='3'/></svg>"/>
+        <div class="pdf-lead" style="color:#ffd166" id="pdfBPVal">--</div>
+        <div class="pdf-chip" style="background:var(--vn-chip-bp)">Blood Pressure</div>
+        <div class="pdf-chip pdf-chip--unit">mmHg</div>
+      </div>
+
+      <div class="pdf-row">
+        <img class="pdf-wave" src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='120' height='36'><polyline points='0,28 15,18 30,22 45,14 60,26 75,18 90,25 105,15 120,26' fill='none' stroke='%2332e875' stroke-width='3'/></svg>"/>
+        <div class="pdf-lead" style="color:#57ff9b" id="pdfO2Val">--</div>
+        <div class="pdf-chip" style="background:var(--vn-chip-o2)">Oxygen Saturation</div>
+        <div class="pdf-chip pdf-chip--unit">%</div>
+      </div>
+
+      <div class="pdf-row">
+        <img class="pdf-wave" src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='120' height='36'><polyline points='0,22 18,10 36,28 54,12 72,26 90,14 108,24 120,16' fill='none' stroke='%2338bdf8' stroke-width='3'/></svg>"/>
+        <div class="pdf-lead" style="color:#7ad3ff" id="pdfRRVal">--</div>
+        <div class="pdf-chip" style="background:var(--vn-chip-rr)">Respiration</div>
+        <div class="pdf-chip pdf-chip--unit">rpm</div>
+      </div>
+
+      <div class="pdf-row">
+        <img class="pdf-wave" src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='120' height='36'><polyline points='0,24 20,14 40,28 60,16 80,26 100,12 120,24' fill='none' stroke='%23ff4d4d' stroke-width='3'/></svg>"/>
+        <div class="pdf-lead" style="color:#ff7a7a" id="pdfTempVal">--</div>
+        <div class="pdf-chip" style="background:var(--vn-chip-temp)">Temperature</div>
+        <div class="pdf-chip pdf-chip--unit">°C</div>
+      </div>
+
+      <hr style="border:none;border-top:1px solid #1f2937;margin:18px 0;">
+      <div style="font-size:12px;color:#9ca3af;text-align:right;">
+        <em style="color:#6366f1">Powered by: karlthebrown</em>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    const ids = ['patientName','temperature','pulse','respiratoryRate','bloodPressure','oxygenSaturation','bloodSugar','pain','medMorning','medAfternoon','medEvening','notes','nurseName'];
+    const el = id => document.getElementById(id);
+
+    function getData(){ const d={}; ids.forEach(k=>d[k]=(el(k)?.value||'').trim()); return d; }
+
+    function formatWhatsApp(d){
+      const lines = [
+        '🩺 *Victoria Nurse — Care Together*',
+        '——————————————',
+        `*Patient*: ${d.patientName || '-'}`,
+        '',
+        '*Vitals*',
+        `• Temperature (°C): ${d.temperature || '-'}`,
+        `• Pulse (bpm): ${d.pulse || '-'}`,
+        `• Respiratory Rate: ${d.respiratoryRate || '-'}`,
+        `• Blood Pressure: ${d.bloodPressure || '-'}`,
+        `• Oxygen Saturation: ${d.oxygenSaturation || '-'}`,
+        `• Blood Sugar (mg/dL): ${d.bloodSugar || '-'}`,
+        `• Pain (0–10): ${d.pain || '-'}`,
+        '',
+        '*Medication*',
+        `• Morning: ${d.medMorning || '-'}`,
+        `• Afternoon: ${d.medAfternoon || '-'}`,
+        `• Evening: ${d.medEvening || '-'}`,
+        '',
+        `*Notes*: ${d.notes || '-'}`,
+        `*Nurse*: ${d.nurseName || '-'}`,
+        '——————————————',
+        'Sent via Victoria Nurse'
+      ];
+      return lines.join('\n');
+    }
+
+    async function generateNeonPDF(d){
+      document.getElementById('pdfPulseVal').textContent = d.pulse || '--';
+      document.getElementById('pdfBPVal').textContent    = d.bloodPressure || '--';
+      document.getElementById('pdfO2Val').textContent    = d.oxygenSaturation || '--';
+      document.getElementById('pdfRRVal').textContent    = d.respiratoryRate || '--';
+      document.getElementById('pdfTempVal').textContent  = d.temperature || '--';
+
+      const node = document.getElementById('pdfRoot');
+      const canvas = await html2canvas(node, { scale: 2, backgroundColor: '#000000' });
+      const imgData = canvas.toDataURL('image/png');
+
+      const { jsPDF } = window.jspdf;
+      const pdf = new jsPDF('p','pt','a4');
+      const pageWidth = pdf.internal.pageSize.getWidth();
+      const imgWidth = pageWidth - 40;
+      const imgHeight = canvas.height * (imgWidth / canvas.width);
+      pdf.addImage(imgData,'PNG',20,20,imgWidth,imgHeight,'','FAST');
+
+      const safe = (d.patientName || 'patient').replace(/[^\w\-]+/g,'_');
+      pdf.save(`Victoria_Nurse_${safe}_${new Date().toISOString().slice(0,10)}.pdf`);
+    }
+
+    function clearAll(){ ids.forEach(k=>{ if(el(k)) el(k).value=''; }); }
+
+    document.getElementById('btnPreview').addEventListener('click', async ()=>{
+      const d = getData(); await generateNeonPDF(d); clearAll();
+    });
+    document.getElementById('btnWhatsApp').addEventListener('click', ()=>{
+      const d = getData(); const url = `https://wa.me/?text=${encodeURIComponent(formatWhatsApp(d))}`; window.open(url,'_blank'); clearAll();
+    });
+    document.getElementById('btnEmail').addEventListener('click', async ()=>{
+      const d = getData(); await generateNeonPDF(d);
+      const subject = `Patient Vitals — ${d.patientName || 'Unnamed'} — Victoria Nurse`;
+      const body = formatWhatsApp(d).replace(/\*/g,'');
+      window.location.href = `mailto:?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+      clearAll();
+    });
+
+    // Hard refresh for stale clients (one-time)
+    (async () => {
+      try {
+        const key = 'vn_migrated_v7';
+        if (!localStorage.getItem(key)) {
+          if ('serviceWorker' in navigator) {
+            const regs = await navigator.serviceWorker.getRegistrations();
+            await Promise.all(regs.map(r => r.unregister()));
+          }
+          if (window.caches && caches.keys) {
+            const names = await caches.keys();
+            await Promise.all(names.map(n => caches.delete(n)));
+          }
+          localStorage.setItem(key, '1'); location.reload();
+        }
+      } catch(_) {}
+    })();
+
+    // Register SW
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        const v = window.__VN_VER__;
+        navigator.serviceWorker.register(`./service-worker.js?v=${v}`, { scope: './' }).catch(()=>{});
+      });
+    }
+  </script>
+</body>
+</html>
