@@ -3,6 +3,7 @@ const CACHE_NAME = 'victoria-nurse-v11';
 const ASSETS = [
   './manifest.webmanifest?v=2025-09-12-11',
   './icons/icon-192.png?v=2025-09-12-11',
+  './icons/icon-512.png?v=2025-09-12-11',
   './icons/favicon.png?v=2025-09-12-11'
 ];
 
@@ -28,7 +29,7 @@ self.addEventListener('fetch', (event) => {
   const url = new URL(req.url);
   const isHTML = req.destination === 'document' || req.headers.get('accept')?.includes('text/html');
 
-  // Never cache HTML
+  // Never cache HTML; if offline, fall back to a small cached asset
   if (isHTML || url.pathname.endsWith('/') || url.pathname.endsWith('/index.html')) {
     event.respondWith(fetch(req).catch(() =>
       caches.match('./manifest.webmanifest?v=2025-09-12-11')
@@ -36,7 +37,7 @@ self.addEventListener('fetch', (event) => {
     return;
   }
 
-  // Same-origin static assets (only whitelist entries in ASSETS)
+  // Same-origin static assets (whitelist only)
   if (url.origin === location.origin) {
     event.respondWith(
       caches.match(req).then((cached) => {
