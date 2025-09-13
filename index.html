@@ -14,30 +14,37 @@
       --vn-sky:#38bdf8;
       --vn-fuchsia:#d946ef;
     }
-    /* Full-bleed background */
+    /* Full-bleed background image */
     .landing-bg{
       position: fixed;
       inset: 0;
       background: #0b1220 url("./images/welcome-victoria-nurse.jpg") center center / cover no-repeat;
       z-index: -2;
     }
+    /* Soft veil */
     .veil{
       position: fixed; inset: 0;
       background: radial-gradient(1200px 800px at 50% 30%, #0000, #0b1220d0);
       z-index: -1;
     }
+    /* Ken Burns */
     @media (prefers-reduced-motion: no-preference) {
       @keyframes kenburns { 0%{transform:scale(1)} 100%{transform:scale(1.06)} }
       .bg-kenburns{ animation: kenburns 28s ease-in-out forwards; }
     }
 
-    /* Gradient button */
+    /* Gradient CTA */
     .btn-grad{
       position: relative;
       background-image: linear-gradient(90deg, var(--vn-indigo), var(--vn-sky), var(--vn-fuchsia));
       transition: transform .12s ease, box-shadow .12s ease, opacity .12s ease;
       box-shadow: 0 14px 35px rgba(0,0,0,.25);
       will-change: transform;
+      touch-action: manipulation;
+      padding: 0.95rem 1.9rem;
+      border-radius: 1.1rem;
+      font-weight: 600;
+      font-size: 1rem;
     }
     .btn-grad:hover{ opacity:.97; transform: translateY(-1px); }
     .btn-grad:active{ transform: translateY(0) scale(.98); }
@@ -48,11 +55,25 @@
     }
     .btn-grad:hover::after{ transform: translateX(120%); }
 
-    /* Logo micro-interaction */
+    /* Tappable logo */
     .logo-link{ display:inline-block; border-radius:16px; }
     .logo-link img{ transition: transform .12s ease, filter .2s ease; will-change: transform; }
     .logo-link:hover img{ transform: scale(1.03); filter: drop-shadow(0 6px 14px rgba(0,0,0,.35)); }
     .logo-link:active img{ transform: scale(.97); }
+
+    /* Bottom CTA bar (keeps button between hero and footer) */
+    .cta-bar{
+      position: fixed;
+      left: 0; right: 0;
+      bottom: calc(6vh + env(safe-area-inset-bottom, 0px));
+      display: flex;
+      justify-content: center;
+      z-index: 10;
+      padding: 0 1rem;
+    }
+    @media (max-height: 680px){
+      .cta-bar{ bottom: calc(3vh + env(safe-area-inset-bottom, 0px)); }
+    }
   </style>
 
   <!-- PWA (unchanged) -->
@@ -72,14 +93,11 @@
     </a>
   </header>
 
-  <!-- Main -->
-  <main class="min-h-screen flex flex-col items-center justify-center p-6 text-center">
-    <!-- The welcome image already contains "Welcome to Victoria Nurse" -->
-    <div class="mt-6">
-      <a href="./app.html" class="btn-grad inline-flex items-center justify-center px-8 py-4 rounded-2xl font-semibold text-base">
-        Get Started
-      </a>
-    </div>
-  </main>
+  <!-- Bottom-centered CTA (between hero and footer zone) -->
+  <div class="cta-bar">
+    <a href="./app.html" class="btn-grad inline-flex items-center justify-center">
+      Get Started
+    </a>
+  </div>
 </body>
 </html>
