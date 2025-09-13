@@ -21,42 +21,70 @@
       background: #0b1220 url("./images/welcome-victoria-nurse.jpg") center center / cover no-repeat;
       z-index: -2;
     }
-    /* Soft veil to make foreground pop */
+    /* Soft veil */
     .veil{
       position: fixed; inset: 0;
       background: radial-gradient(1200px 800px at 50% 30%, #0000, #0b1220d0);
       z-index: -1;
     }
-    /* Ken Burns + fade (respect reduced motion) */
+    /* Ken Burns */
     @media (prefers-reduced-motion: no-preference) {
       @keyframes kenburns { 0%{transform:scale(1)} 100%{transform:scale(1.06)} }
-      @keyframes fadeUp { 0%{opacity:0;transform:translateY(10px)} 100%{opacity:1;transform:none} }
       .bg-kenburns{ animation: kenburns 28s ease-in-out forwards; }
-      .animate-in{ animation: fadeUp .7s ease-out forwards; }
-      .animate-in.delay-1{ animation-delay: .15s; }
     }
-    .badge-glass{
-      background: linear-gradient(180deg, rgba(255,255,255,.14), rgba(255,255,255,.08));
-      border: 1px solid rgba(255,255,255,.18);
-      box-shadow: 0 8px 30px rgba(0,0,0,.18);
-    }
-    /* Shimmery gradient CTA */
+
+    /* CTA: gradient + shimmer line */
     .btn-grad{
       position: relative;
       background-image: linear-gradient(90deg, var(--vn-indigo), var(--vn-sky), var(--vn-fuchsia));
       transition: transform .12s ease, box-shadow .12s ease, opacity .12s ease;
       box-shadow: 0 14px 35px rgba(0,0,0,.25);
+      will-change: transform;
+      touch-action: manipulation;
     }
     .btn-grad:hover{ opacity:.97; transform: translateY(-1px); }
+    .btn-grad:active{ transform: translateY(0) scale(.98); }
     .btn-grad::after{
       content:""; position:absolute; inset:0; border-radius:inherit; pointer-events:none;
       background: linear-gradient(120deg, transparent 0%, rgba(255,255,255,.14) 35%, transparent 70%);
       transform: translateX(-120%); transition: transform .45s ease;
     }
     .btn-grad:hover::after{ transform: translateX(120%); }
+
+    /* Tappable logo (micro-interaction) */
+    .logo-link{ display:inline-block; border-radius:16px; }
+    .logo-link img{
+      transition: transform .12s ease, filter .2s ease;
+      will-change: transform;
+    }
+    .logo-link:hover img{ transform: scale(1.03); filter: drop-shadow(0 6px 14px rgba(0,0,0,.35)); }
+    .logo-link:active img{ transform: scale(.97); }
+
+    /* Responsive title + spacing + button sizing */
+    .title{
+      font-weight: 800;
+      letter-spacing: -0.01em;
+      text-shadow: 0 2px 24px rgba(0,0,0,.25);
+    }
+    .cta { padding: 0.9rem 1.75rem; border-radius: 1.1rem; font-weight: 600; }
+    @media (max-width: 380px){
+      .title{ font-size: 1.6rem; }
+      .cta{ padding: 0.85rem 1.4rem; border-radius: 1rem; font-size: .95rem; }
+      .title-gap{ height: 1.25rem; }
+    }
+    @media (min-width: 381px) and (max-width: 639px){
+      .title{ font-size: 1.9rem; }
+      .cta{ padding: 1rem 1.9rem; font-size: 1rem; }
+      .title-gap{ height: 1.6rem; }
+    }
+    @media (min-width: 640px){
+      .title{ font-size: 2.25rem; }
+      .cta{ padding: 1rem 2rem; font-size: 1rem; }
+      .title-gap{ height: 2rem; }
+    }
   </style>
 
-  <!-- PWA basics (optional on landing but harmless) -->
+  <!-- PWA (unchanged) -->
   <link rel="manifest" href="./manifest.webmanifest?v=2025-09-12-11"/>
   <meta name="theme-color" content="#6366f1"/>
   <link rel="icon" type="image/png" href="./icons/favicon.png?v=2025-09-12-11"/>
@@ -66,29 +94,20 @@
   <div class="landing-bg bg-kenburns"></div>
   <div class="veil"></div>
 
-  <main class="min-h-screen flex flex-col items-center justify-center p-6">
-    <section class="w-full max-w-md text-center">
-      <div class="inline-flex items-center gap-3 px-4 py-2 rounded-full badge-glass backdrop-blur animate-in">
-        <img src="./icons/icon-192.png?v=2025-09-12-11" alt="" class="w-6 h-6 rounded-lg"/>
-        <span class="font-semibold tracking-wide">Victoria Nurse</span>
-      </div>
+  <!-- Header with tappable logo -->
+  <header class="absolute top-4 left-4">
+    <a href="./index.html" class="logo-link" aria-label="Go to homepage">
+      <img src="./icons/icon-192.png?v=2025-09-12-11" alt="Victoria Nurse logo" class="w-12 h-12 rounded-xl shadow-lg"/>
+    </a>
+  </header>
 
-      <div class="h-12"></div>
-
-      <a href="./app.html"
-         class="btn-grad animate-in delay-1 inline-flex items-center justify-center w-full sm:w-auto px-8 py-4 rounded-2xl font-semibold text-base">
-        Get Started
-      </a>
-    </section>
+  <!-- Main -->
+  <main class="min-h-screen flex flex-col items-center justify-center p-6 text-center">
+    <h1 class="title">Victoria Nurse</h1>
+    <div class="title-gap"></div>
+    <a href="./app.html" class="btn-grad cta inline-flex items-center justify-center">
+      Get Started
+    </a>
   </main>
-
-  <footer class="fixed bottom-0 inset-x-0 px-4 pb-4">
-    <div class="mx-auto max-w-7xl">
-      <div class="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-white/10 ring-1 ring-white/15 backdrop-blur">
-        <span class="opacity-90">Powered by:</span>
-        <span class="font-semibold" style="color:#38bdf8">karlthebrown</span>
-      </div>
-    </div>
-  </footer>
 </body>
 </html>
