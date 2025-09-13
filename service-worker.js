@@ -1,16 +1,18 @@
-/* Victoria Nurse — Service Worker (v11) */
-const CACHE_NAME = 'victoria-nurse-v11';
+/* Victoria Nurse — Service Worker (v12) */
+const CACHE_NAME = 'victoria-nurse-v12';
 const ASSETS = [
+  './',
+  './index.html',
+  './app.html',
   './manifest.webmanifest?v=2025-09-12-11',
   './icons/icon-192.png?v=2025-09-12-11',
   './icons/icon-512.png?v=2025-09-12-11',
-  './icons/favicon.png?v=2025-09-12-11'
+  './icons/favicon.png?v=2025-09-12-11',
+  './images/welcome-victoria-nurse.jpg' // new landing background
 ];
 
 self.addEventListener('install', (event) => {
-  event.waitUntil(
-    caches.open(CACHE_NAME).then((c) => c.addAll(ASSETS))
-  );
+  event.waitUntil(caches.open(CACHE_NAME).then((c) => c.addAll(ASSETS)));
   self.skipWaiting();
 });
 
@@ -29,15 +31,15 @@ self.addEventListener('fetch', (event) => {
   const url = new URL(req.url);
   const isHTML = req.destination === 'document' || req.headers.get('accept')?.includes('text/html');
 
-  // Never cache HTML; if offline, fall back to a small cached asset
-  if (isHTML || url.pathname.endsWith('/') || url.pathname.endsWith('/index.html')) {
-    event.respondWith(fetch(req).catch(() =>
-      caches.match('./manifest.webmanifest?v=2025-09-12-11')
-    ));
+  // Network-first for HTML (fallback to cached index if offline)
+  if (isHTML) {
+    event.respondWith(
+      fetch(req).catch(() => caches.match('./index.html'))
+    );
     return;
   }
 
-  // Same-origin static assets (whitelist only)
+  // Cache-first for known static ASSETS
   if (url.origin === location.origin) {
     event.respondWith(
       caches.match(req).then((cached) => {
@@ -55,6 +57,6 @@ self.addEventListener('fetch', (event) => {
     return;
   }
 
-  // Cross-origin: network-first, no cache
-  event.respondWith(fetch(req).catch(() => new Response('', { status: 504 })));
+  // Cross-origin: just hit network
+  event.respondWith(fetch(req));
 });
