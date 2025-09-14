@@ -9,33 +9,40 @@
 
   <style>
     :root{
-      --vn-purple:#6A0DAD; --vn-pink:#FF61A6; --vn-orange:#FFB347; --vn-blue:#7DDFFF;
+      --vn-purple:#6A0DAD; --vn-pink:#FF61A6; --vn-blue:#7DDFFF;
     }
     html, body { height: 100%; background:#000; }
     body { margin:0; }
+
+    /* ✅ Full-bleed landing image (ensure file exists with this exact name) */
     .landing-bg{
       position: fixed; inset: 0;
       background: #000 url("./images/welcome-victoria-nurse.jpg") center center / cover no-repeat;
       z-index: -1;
     }
+
     .cta-bar{
       position: fixed; left:0; right:0;
       bottom: calc(5vh + env(safe-area-inset-bottom, 0px));
       display:flex; justify-content:center; padding:0 1rem;
     }
+
+    /* ✅ Gradient without yellow/orange */
     .btn-grad{
-      background-image: linear-gradient(90deg, var(--vn-purple), var(--vn-pink), var(--vn-orange), var(--vn-blue));
+      background-image: linear-gradient(90deg, var(--vn-purple), var(--vn-pink), var(--vn-blue));
       color:#fff; font-weight:600; padding:.95rem 1.9rem; border-radius:1.1rem; font-size:1rem;
       transition: transform .12s ease, opacity .12s ease; box-shadow:0 14px 35px rgba(0,0,0,.25);
     }
     .btn-grad:hover{ opacity:.97; transform: translateY(-1px); }
     .btn-grad:active{ transform: translateY(0) scale(.98); }
+
     .logo-link{ display:inline-block; border-radius:16px; }
     .logo-link img{ transition: transform .12s ease, filter .2s ease; }
     .logo-link:hover img{ transform: scale(1.03); filter: drop-shadow(0 6px 14px rgba(0,0,0,.35)); }
     .logo-link:active img{ transform: scale(.97); }
   </style>
 
+  <!-- PWA (unchanged) -->
   <link rel="manifest" href="./manifest.webmanifest?v=2025-09-12-11"/>
   <meta name="theme-color" content="#6366f1"/>
   <link rel="icon" type="image/png" href="./icons/favicon.png?v=2025-09-12-11"/>
@@ -44,12 +51,14 @@
 <body class="min-h-screen text-white antialiased">
   <div class="landing-bg"></div>
 
+  <!-- Logo (clickable) -->
   <header class="absolute top-4 left-4">
     <a href="./index.html" class="logo-link" aria-label="Home">
       <img src="./icons/icon-192.png?v=2025-09-12-11" alt="Victoria Nurse logo" class="w-12 h-12 rounded-xl shadow-lg"/>
     </a>
   </header>
 
+  <!-- CTA -->
   <div class="cta-bar">
     <a href="./app.html" class="btn-grad inline-flex items-center justify-center">Get Started</a>
   </div>
