@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
   <title>Victoria Nurse — Care Together</title>
 
-  <!-- VERSION (bump to match SW v22) -->
+  <!-- VERSION (v22) -->
   <script>window.__VN_VER__="2025-09-17-22";</script>
 
   <!-- PWA -->
@@ -28,8 +28,8 @@
 
   <style>
     :root{
-      --g-blue:#7DDFFF; --g-pink:#FF61A6; --g-purple:#6A0DAD; /* gradients */
-      --vn-sky:#38bdf8; /* labels, rings, input text */
+      --g-blue:#7DDFFF; --g-pink:#FF61A6; --g-purple:#6A0DAD;
+      --vn-sky:#38bdf8;
     }
     label{ color:var(--vn-sky); }
     .vn-field{
@@ -42,7 +42,7 @@
     .vn-textarea{ min-height:3.5rem; }
     .vn-tagline{ font-family:"Playfair Display", ui-serif, Georgia, serif; }
 
-    /* Buttons: blue→pink→purple (matches the new header direction) */
+    /* Buttons: blue→pink→purple */
     .btn-grad{
       background-image:linear-gradient(90deg, var(--g-blue), var(--g-pink), var(--g-purple));
       color:#fff; font-weight:600; padding:.95rem 1.2rem; border-radius:1.1rem;
@@ -51,7 +51,7 @@
     .btn-grad:hover{ opacity:.97; transform: translateY(-1px); }
     .btn-grad:active{ transform: translateY(0) scale(.98); }
 
-    /* ---------- PDF (CLEAN LAYOUT, NO BACKGROUND IMAGE) ---------- */
+    /* ---------- PDF (clean layout, no background image) ---------- */
     .pdf-page{ width:794px; background:#ffffff; color:#111827; padding:28px; font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto; }
     .pdf-top{ display:flex; align-items:center; gap:14px; }
     .pdf-logo{ width:56px; height:56px; border-radius:14px; }
@@ -87,7 +87,7 @@
     <main class="w-full max-w-3xl">
       <div class="bg-white/85 backdrop-blur-xl shadow-2xl rounded-3xl overflow-hidden ring-1 ring-white/40">
 
-        <!-- Header with swapped gradient: blue (left) → pink → purple (right) -->
+        <!-- Header with swapped gradient: blue → pink → purple -->
         <header class="bg-gradient-to-r from-sky-400 via-pink-500 to-purple-700 p-6">
           <div class="flex items-center gap-4">
             <a href="./index.html" aria-label="Home">
@@ -117,7 +117,7 @@
                 <input id="respiratoryRate" type="number" inputmode="numeric" placeholder="e.g., 16" class="vn-field vn-input w-full"/></div>
               <div><label for="bloodPressure" class="block text-sm font-semibold mb-1">Blood Pressure (mmHg)</label>
                 <input id="bloodPressure" type="text" placeholder="e.g., 108/68" class="vn-field vn-input w-full"/></div>
-              <div><label for="oxygenSaturation" class="block text-sm font-semibold mb-1">Oxygen Saturation (SpO₂ %)</label>
+              <div><label for="oxygenSaturation" class="block text sm font-semibold mb-1">Oxygen Saturation (SpO₂ %)</label>
                 <input id="oxygenSaturation" type="number" inputmode="numeric" placeholder="e.g., 98" class="vn-field vn-input w-full"/></div>
               <div><label for="bloodSugar" class="block text-sm font-semibold mb-1">Blood Sugar Level (mg/dL)</label>
                 <input id="bloodSugar" type="number" step="0.1" inputmode="decimal" placeholder="e.g., 95" class="vn-field vn-input w-full"/></div>
@@ -160,7 +160,7 @@
     </main>
   </div>
 
-  <!-- PDF Template (LOGO + GRADIENT TITLES, NO BG IMAGE) -->
+  <!-- PDF Template (clean, no background image) -->
   <div id="pdfCanvas" class="hidden">
     <div class="pdf-page" id="pdfRoot">
       <div class="pdf-top">
@@ -174,14 +174,8 @@
 
       <!-- Patient Info -->
       <div class="pdf-info">
-        <div class="pdf-card">
-          <div class="pdf-label">Patient</div>
-          <div class="pdf-value" id="pdfPatientVal">--</div>
-        </div>
-        <div class="pdf-card">
-          <div class="pdf-label">Nurse</div>
-          <div class="pdf-value" id="pdfNurseVal">--</div>
-        </div>
+        <div class="pdf-card"><div class="pdf-label">Patient</div><div class="pdf-value" id="pdfPatientVal">--</div></div>
+        <div class="pdf-card"><div class="pdf-label">Nurse</div><div class="pdf-value" id="pdfNurseVal">--</div></div>
       </div>
 
       <!-- Vitals -->
@@ -246,12 +240,9 @@
       ].join('\n');
     }
 
-    // PDF: map values into clean layout, then capture
     async function generatePDF(d){
-      // Top cards
       document.getElementById('pdfPatientVal').textContent = d.patientName || '--';
       document.getElementById('pdfNurseVal').textContent   = d.nurseName || '--';
-      // Vitals (with units)
       document.getElementById('pdfTempVal').textContent  = (d.temperature||'--') + ' °C';
       document.getElementById('pdfPulseVal').textContent = (d.pulse||'--') + ' bpm';
       document.getElementById('pdfRRVal').textContent    = (d.respiratoryRate||'--') + ' rpm';
@@ -259,13 +250,11 @@
       document.getElementById('pdfO2Val').textContent    = (d.oxygenSaturation||'--') + ' %';
       document.getElementById('pdfSugarVal').textContent = (d.bloodSugar||'--') + ' mg/dL';
       document.getElementById('pdfPainVal').textContent  = (d.pain||'--') + ' /10';
-      // Meds & notes
       document.getElementById('pdfMedAM').textContent = d.medMorning || '--';
       document.getElementById('pdfMedPM').textContent = d.medAfternoon || '--';
       document.getElementById('pdfMedEV').textContent = d.medEvening || '--';
       document.getElementById('pdfNotes').textContent = d.notes || '--';
 
-      // Show off-screen, render, then hide
       const wrap=document.getElementById('pdfCanvas'), node=document.getElementById('pdfRoot');
       const prevClass=wrap.className; wrap.classList.remove('hidden');
       const prevStyle={position:wrap.style.position,left:wrap.style.left,top:wrap.style.top,visibility:wrap.style.visibility};
@@ -292,7 +281,6 @@
     document.getElementById('btnWhatsApp').addEventListener('click', ()=>{ const d=getData(); const url=`https://wa.me/?text=${encodeURIComponent(formatWhatsApp(d))}`; window.open(url,'_blank'); clearAll(); });
     document.getElementById('btnEmail').addEventListener('click', ()=>{ const d=getData(); try{ generatePDF(d); }catch(_){} const subject=`Patient Vitals — ${d.patientName||'Unnamed'} — Victoria Nurse`; const body=formatWhatsApp(d).replace(/\*/g,''); window.location.href=`mailto:?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`; clearAll(); });
 
-    // Register SW with versioned URL
     if('serviceWorker' in navigator){
       window.addEventListener('load',()=>navigator.serviceWorker.register(`./service-worker.js?v=${window.__VN_VER__}`,{scope:'./'}).catch(()=>{}));
     }
