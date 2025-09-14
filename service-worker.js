@@ -1,5 +1,5 @@
-/* Victoria Nurse — Service Worker (v19) */
-const CACHE_NAME = 'victoria-nurse-v19';
+/* Victoria Nurse — Service Worker (v20) */
+const CACHE_NAME = 'victoria-nurse-v20';
 
 const ASSETS = [
   './',
@@ -21,7 +21,7 @@ self.addEventListener('install', (event) => {
 });
 
 self.addEventListener('activate', (event) => {
-  event.waitUntil((async ()=>{
+  event.waitUntil((async () => {
     const keys = await caches.keys();
     await Promise.all(keys.filter(k => k !== CACHE_NAME).map(k => caches.delete(k)));
   })());
@@ -43,7 +43,7 @@ self.addEventListener('fetch', (event) => {
           const app = await caches.match('./app.html'); if (app) return app;
         }
         const landing = await caches.match('./index.html');
-        return landing || new Response('Offline', {status:503});
+        return landing || new Response('Offline', { status: 503 });
       }
     })());
     return;
@@ -63,7 +63,7 @@ self.addEventListener('fetch', (event) => {
         }
         return res;
       } catch {
-        return new Response('', {status:504});
+        return new Response('', { status: 504 });
       }
     })());
     return;
