@@ -9,14 +9,13 @@
 
   <style>
     :root{
-      --vn-purple:#6A0DAD; --vn-pink:#FF61A6; --vn-blue:#7DDFFF;
-      /* bump this version string if you replace the image again */
-      --bg-ver: "2025-09-12-11";
+      --vn-purple:#6A0DAD; 
+      --vn-pink:#FF61A6; 
+      --vn-blue:#7DDFFF;
     }
-    html, body { height: 100%; background:#000; }
-    body { margin:0; }
+    html, body { height: 100%; background:#000; margin:0; }
 
-    /* The only important change is the ?v=… on the image URL */
+    /* Landing background */
     .landing-bg{
       position: fixed; inset: 0;
       background: #000 url("./images/welcome-victoria-nurse.jpg?v=2025-09-12-11") center center / cover no-repeat;
@@ -41,7 +40,7 @@
     .logo-link:active img{ transform: scale(.97); }
   </style>
 
-  <!-- PWA (unchanged) -->
+  <!-- PWA -->
   <link rel="manifest" href="./manifest.webmanifest?v=2025-09-12-11"/>
   <meta name="theme-color" content="#6366f1"/>
   <link rel="icon" type="image/png" href="./icons/favicon.png?v=2025-09-12-11"/>
