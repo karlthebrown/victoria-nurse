@@ -6,8 +6,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
   <title>Victoria Nurse — Care Together</title>
 
-  <!-- VERSION -->
-  <script>window.__VN_VER__="2025-09-17-21";</script>
+  <!-- VERSION (bump to match SW v22) -->
+  <script>window.__VN_VER__="2025-09-17-22";</script>
 
   <!-- PWA -->
   <link rel="manifest" href="./manifest.webmanifest?v=2025-09-12-11"/>
@@ -28,8 +28,8 @@
 
   <style>
     :root{
-      --vn-purple:#6A0DAD; --vn-pink:#FF61A6; --vn-blue:#7DDFFF;
-      --vn-sky:#38bdf8;
+      --g-blue:#7DDFFF; --g-pink:#FF61A6; --g-purple:#6A0DAD; /* gradients */
+      --vn-sky:#38bdf8; /* labels, rings, input text */
     }
     label{ color:var(--vn-sky); }
     .vn-field{
@@ -40,46 +40,55 @@
     .vn-field::placeholder{ color:#9fb6c8; opacity:.85; }
     .vn-input{ height:3.5rem; }
     .vn-textarea{ min-height:3.5rem; }
-
     .vn-tagline{ font-family:"Playfair Display", ui-serif, Georgia, serif; }
 
-    /* Gradients match landing (no yellow) */
+    /* Buttons: blue→pink→purple (matches the new header direction) */
     .btn-grad{
-      background-image:linear-gradient(90deg, var(--vn-purple), var(--vn-pink), var(--vn-blue));
+      background-image:linear-gradient(90deg, var(--g-blue), var(--g-pink), var(--g-purple));
       color:#fff; font-weight:600; padding:.95rem 1.2rem; border-radius:1.1rem;
       transition: transform .12s ease, opacity .12s ease; box-shadow:0 14px 35px rgba(0,0,0,.25);
     }
     .btn-grad:hover{ opacity:.97; transform: translateY(-1px); }
     .btn-grad:active{ transform: translateY(0) scale(.98); }
 
-    /* PDF overlay values (on your background image) */
-    .pdf-sheet{ width:794px; color:#fff; }
-    .pdf-hero{ position:relative; width:100%; }
-    .pdf-hero img{ width:100%; height:auto; display:block; border-radius:10px; }
-    .pdf-val{
-      position:absolute; font-weight:900; color:#fff;
-      text-shadow:0 2px 6px rgba(0,0,0,.55); font-size:32px; letter-spacing:.3px;
+    /* ---------- PDF (CLEAN LAYOUT, NO BACKGROUND IMAGE) ---------- */
+    .pdf-page{ width:794px; background:#ffffff; color:#111827; padding:28px; font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto; }
+    .pdf-top{ display:flex; align-items:center; gap:14px; }
+    .pdf-logo{ width:56px; height:56px; border-radius:14px; }
+    .pdf-brand{ line-height:1.1; }
+    .pdf-title{
+      font-weight:900; font-size:26px;
+      background: linear-gradient(90deg, var(--g-blue), var(--g-pink), var(--g-purple));
+      -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent; color:transparent;
+      letter-spacing:.2px;
     }
-    /* Tuned positions for /images/pdf-vitals-bg.jpg */
-    .v-hr   { top:13%; left:78%; }  /* Heart Rate */
-    .v-bp   { top:33%; left:78%; }  /* Blood Pressure */
-    .v-spo2 { top:53%; left:78%; }  /* SpO2 */
-    .v-rr   { top:73%; left:78%; }  /* Respiration */
-    .v-temp { top:91%; left:78%; }  /* Temperature */
-    .pdf-details{ margin-top:10px; display:grid; grid-template-columns:1fr 1fr; gap:10px; }
-    .pdf-box{ background:#0b0b0b; border:1px solid #222; padding:10px; border-radius:10px; font-size:12px; }
-    .pdf-box b{ color:#7DDFFF; }
-    .pdf-notes{ grid-column:1/-1; background:#0b0b0b; border:1px solid #222; padding:12px; border-radius:10px; font-size:12px; color:#e5e7eb; line-height:1.55; }
-    .pdf-footer{ margin-top:8px; text-align:right; color:#9ca3af; font-size:12px; }
+    .pdf-tag{
+      font-family:"Playfair Display", ui-serif, Georgia, serif;
+      font-size:14px; margin-top:2px;
+      background: linear-gradient(90deg, var(--g-blue), var(--g-pink));
+      -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent; color:transparent;
+    }
+    .pdf-hr{ border:none; border-top:1px solid #e5e7eb; margin:14px 0 18px; }
+
+    .pdf-section-title{ font-weight:800; color:#111827; margin:12px 0 8px; }
+    .pdf-info{ display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+    .pdf-card{ background:#f8fafc; border:1px solid #e5e7eb; border-radius:10px; padding:12px; }
+    .pdf-label{ font-size:11px; font-weight:700; color:#64748b; text-transform:uppercase; letter-spacing:.5px; margin-bottom:6px; }
+    .pdf-value{ font-size:18px; font-weight:800; color:#0f172a; }
+
+    .pdf-vitals{ display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+    .pdf-notes{ background:#fff7ff; border:1px solid #f5d0fe; color:#1f2937; border-radius:10px; padding:12px; line-height:1.55; }
+    .pdf-foot{ margin-top:12px; font-size:12px; color:#6b7280; text-align:right; }
   </style>
 </head>
+
 <body class="min-h-screen bg-gradient-to-br from-purple-700 via-pink-500 to-sky-400 text-slate-900 antialiased">
   <div class="min-h-screen p-4 flex items-center justify-center">
     <main class="w-full max-w-3xl">
       <div class="bg-white/85 backdrop-blur-xl shadow-2xl rounded-3xl overflow-hidden ring-1 ring-white/40">
 
-        <!-- Header with multi-stop gradient -->
-        <header class="bg-gradient-to-r from-purple-700 via-pink-500 to-sky-400 p-6">
+        <!-- Header with swapped gradient: blue (left) → pink → purple (right) -->
+        <header class="bg-gradient-to-r from-sky-400 via-pink-500 to-purple-700 p-6">
           <div class="flex items-center gap-4">
             <a href="./index.html" aria-label="Home">
               <img src="./icons/icon-192.png?v=2025-09-12-11" alt="Victoria Nurse" class="h-14 w-14 rounded-2xl shadow"/>
@@ -151,34 +160,61 @@
     </main>
   </div>
 
-  <!-- PDF Template -->
+  <!-- PDF Template (LOGO + GRADIENT TITLES, NO BG IMAGE) -->
   <div id="pdfCanvas" class="hidden">
-    <div class="pdf-sheet" id="pdfRoot">
-      <div class="pdf-hero">
-        <img src="./images/pdf-vitals-bg.jpg" alt="Vitals background"/>
-        <div class="pdf-val v-hr"   id="pdfPulseVal">-- bpm</div>
-        <div class="pdf-val v-bp"   id="pdfBPVal">-- mmHg</div>
-        <div class="pdf-val v-spo2" id="pdfO2Val">-- %</div>
-        <div class="pdf-val v-rr"   id="pdfRRVal">-- rpm</div>
-        <div class="pdf-val v-temp" id="pdfTempVal">-- °C</div>
+    <div class="pdf-page" id="pdfRoot">
+      <div class="pdf-top">
+        <img class="pdf-logo" src="./icons/icon-192.png" alt="Logo"/>
+        <div class="pdf-brand">
+          <div class="pdf-title">Victoria Nurse</div>
+          <div class="pdf-tag">Care Together</div>
+        </div>
+      </div>
+      <hr class="pdf-hr"/>
+
+      <!-- Patient Info -->
+      <div class="pdf-info">
+        <div class="pdf-card">
+          <div class="pdf-label">Patient</div>
+          <div class="pdf-value" id="pdfPatientVal">--</div>
+        </div>
+        <div class="pdf-card">
+          <div class="pdf-label">Nurse</div>
+          <div class="pdf-value" id="pdfNurseVal">--</div>
+        </div>
       </div>
 
-      <div class="pdf-details">
-        <div class="pdf-box"><b>Patient</b><div id="pdfPatientVal">--</div></div>
-        <div class="pdf-box"><b>Blood Sugar (mg/dL)</b><div id="pdfSugarVal">--</div></div>
-        <div class="pdf-box"><b>Med — Morning</b><div id="pdfMedAM">--</div></div>
-        <div class="pdf-box"><b>Med — Afternoon</b><div id="pdfMedPM">--</div></div>
-        <div class="pdf-box"><b>Med — Evening</b><div id="pdfMedEV">--</div></div>
-        <div class="pdf-box"><b>Nurse</b><div id="pdfNurseVal">--</div></div>
-        <div class="pdf-notes" id="pdfNotes">--</div>
+      <!-- Vitals -->
+      <div class="pdf-section-title">Vitals</div>
+      <div class="pdf-vitals">
+        <div class="pdf-card"><div class="pdf-label">Temperature</div><div class="pdf-value" id="pdfTempVal">-- °C</div></div>
+        <div class="pdf-card"><div class="pdf-label">Pulse</div><div class="pdf-value" id="pdfPulseVal">-- bpm</div></div>
+        <div class="pdf-card"><div class="pdf-label">Respiratory Rate</div><div class="pdf-value" id="pdfRRVal">-- rpm</div></div>
+        <div class="pdf-card"><div class="pdf-label">Blood Pressure</div><div class="pdf-value" id="pdfBPVal">-- mmHg</div></div>
+        <div class="pdf-card"><div class="pdf-label">Oxygen Saturation</div><div class="pdf-value" id="pdfO2Val">-- %</div></div>
+        <div class="pdf-card"><div class="pdf-label">Blood Sugar</div><div class="pdf-value" id="pdfSugarVal">-- mg/dL</div></div>
+        <div class="pdf-card" style="grid-column:1/-1;"><div class="pdf-label">Pain Assessment</div><div class="pdf-value" id="pdfPainVal">-- /10</div></div>
       </div>
 
-      <div class="pdf-footer"><em>Powered by: karlthebrown</em></div>
+      <!-- Medications -->
+      <div class="pdf-section-title">Medications</div>
+      <div class="pdf-info">
+        <div class="pdf-card"><div class="pdf-label">Morning</div><div class="pdf-value" id="pdfMedAM">--</div></div>
+        <div class="pdf-card"><div class="pdf-label">Afternoon</div><div class="pdf-value" id="pdfMedPM">--</div></div>
+        <div class="pdf-card" style="grid-column:1/-1;"><div class="pdf-label">Evening</div><div class="pdf-value" id="pdfMedEV">--</div></div>
+      </div>
+
+      <!-- Notes -->
+      <div class="pdf-section-title">Notes</div>
+      <div class="pdf-notes" id="pdfNotes">--</div>
+
+      <div class="pdf-foot"><em>Powered by: karlthebrown</em></div>
     </div>
   </div>
 
   <script>
     document.getElementById('year').textContent = new Date().getFullYear();
+
     const ids=['patientName','temperature','pulse','respiratoryRate','bloodPressure','oxygenSaturation','bloodSugar','pain','medMorning','medAfternoon','medEvening','notes','nurseName'];
     const el=id=>document.getElementById(id);
     const getData=()=>Object.fromEntries(ids.map(k=>[k,(el(k)?.value||'').trim()]));
@@ -210,28 +246,33 @@
       ].join('\n');
     }
 
+    // PDF: map values into clean layout, then capture
     async function generatePDF(d){
-      // Map values (with units on overlay)
+      // Top cards
       document.getElementById('pdfPatientVal').textContent = d.patientName || '--';
-      document.getElementById('pdfPulseVal').textContent   = (d.pulse || '--') + ' bpm';
-      document.getElementById('pdfBPVal').textContent      = (d.bloodPressure || '--') + ' mmHg';
-      document.getElementById('pdfO2Val').textContent      = (d.oxygenSaturation || '--') + ' %';
-      document.getElementById('pdfRRVal').textContent      = (d.respiratoryRate || '--') + ' rpm';
-      document.getElementById('pdfTempVal').textContent    = (d.temperature || '--') + ' °C';
-      document.getElementById('pdfSugarVal').textContent   = d.bloodSugar || '--';
-      document.getElementById('pdfMedAM').textContent      = d.medMorning || '--';
-      document.getElementById('pdfMedPM').textContent      = d.medAfternoon || '--';
-      document.getElementById('pdfMedEV').textContent      = d.medEvening || '--';
-      document.getElementById('pdfNotes').textContent      = d.notes || '--';
       document.getElementById('pdfNurseVal').textContent   = d.nurseName || '--';
+      // Vitals (with units)
+      document.getElementById('pdfTempVal').textContent  = (d.temperature||'--') + ' °C';
+      document.getElementById('pdfPulseVal').textContent = (d.pulse||'--') + ' bpm';
+      document.getElementById('pdfRRVal').textContent    = (d.respiratoryRate||'--') + ' rpm';
+      document.getElementById('pdfBPVal').textContent    = (d.bloodPressure||'--') + ' mmHg';
+      document.getElementById('pdfO2Val').textContent    = (d.oxygenSaturation||'--') + ' %';
+      document.getElementById('pdfSugarVal').textContent = (d.bloodSugar||'--') + ' mg/dL';
+      document.getElementById('pdfPainVal').textContent  = (d.pain||'--') + ' /10';
+      // Meds & notes
+      document.getElementById('pdfMedAM').textContent = d.medMorning || '--';
+      document.getElementById('pdfMedPM').textContent = d.medAfternoon || '--';
+      document.getElementById('pdfMedEV').textContent = d.medEvening || '--';
+      document.getElementById('pdfNotes').textContent = d.notes || '--';
 
+      // Show off-screen, render, then hide
       const wrap=document.getElementById('pdfCanvas'), node=document.getElementById('pdfRoot');
       const prevClass=wrap.className; wrap.classList.remove('hidden');
       const prevStyle={position:wrap.style.position,left:wrap.style.left,top:wrap.style.top,visibility:wrap.style.visibility};
       wrap.style.position='fixed'; wrap.style.left='-99999px'; wrap.style.top='0'; wrap.style.visibility='visible';
 
       try{
-        const canvas=await html2canvas(node,{scale:2,backgroundColor:'#000'});
+        const canvas=await html2canvas(node,{scale:2,backgroundColor:'#ffffff'});
         const imgData=canvas.toDataURL('image/png');
         const { jsPDF }=window.jspdf; const pdf=new jsPDF('p','pt','a4');
         const pageWidth=pdf.internal.pageSize.getWidth();
