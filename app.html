@@ -266,45 +266,80 @@
       return lines.join('\n');
     }
 
+    // --- FIX 1: Render the PDF template off-screen (not display:none) ---
     async function generateNeonPDF(d){
+      // Map values
       document.getElementById('pdfPulseVal').textContent = d.pulse || '--';
       document.getElementById('pdfBPVal').textContent    = d.bloodPressure || '--';
       document.getElementById('pdfO2Val').textContent    = d.oxygenSaturation || '--';
       document.getElementById('pdfRRVal').textContent    = d.respiratoryRate || '--';
       document.getElementById('pdfTempVal').textContent  = d.temperature || '--';
 
+      const wrap = document.getElementById('pdfCanvas');
       const node = document.getElementById('pdfRoot');
-      const canvas = await html2canvas(node, { scale: 2, backgroundColor: '#000000' });
-      const imgData = canvas.toDataURL('image/png');
 
-      const { jsPDF } = window.jspdf;
-      const pdf = new jsPDF('p','pt','a4');
-      const pageWidth = pdf.internal.pageSize.getWidth();
-      const imgWidth = pageWidth - 40;
-      const imgHeight = canvas.height * (imgWidth / canvas.width);
-      pdf.addImage(imgData,'PNG',20,20,imgWidth,imgHeight,'','FAST');
+      // Temporarily show off-screen so html2canvas can measure it
+      const prevClass = wrap.className;
+      wrap.classList.remove('hidden');
+      const prevStyle = { position: wrap.style.position, left: wrap.style.left, top: wrap.style.top, visibility: wrap.style.visibility };
+      wrap.style.position = 'fixed';
+      wrap.style.left = '-99999px';
+      wrap.style.top = '0';
+      wrap.style.visibility = 'visible';
 
-      const safe = (d.patientName || 'patient').replace(/[^\w\-]+/g,'_');
-      pdf.save(`Victoria_Nurse_${safe}_${new Date().toISOString().slice(0,10)}.pdf`);
+      try {
+        const canvas = await html2canvas(node, { scale: 2, backgroundColor: '#000000' });
+        const imgData = canvas.toDataURL('image/png');
+
+        const { jsPDF } = window.jspdf;
+        const pdf = new jsPDF('p','pt','a4');
+        const pageWidth = pdf.internal.pageSize.getWidth();
+        const imgWidth = pageWidth - 40;
+        const imgHeight = canvas.height * (imgWidth / canvas.width);
+        pdf.addImage(imgData,'PNG',20,20,imgWidth,imgHeight,'','FAST');
+
+        const safe = (d.patientName || 'patient').replace(/[^\w\-]+/g,'_');
+        pdf.save(`Victoria_Nurse_${safe}_${new Date().toISOString().slice(0,10)}.pdf`);
+      } finally {
+        // Restore hidden state
+        wrap.style.position = prevStyle.position;
+        wrap.style.left = prevStyle.left;
+        wrap.style.top = prevStyle.top;
+        wrap.style.visibility = prevStyle.visibility;
+        wrap.className = prevClass;
+      }
     }
 
     function clearAll(){ ids.forEach(k=>{ if(el(k)) el(k).value=''; }); }
 
+    // Preview PDF (can await)
     document.getElementById('btnPreview').addEventListener('click', async ()=>{
       const d = getData(); await generateNeonPDF(d); clearAll();
     });
+
+    // WhatsApp share
     document.getElementById('btnWhatsApp').addEventListener('click', ()=>{
-      const d = getData(); const url = `https://wa.me/?text=${encodeURIComponent(formatWhatsApp(d))}`; window.open(url,'_blank'); clearAll();
-    });
-    document.getElementById('btnEmail').addEventListener('click', async ()=>{
-      const d = getData(); await generateNeonPDF(d);
-      const subject = `Patient Vitals — ${d.patientName || 'Unnamed'} — Victoria Nurse`;
-      const body = formatWhatsApp(d).replace(/\*/g,'');
-      window.location.href = `mailto:?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+      const d = getData();
+      const url = `https://wa.me/?text=${encodeURIComponent(formatWhatsApp(d))}`;
+      window.open(url,'_blank');
       clearAll();
     });
 
-    // Hard refresh for stale clients (one-time)
+    // --- FIX 2: Email share (open mail app immediately; generate PDF without await) ---
+    document.getElementById('btnEmail').addEventListener('click', ()=>{
+      const d = getData();
+
+      // Start PDF generation without awaiting so the mailto stays in the same user gesture
+      try { generateNeonPDF(d); } catch(_) {}
+
+      const subject = `Patient Vitals — ${d.patientName || 'Unnamed'} — Victoria Nurse`;
+      const body = formatWhatsApp(d).replace(/\*/g,''); // plain text for email
+      window.location.href = `mailto:?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+
+      clearAll();
+    });
+
+    // One-time hard refresh for stale clients
     (async () => {
       try {
         const key = 'vn_migrated_v7';
@@ -317,12 +352,13 @@
             const names = await caches.keys();
             await Promise.all(names.map(n => caches.delete(n)));
           }
-          localStorage.setItem(key, '1'); location.reload();
+          localStorage.setItem(key, '1');
+          location.reload();
         }
       } catch(_) {}
     })();
 
-    // Register SW
+    // Register SW with versioned URL
     if ('serviceWorker' in navigator) {
       window.addEventListener('load', () => {
         const v = window.__VN_VER__;
