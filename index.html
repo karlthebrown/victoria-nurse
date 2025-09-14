@@ -1,90 +1,61 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Victoria Nurse</title>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
+  <title>Victoria Nurse — Welcome</title>
+
+  <!-- Tailwind -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Preload landing image -->
+  <link rel="preload" as="image" href="./images/welcome-victoria-nurse.jpg?v=2025-09-12-11"/>
+
   <style>
-    body {
-      margin: 0;
-      padding: 0;
-      font-family: Arial, sans-serif;
-      background-color: #000; /* Dark background */
-      color: #fff;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-      text-align: center;
+    :root{
+      --vn-purple:#6A0DAD; --vn-pink:#FF61A6; --vn-blue:#7DDFFF;
     }
-
-    .logo {
-      margin-bottom: 20px;
+    html, body { height:100%; margin:0; background:#000; }
+    .landing-wrap { position:relative; width:100%; height:100svh; overflow:hidden; }
+    .landing-img {
+      position:absolute; inset:0;
+      width:100%; height:100%;
+      object-fit:cover; object-position:center;
+      display:block;
     }
-
-    .slogan {
-      font-size: 1.6rem;
-      font-weight: 500;
-      margin-bottom: 40px;
-      max-width: 80%;
-      line-height: 1.4;
+    .cta-bar{
+      position:absolute; left:0; right:0; bottom:calc(5vh + env(safe-area-inset-bottom,0px));
+      display:flex; justify-content:center; padding:0 1rem;
     }
-
-    .button {
-      background: linear-gradient(90deg, #6a11cb, #2575fc);
-      border: none;
-      color: white;
-      padding: 15px 40px;
-      font-size: 1.2rem;
-      border-radius: 8px;
-      cursor: pointer;
-      transition: 0.3s;
+    .btn-grad{
+      background-image:linear-gradient(90deg, var(--vn-purple), var(--vn-pink), var(--vn-blue));
+      color:#fff; font-weight:600; padding:.95rem 1.9rem; border-radius:1.1rem; font-size:1rem;
+      transition: transform .12s ease, opacity .12s ease; box-shadow:0 14px 35px rgba(0,0,0,.25);
     }
-
-    .button:hover {
-      opacity: 0.85;
-    }
-
-    /* Responsive Design */
-    @media (max-width: 768px) {
-      .slogan {
-        font-size: 1.3rem;
-        margin-bottom: 30px;
-      }
-      .button {
-        padding: 12px 30px;
-        font-size: 1rem;
-      }
-      .logo img {
-        width: 100px;
-      }
-    }
-
-    @media (max-width: 480px) {
-      .slogan {
-        font-size: 1.1rem;
-        margin-bottom: 25px;
-      }
-      .button {
-        padding: 10px 25px;
-        font-size: 0.9rem;
-      }
-      .logo img {
-        width: 80px;
-      }
-    }
+    .btn-grad:hover{ opacity:.97; transform: translateY(-1px); }
+    .btn-grad:active{ transform: translateY(0) scale(.98); }
+    .logo-link img{ border-radius:12px; box-shadow:0 8px 24px rgba(0,0,0,.35); }
   </style>
+
+  <!-- PWA -->
+  <link rel="manifest" href="./manifest.webmanifest?v=2025-09-12-11"/>
+  <meta name="theme-color" content="#6A0DAD"/>
+  <link rel="icon" type="image/png" href="./icons/favicon.png?v=2025-09-12-11"/>
+  <link rel="apple-touch-icon" sizes="180x180" href="./icons/icon-180.png?v=2025-09-12-11"/>
 </head>
-<body>
-  <div class="logo">
-    <img src="victoria-nurse-logo.png" alt="Victoria Nurse Logo" width="120">
-  </div>
+<body class="text-white antialiased">
+  <div class="landing-wrap">
+    <img class="landing-img" src="./images/welcome-victoria-nurse.jpg?v=2025-09-12-11" alt="Welcome to Victoria Nurse"/>
 
-  <div class="slogan">
-    Record patient readings in seconds, share in moments.
-  </div>
+    <header class="absolute top-4 left-4">
+      <a href="./index.html" class="logo-link" aria-label="Home">
+        <img src="./icons/icon-192.png?v=2025-09-12-11" alt="Victoria Nurse" class="w-12 h-12"/>
+      </a>
+    </header>
 
-  <button class="button">Get Started</button>
+    <div class="cta-bar">
+      <a href="./app.html" class="btn-grad inline-flex items-center justify-center">Get Started</a>
+    </div>
+  </div>
 </body>
 </html>
