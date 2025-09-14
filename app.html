@@ -31,8 +31,7 @@
   <style>
     :root{
       --vn-sky:#38bdf8; --vn-indigo:#6366f1; --vn-fuchsia:#d946ef;
-      /* palette for buttons */
-      --pdf-purple:#6A0DAD; --pdf-pink:#FF61A6; --pdf-orange:#FFB347; --pdf-blue:#7DDFFF;
+      --g-purple:#6A0DAD; --g-pink:#FF61A6; --g-blue:#7DDFFF; /* for buttons & header */
     }
     label{ color:var(--vn-sky); }
     .vn-field{ color:var(--vn-sky); padding:.95rem 1.1rem; border-radius:.9rem; border:1px solid #cbd5e1; background:#fff; line-height:1.6rem; }
@@ -44,12 +43,13 @@
     @keyframes shimmerText{0%{background-position:-200% center}100%{background-position:200% center}}
     .shimmer-title{ display:inline-block; background:linear-gradient(90deg,#fff,#a5f3fc,#fff); background-size:200% auto; -webkit-background-clip:text; -webkit-text-fill-color:transparent; animation:shimmerText 4s linear infinite; }
 
+    /* ✅ Buttons: purple→pink→blue (no yellow) */
     .btn-grad{
-      background-image:linear-gradient(90deg, var(--pdf-purple), var(--pdf-pink), var(--pdf-orange), var(--pdf-blue));
+      background-image:linear-gradient(90deg, var(--g-purple), var(--g-pink), var(--g-blue));
       color:#fff; box-shadow:0 14px 35px rgba(0,0,0,.25);
     }
 
-    /* PDF layout based on your vitals background image */
+    /* PDF overlay for your vitals background */
     .pdf-sheet{ width:794px; background:#000; color:#fff; padding:18px; }
     .pdf-hero{ position:relative; width:100%; }
     .pdf-hero img{ width:100%; height:auto; display:block; border-radius:10px; }
@@ -76,8 +76,8 @@
   <div class="min-h-screen p-4 flex items-center justify-center">
     <main class="w-full max-w-3xl">
       <div class="bg-white/85 backdrop-blur-xl shadow-2xl rounded-3xl overflow-hidden ring-1 ring-white/40">
-        <!-- Header -->
-        <header class="bg-gradient-to-r from-indigo-600 to-sky-500 p-6">
+        <!-- ✅ Header with new gradient (purple→pink→blue) -->
+        <header class="bg-gradient-to-r from-purple-700 via-pink-500 to-sky-400 p-6">
           <div class="flex items-center gap-4">
             <a href="./index.html" aria-label="Home">
               <img src="./icons/icon-192.png?v=2025-09-12-11" alt="Victoria Nurse" class="h-14 w-14 rounded-2xl shadow"/>
@@ -149,7 +149,7 @@
     </main>
   </div>
 
-  <!-- PDF Template using background graphic and units -->
+  <!-- PDF Template using background graphic + units -->
   <div id="pdfCanvas" class="hidden">
     <div class="pdf-sheet" id="pdfRoot">
       <div class="pdf-hero">
@@ -179,7 +179,6 @@
     document.getElementById('year').textContent = new Date().getFullYear();
     const ids=['patientName','temperature','pulse','respiratoryRate','bloodPressure','oxygenSaturation','bloodSugar','pain','medMorning','medAfternoon','medEvening','notes','nurseName'];
     const el = id => document.getElementById(id);
-
     function getData(){ const d={}; ids.forEach(k=>d[k]=(el(k)?.value||'').trim()); return d; }
 
     function formatWhatsApp(d){
@@ -209,9 +208,8 @@
       ].join('\n');
     }
 
-    // PDF: render off-screen + overlay values with units
+    // PDF: off-screen render + units
     async function generatePDF(d){
-      // Map values with units
       document.getElementById('pdfPatientVal').textContent = d.patientName || '--';
       document.getElementById('pdfPulseVal').textContent   = (d.pulse || '--') + ' bpm';
       document.getElementById('pdfBPVal').textContent      = (d.bloodPressure || '--') + ' mmHg';
