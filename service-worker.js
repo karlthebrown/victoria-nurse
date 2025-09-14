@@ -1,5 +1,5 @@
-/* Victoria Nurse — Service Worker (v17) */
-const CACHE_NAME = 'victoria-nurse-v17';
+/* Victoria Nurse — Service Worker (v18) */
+const CACHE_NAME = 'victoria-nurse-v18';
 
 const ASSETS = [
   './',
@@ -10,7 +10,9 @@ const ASSETS = [
   './icons/icon-512.png?v=2025-09-12-11',
   './icons/icon-180.png?v=2025-09-12-11',
   './icons/favicon.png?v=2025-09-12-11',
+  // Keep both forms so either can be cached/served
   './images/welcome-victoria-nurse.jpg',
+  './images/welcome-victoria-nurse.jpg?v=2025-09-12-11',
   './images/pdf-vitals-bg.jpg'
 ];
 
@@ -54,6 +56,7 @@ self.addEventListener('fetch', (event) => {
       if (cached) return cached;
       try {
         const res = await fetch(req);
+        // Opportunistic cache of known assets
         const pathWithQ = url.pathname + (url.search || '');
         const normalized = pathWithQ.startsWith('.') ? pathWithQ : '.' + pathWithQ;
         if (ASSETS.includes(normalized)) {
