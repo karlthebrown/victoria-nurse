@@ -1,15 +1,32 @@
 {
   "name": "Victoria Nurse",
-  "short_name": "Victoria Nurse",
-  "description": "Care Together",
+  "short_name": "VictoriaNurse",
+  "description": "Care Together — Record and share patient vitals with loved ones securely.",
   "start_url": "./index.html",
-  "scope": "./",
   "display": "standalone",
-  "theme_color": "#6366f1",
-  "background_color": "#000000",
+  "orientation": "portrait",
+  "background_color": "#6A0DAD",
+  "theme_color": "#6A0DAD",
   "icons": [
-    { "src": "./icons/icon-192.png", "sizes": "192x192", "type": "image/png" },
-    { "src": "./icons/icon-512.png", "sizes": "512x512", "type": "image/png" },
-    { "src": "./icons/icon-180.png", "sizes": "180x180", "type": "image/png", "purpose": "any maskable" }
+    {
+      "src": "./icons/icon-192.png?v=2025-09-12-11",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "./icons/icon-512.png?v=2025-09-12-11",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "./icons/icon-180.png?v=2025-09-12-11",
+      "sizes": "180x180",
+      "type": "image/png"
+    },
+    {
+      "src": "./icons/favicon.png?v=2025-09-12-11",
+      "sizes": "32x32",
+      "type": "image/png"
+    }
   ]
 }
