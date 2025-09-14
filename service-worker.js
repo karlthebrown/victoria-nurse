@@ -1,5 +1,5 @@
-/* Victoria Nurse — Service Worker (v21) */
-const CACHE_NAME = 'victoria-nurse-v21';
+/* Victoria Nurse — Service Worker (v22) */
+const CACHE_NAME = 'victoria-nurse-v22';
 
 const ASSETS = [
   './',
@@ -11,14 +11,15 @@ const ASSETS = [
   './icons/icon-180.png?v=2025-09-12-11',
   './icons/favicon.png?v=2025-09-12-11',
   './images/welcome-victoria-nurse.jpg',
-  './images/welcome-victoria-nurse.jpg?v=2025-09-12-11',
-  './images/pdf-vitals-bg.jpg'
+  './images/welcome-victoria-nurse.jpg?v=2025-09-12-11'
+  // NOTE: pdf-vitals-bg.jpg removed (no longer used)
 ];
 
 self.addEventListener('install', (event) => {
   event.waitUntil(caches.open(CACHE_NAME).then(c => c.addAll(ASSETS)));
   self.skipWaiting();
 });
+
 self.addEventListener('activate', (event) => {
   event.waitUntil((async ()=>{
     const keys = await caches.keys();
@@ -26,6 +27,7 @@ self.addEventListener('activate', (event) => {
   })());
   self.clients.claim();
 });
+
 self.addEventListener('fetch', (event) => {
   const req = event.request;
   if (req.method !== 'GET') return;
