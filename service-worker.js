@@ -1,5 +1,5 @@
-/* Victoria Nurse — Service Worker (v31) */
-const CACHE_NAME = 'victoria-nurse-v31';
+/* Victoria Nurse — Service Worker (v33) */
+const CACHE_NAME = 'victoria-nurse-v33';
 
 const ASSETS = [
   './',
@@ -34,7 +34,6 @@ self.addEventListener('fetch', (event) => {
   const url = new URL(req.url);
   const isHTML = req.destination === 'document' || req.headers.get('accept')?.includes('text/html');
 
-  // Network-first for HTML
   if (isHTML) {
     event.respondWith((async () => {
       try { return await fetch(req); }
@@ -49,15 +48,12 @@ self.addEventListener('fetch', (event) => {
     return;
   }
 
-  // Cache-first for same-origin assets
   if (url.origin === location.origin) {
     event.respondWith((async () => {
       const cached = await caches.match(req);
       if (cached) return cached;
-
       try {
         const res = await fetch(req);
-
         const pathWithQ = url.pathname + (url.search || '');
         const normalized = pathWithQ.startsWith('.') ? pathWithQ : '.' + pathWithQ;
         if (ASSETS.includes(normalized)) {
