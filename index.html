@@ -15,7 +15,7 @@
   <link rel="icon" type="image/png" href="./icons/favicon.png?v=2025-09-17-28"/>
   <link rel="apple-touch-icon" sizes="180x180" href="./icons/icon-180.png?v=2025-09-17-28"/>
 
-  <!-- Preload PNG landing image -->
+  <!-- Preload hero -->
   <link rel="preload" as="image" href="./images/welcome-victoria-nurse-medical.png?v=2025-09-17-28"/>
 
   <style>
@@ -34,20 +34,18 @@
 </head>
 <body class="text-white antialiased">
   <div class="landing-wrap">
-    <!-- Background -->
-    <img src="./images/welcome-victoria-nurse-medical.png?v=2025-09-17-28"
-         alt="Welcome to Victoria Nurse"
-         class="landing-img"/>
+    <!-- Background image only -->
+    <img
+      src="./images/welcome-victoria-nurse-medical.png?v=2025-09-17-28"
+      alt="Victoria Nurse"
+      class="landing-img"
+    />
 
-    <!-- Centered overlay -->
-    <div class="absolute inset-0 flex flex-col items-center justify-center text-center px-5">
-      <h1 class="text-white text-3xl md:text-4xl font-extrabold drop-shadow-lg mb-2">
-        Welcome to Victoria Nurse
-      </h1>
-      <p class="text-white/90 text-sm md:text-base mb-6">
+    <!-- Minimal overlay (NO headline). Tagline + single button stacked -->
+    <div class="absolute inset-0 flex flex-col items-center justify-center text-center px-5 space-y-4">
+      <p class="text-white/90 text-sm md:text-base">
         Record patient readings in seconds, share in moments.
       </p>
-      <!-- The single, smaller button -->
       <a href="app.html" class="btn-grad inline-flex items-center justify-center">Get Started</a>
     </div>
 
@@ -57,7 +55,7 @@
     </footer>
   </div>
 
-  <!-- One-time SW/cache migration for stubborn clients -->
+  <!-- One-time SW/cache migration (kept) -->
   <script>
     (async () => {
       const KEY = 'vn_migrate_v28';
