@@ -6,12 +6,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
   <title>Victoria Nurse — Care Together</title>
 
-  <!-- VERSION (v22) -->
-  <script>window.__VN_VER__="2025-09-17-22";</script>
+  <!-- VERSION (align with SW v24) -->
+  <script>window.__VN_VER__="2025-09-17-24";</script>
 
   <!-- PWA -->
   <link rel="manifest" href="./manifest.webmanifest?v=2025-09-12-11"/>
-  <meta name="theme-color" content="#6A0DAD"/>
+  <meta name="theme-color" content="#0EA5E9"/>
 
   <!-- Icons -->
   <link rel="icon" type="image/png" href="./icons/favicon.png?v=2025-09-12-11"/>
@@ -28,44 +28,53 @@
 
   <style>
     :root{
-      --g-blue:#7DDFFF; --g-pink:#FF61A6; --g-purple:#6A0DAD;
-      --vn-sky:#38bdf8;
+      /* Professional medical palette */
+      --med-teal:#14B8A6;   /* teal-500 */
+      --med-sky:#0EA5E9;    /* sky-500 */
+      --med-indigo:#1E40AF; /* indigo-800 */
+      --label:#0891B2;      /* cyan-600 for labels/rings */
     }
-    label{ color:var(--vn-sky); }
+    body {
+      /* clinical gradient background */
+      background: linear-gradient(135deg, #0EA5E9 0%, #14B8A6 50%, #1E40AF 100%);
+    }
+
+    label{ color:var(--label); }
     .vn-field{
-      color:var(--vn-sky);
+      color:var(--label);
       padding:.95rem 1.1rem; border-radius:.9rem; border:1px solid #cbd5e1; background:#fff; line-height:1.6rem;
     }
-    .vn-field:focus{ outline:none; box-shadow:0 0 0 2px var(--vn-sky); border-color:var(--vn-sky); }
-    .vn-field::placeholder{ color:#9fb6c8; opacity:.85; }
+    .vn-field:focus{ outline:none; box-shadow:0 0 0 2px var(--label); border-color:var(--label); }
+    .vn-field::placeholder{ color:#98a6b3; opacity:.85; }
     .vn-input{ height:3.5rem; }
     .vn-textarea{ min-height:3.5rem; }
-    .vn-tagline{ font-family:"Playfair Display", ui-serif, Georgia, serif; }
 
-    /* Buttons: blue→pink→purple */
+    .vn-tagline{ font-family:"Playfair Display", ui-serif, Georgia, serif; color:#E6F4FF; }
+
+    /* Buttons: medical gradient (teal→sky→indigo) */
     .btn-grad{
-      background-image:linear-gradient(90deg, var(--g-blue), var(--g-pink), var(--g-purple));
+      background-image:linear-gradient(90deg, var(--med-teal), var(--med-sky), var(--med-indigo));
       color:#fff; font-weight:600; padding:.95rem 1.2rem; border-radius:1.1rem;
       transition: transform .12s ease, opacity .12s ease; box-shadow:0 14px 35px rgba(0,0,0,.25);
     }
     .btn-grad:hover{ opacity:.97; transform: translateY(-1px); }
     .btn-grad:active{ transform: translateY(0) scale(.98); }
 
-    /* ---------- PDF (clean layout, no background image) ---------- */
+    /* ---------- PDF (clean layout, medical palette) ---------- */
     .pdf-page{ width:794px; background:#ffffff; color:#111827; padding:28px; font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto; }
     .pdf-top{ display:flex; align-items:center; gap:14px; }
     .pdf-logo{ width:56px; height:56px; border-radius:14px; }
     .pdf-brand{ line-height:1.1; }
     .pdf-title{
       font-weight:900; font-size:26px;
-      background: linear-gradient(90deg, var(--g-blue), var(--g-pink), var(--g-purple));
+      background: linear-gradient(90deg, var(--med-teal), var(--med-sky), var(--med-indigo));
       -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent; color:transparent;
       letter-spacing:.2px;
     }
     .pdf-tag{
       font-family:"Playfair Display", ui-serif, Georgia, serif;
       font-size:14px; margin-top:2px;
-      background: linear-gradient(90deg, var(--g-blue), var(--g-pink));
+      background: linear-gradient(90deg, var(--med-sky), var(--med-indigo));
       -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent; color:transparent;
     }
     .pdf-hr{ border:none; border-top:1px solid #e5e7eb; margin:14px 0 18px; }
@@ -77,18 +86,18 @@
     .pdf-value{ font-size:18px; font-weight:800; color:#0f172a; }
 
     .pdf-vitals{ display:grid; grid-template-columns:1fr 1fr; gap:10px; }
-    .pdf-notes{ background:#fff7ff; border:1px solid #f5d0fe; color:#1f2937; border-radius:10px; padding:12px; line-height:1.55; }
+    .pdf-notes{ background:#F0FDFA; border:1px solid #A7F3D0; color:#1f2937; border-radius:10px; padding:12px; line-height:1.55; }
     .pdf-foot{ margin-top:12px; font-size:12px; color:#6b7280; text-align:right; }
   </style>
 </head>
 
-<body class="min-h-screen bg-gradient-to-br from-purple-700 via-pink-500 to-sky-400 text-slate-900 antialiased">
+<body class="min-h-screen text-slate-900 antialiased">
   <div class="min-h-screen p-4 flex items-center justify-center">
     <main class="w-full max-w-3xl">
       <div class="bg-white/85 backdrop-blur-xl shadow-2xl rounded-3xl overflow-hidden ring-1 ring-white/40">
 
-        <!-- Header with swapped gradient: blue → pink → purple -->
-        <header class="bg-gradient-to-r from-sky-400 via-pink-500 to-purple-700 p-6">
+        <!-- Header: medical gradient + clinical text colors -->
+        <header class="p-6" style="background:linear-gradient(90deg, var(--med-teal), var(--med-sky), var(--med-indigo));">
           <div class="flex items-center gap-4">
             <a href="./index.html" aria-label="Home">
               <img src="./icons/icon-192.png?v=2025-09-12-11" alt="Victoria Nurse" class="h-14 w-14 rounded-2xl shadow"/>
@@ -115,23 +124,53 @@
                 <input id="pulse" type="number" inputmode="numeric" placeholder="e.g., 80" class="vn-field vn-input w-full"/></div>
               <div><label for="respiratoryRate" class="block text-sm font-semibold mb-1">Respiratory Rate (breaths/min)</label>
                 <input id="respiratoryRate" type="number" inputmode="numeric" placeholder="e.g., 16" class="vn-field vn-input w-full"/></div>
-              <div><label for="bloodPressure" class="block text-sm font-semibold mb-1">Blood Pressure (mmHg)</label>
-                <input id="bloodPressure" type="text" placeholder="e.g., 108/68" class="vn-field vn-input w-full"/></div>
-              <div><label for="oxygenSaturation" class="block text sm font-semibold mb-1">Oxygen Saturation (SpO₂ %)</label>
+              <div>
+                <label for="bloodPressure" class="block text-sm font-semibold mb-1">Blood Pressure (mmHg)</label>
+                <div class="grid grid-cols-2 gap-2">
+                  <input id="sbp" type="number" inputmode="numeric" placeholder="SBP" class="vn-field vn-input w-full"/>
+                  <input id="dbp" type="number" inputmode="numeric" placeholder="DBP" class="vn-field vn-input w-full"/>
+                </div>
+              </div>
+              <div><label for="oxygenSaturation" class="block text-sm font-semibold mb-1">Oxygen Saturation (SpO₂ %)</label>
                 <input id="oxygenSaturation" type="number" inputmode="numeric" placeholder="e.g., 98" class="vn-field vn-input w-full"/></div>
               <div><label for="bloodSugar" class="block text-sm font-semibold mb-1">Blood Sugar Level (mg/dL)</label>
                 <input id="bloodSugar" type="number" step="0.1" inputmode="decimal" placeholder="e.g., 95" class="vn-field vn-input w-full"/></div>
+              <div><label for="respiratoryRate" class="block text-sm font-semibold mb-1">Respiratory Rate (breaths/min)</label></div>
+              <div><label for="weight" class="block text-sm font-semibold mb-1">Weight (kg)</label>
+                <input id="weight" type="number" step="0.1" inputmode="decimal" placeholder="e.g., 72.4" class="vn-field vn-input w-full"/></div>
               <div class="md:col-span-2"><label for="pain" class="block text-sm font-semibold mb-1">Pain Assessment (0–10)</label>
                 <input id="pain" type="number" min="0" max="10" inputmode="numeric" placeholder="e.g., 3" class="vn-field vn-input w-full"/></div>
             </div>
 
+            <!-- Medications with statuses + notes -->
             <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-              <div><label for="medMorning" class="block text-sm font-semibold mb-1">Medication – Morning</label>
-                <textarea id="medMorning" rows="3" placeholder="Name, dosage, time" class="vn-field vn-textarea w-full"></textarea></div>
-              <div><label for="medAfternoon" class="block text-sm font-semibold mb-1">Medication – Afternoon</label>
-                <textarea id="medAfternoon" rows="3" placeholder="Name, dosage, time" class="vn-field vn-textarea w-full"></textarea></div>
-              <div><label for="medEvening" class="block text-sm font-semibold mb-1">Medication – Evening</label>
-                <textarea id="medEvening" rows="3" placeholder="Name, dosage, time" class="vn-field vn-textarea w-full"></textarea></div>
+              <div>
+                <label class="block text-sm font-semibold mb-1">Medication – Morning</label>
+                <select id="medMorningStatus" class="vn-field vn-input w-full">
+                  <option value="taken">Taken</option>
+                  <option value="skipped">Skipped</option>
+                  <option value="delayed">Delayed</option>
+                </select>
+                <input id="medMorningNote" class="vn-field vn-input w-full mt-2" placeholder="Optional note"/>
+              </div>
+              <div>
+                <label class="block text-sm font-semibold mb-1">Medication – Afternoon</label>
+                <select id="medAfternoonStatus" class="vn-field vn-input w-full">
+                  <option value="taken">Taken</option>
+                  <option value="skipped">Skipped</option>
+                  <option value="delayed">Delayed</option>
+                </select>
+                <input id="medAfternoonNote" class="vn-field vn-input w-full mt-2" placeholder="Optional note"/>
+              </div>
+              <div>
+                <label class="block text-sm font-semibold mb-1">Medication – Evening</label>
+                <select id="medEveningStatus" class="vn-field vn-input w-full">
+                  <option value="taken">Taken</option>
+                  <option value="skipped">Skipped</option>
+                  <option value="delayed">Delayed</option>
+                </select>
+                <input id="medEveningNote" class="vn-field vn-input w-full mt-2" placeholder="Optional note"/>
+              </div>
             </div>
 
             <div>
@@ -140,7 +179,7 @@
             </div>
 
             <div>
-              <label for="nurseName" class="block text-sm font-semibold mb-1">Nurse’s Name (who performed the checks)</label>
+              <label for="nurseName" class="block text-sm font-semibold mb-1">Prepared by (Nurse’s Name)</label>
               <input id="nurseName" type="text" placeholder="Enter nurse's full name" class="vn-field vn-input w-full"/>
             </div>
 
@@ -153,14 +192,14 @@
         </section>
 
         <footer class="px-6 py-4 bg-white/70 text-sm flex items-center justify-between">
-          <span class="font-medium" style="color:#6A0DAD">&copy; <span id="year"></span> Victoria Nurse</span>
-          <span class="italic" style="color:#6A0DAD">Powered by: karlthebrown</span>
+          <span class="font-medium" style="color:#0EA5E9">&copy; <span id="year"></span> Victoria Nurse</span>
+          <span class="italic" style="color:#0EA5E9">Powered by: karlthebrown</span>
         </footer>
       </div>
     </main>
   </div>
 
-  <!-- PDF Template (clean, no background image) -->
+  <!-- PDF Template (clean, medical palette) -->
   <div id="pdfCanvas" class="hidden">
     <div class="pdf-page" id="pdfRoot">
       <div class="pdf-top">
@@ -172,21 +211,21 @@
       </div>
       <hr class="pdf-hr"/>
 
-      <!-- Patient Info -->
+      <!-- Patient / Nurse -->
       <div class="pdf-info">
         <div class="pdf-card"><div class="pdf-label">Patient</div><div class="pdf-value" id="pdfPatientVal">--</div></div>
-        <div class="pdf-card"><div class="pdf-label">Nurse</div><div class="pdf-value" id="pdfNurseVal">--</div></div>
+        <div class="pdf-card"><div class="pdf-label">Prepared by</div><div class="pdf-value" id="pdfNurseVal">--</div></div>
       </div>
 
       <!-- Vitals -->
       <div class="pdf-section-title">Vitals</div>
       <div class="pdf-vitals">
-        <div class="pdf-card"><div class="pdf-label">Temperature</div><div class="pdf-value" id="pdfTempVal">-- °C</div></div>
-        <div class="pdf-card"><div class="pdf-label">Pulse</div><div class="pdf-value" id="pdfPulseVal">-- bpm</div></div>
-        <div class="pdf-card"><div class="pdf-label">Respiratory Rate</div><div class="pdf-value" id="pdfRRVal">-- rpm</div></div>
         <div class="pdf-card"><div class="pdf-label">Blood Pressure</div><div class="pdf-value" id="pdfBPVal">-- mmHg</div></div>
-        <div class="pdf-card"><div class="pdf-label">Oxygen Saturation</div><div class="pdf-value" id="pdfO2Val">-- %</div></div>
-        <div class="pdf-card"><div class="pdf-label">Blood Sugar</div><div class="pdf-value" id="pdfSugarVal">-- mg/dL</div></div>
+        <div class="pdf-card"><div class="pdf-label">Heart Rate</div><div class="pdf-value" id="pdfPulseVal">-- bpm</div></div>
+        <div class="pdf-card"><div class="pdf-label">Temperature</div><div class="pdf-value" id="pdfTempVal">-- °C</div></div>
+        <div class="pdf-card"><div class="pdf-label">SpO₂</div><div class="pdf-value" id="pdfO2Val">-- %</div></div>
+        <div class="pdf-card"><div class="pdf-label">Respiratory Rate</div><div class="pdf-value" id="pdfRRVal">-- /min</div></div>
+        <div class="pdf-card"><div class="pdf-label">Weight</div><div class="pdf-value" id="pdfWeightVal">-- kg</div></div>
         <div class="pdf-card" style="grid-column:1/-1;"><div class="pdf-label">Pain Assessment</div><div class="pdf-value" id="pdfPainVal">-- /10</div></div>
       </div>
 
@@ -207,80 +246,196 @@
   </div>
 
   <script>
+    // ------- Settings / Modes (simple defaults; extend later if needed) -------
+    const MODE_KEY = 'privacyMode';   // 'ephemeral' | 'local'
+    const getMode = () => localStorage.getItem(MODE_KEY) || 'ephemeral';
+
+    const settings = {
+      unitsTemp: localStorage.getItem('unitsTemp') || 'C',
+      unitsWeight: localStorage.getItem('unitsWeight') || 'kg',
+      preparedBy: localStorage.getItem('preparedBy') || ''
+    };
+
+    // ------- Helpers -------
     document.getElementById('year').textContent = new Date().getFullYear();
-
-    const ids=['patientName','temperature','pulse','respiratoryRate','bloodPressure','oxygenSaturation','bloodSugar','pain','medMorning','medAfternoon','medEvening','notes','nurseName'];
+    const ids=['patientName','temperature','pulse','respiratoryRate','sbp','dbp','oxygenSaturation','bloodSugar','weight','pain','medMorningStatus','medMorningNote','medAfternoonStatus','medAfternoonNote','medEveningStatus','medEveningNote','notes','nurseName'];
     const el=id=>document.getElementById(id);
-    const getData=()=>Object.fromEntries(ids.map(k=>[k,(el(k)?.value||'').trim()]));
+    const getVal=id=>(el(id)?.value||'').trim();
 
-    function formatWhatsApp(d){
+    function pad2(n){ return n.toString().padStart(2,'0'); }
+    function fmtDateTime(d = new Date()){
+      return `${d.getFullYear()}-${pad2(d.getMonth()+1)}-${pad2(d.getDate())} ${pad2(d.getHours())}:${pad2(d.getMinutes())}`;
+    }
+
+    function buildRecord(){
+      const rec = {
+        timestamp: Date.now(),
+        session: (new Date().getHours() < 12 ? 'AM' : 'PM'),
+        bp: { sbp: getVal('sbp'), dbp: getVal('dbp') },
+        hr: getVal('pulse'),
+        temp: getVal('temperature'),
+        spo2: getVal('oxygenSaturation'),
+        rr: getVal('respiratoryRate'),
+        weight: getVal('weight'),
+        sugar: getVal('bloodSugar'),
+        meds: {
+          morning:  { status: getVal('medMorningStatus') || 'taken',   note: getVal('medMorningNote') },
+          afternoon:{ status: getVal('medAfternoonStatus') || 'taken', note: getVal('medAfternoonNote') },
+          evening:  { status: getVal('medEveningStatus') || 'taken',   note: getVal('medEveningNote') }
+        },
+        notes: getVal('notes'),
+        preparedBy: settings.preparedBy || getVal('nurseName') || ''
+      };
+      return rec;
+    }
+
+    function shareText(rec){
+      const medsLine = [
+        `Morning – ${rec.meds.morning.status}${rec.meds.morning.note?` (${rec.meds.morning.note})`:''}`,
+        `Afternoon – ${rec.meds.afternoon.status}${rec.meds.afternoon.note?` (${rec.meds.afternoon.note})`:''}`,
+        `Evening – ${rec.meds.evening.status}${rec.meds.evening.note?` (${rec.meds.evening.note})`:''}`
+      ].join(' | ');
+
       return [
-        '🩺 *Victoria Nurse — Care Together*',
-        '——————————————',
-        `*Patient*: ${d.patientName||'-'}`,
-        '',
-        '*Vitals*',
-        `• Temperature (°C): ${d.temperature||'-'}`,
-        `• Pulse (bpm): ${d.pulse||'-'}`,
-        `• Respiratory Rate: ${d.respiratoryRate||'-'}`,
-        `• Blood Pressure: ${d.bloodPressure||'-'}`,
-        `• Oxygen Saturation: ${d.oxygenSaturation||'-'}`,
-        `• Blood Sugar (mg/dL): ${d.bloodSugar||'-'}`,
-        `• Pain (0–10): ${d.pain||'-'}`,
-        '',
-        '*Medication*',
-        `• Morning: ${d.medMorning||'-'}`,
-        `• Afternoon: ${d.medAfternoon||'-'}`,
-        `• Evening: ${d.medEvening||'-'}`,
-        '',
-        `*Notes*: ${d.notes||'-'}`,
-        `*Nurse*: ${d.nurseName||'-'}`,
-        '——————————————',
-        'Sent via Victoria Nurse'
+        `Victoria Nurse – Patient Vitals (${rec.session})`,
+        `Date: ${fmtDateTime(new Date(rec.timestamp))}`,
+        `BP: ${rec.bp.sbp}/${rec.bp.dbp} mmHg | HR: ${rec.hr} bpm | Temp: ${rec.temp} °C`,
+        `SpO₂: ${rec.spo2}% | RR: ${rec.rr}/min | Weight: ${rec.weight} ${settings.unitsWeight}`,
+        `Meds: ${medsLine}`,
+        `Notes: ${rec.notes || '-'}`,
+        `Prepared by: ${rec.preparedBy || '-'} – ${fmtDateTime(new Date(rec.timestamp)).slice(11)}`,
+        `Powered by: KarltheBrown`
       ].join('\n');
     }
 
-    async function generatePDF(d){
-      document.getElementById('pdfPatientVal').textContent = d.patientName || '--';
-      document.getElementById('pdfNurseVal').textContent   = d.nurseName || '--';
-      document.getElementById('pdfTempVal').textContent  = (d.temperature||'--') + ' °C';
-      document.getElementById('pdfPulseVal').textContent = (d.pulse||'--') + ' bpm';
-      document.getElementById('pdfRRVal').textContent    = (d.respiratoryRate||'--') + ' rpm';
-      document.getElementById('pdfBPVal').textContent    = (d.bloodPressure||'--') + ' mmHg';
-      document.getElementById('pdfO2Val').textContent    = (d.oxygenSaturation||'--') + ' %';
-      document.getElementById('pdfSugarVal').textContent = (d.bloodSugar||'--') + ' mg/dL';
-      document.getElementById('pdfPainVal').textContent  = (d.pain||'--') + ' /10';
-      document.getElementById('pdfMedAM').textContent = d.medMorning || '--';
-      document.getElementById('pdfMedPM').textContent = d.medAfternoon || '--';
-      document.getElementById('pdfMedEV').textContent = d.medEvening || '--';
-      document.getElementById('pdfNotes').textContent = d.notes || '--';
+    // ------- PDF (clean, medical) -------
+    async function makePdf(rec){
+      const { jsPDF } = window.jspdf;
+      const pdf = new jsPDF('p','pt','a4');
+      const W = pdf.internal.pageSize.getWidth();
+      let y = 40;
 
-      const wrap=document.getElementById('pdfCanvas'), node=document.getElementById('pdfRoot');
-      const prevClass=wrap.className; wrap.classList.remove('hidden');
-      const prevStyle={position:wrap.style.position,left:wrap.style.left,top:wrap.style.top,visibility:wrap.style.visibility};
-      wrap.style.position='fixed'; wrap.style.left='-99999px'; wrap.style.top='0'; wrap.style.visibility='visible';
+      // Header bar (teal→sky→indigo proxy strip)
+      pdf.setFillColor(14,165,233); pdf.rect(20, 20, W-40, 6, 'F');
 
-      try{
-        const canvas=await html2canvas(node,{scale:2,backgroundColor:'#ffffff'});
-        const imgData=canvas.toDataURL('image/png');
-        const { jsPDF }=window.jspdf; const pdf=new jsPDF('p','pt','a4');
-        const pageWidth=pdf.internal.pageSize.getWidth();
-        const imgWidth=pageWidth-40; const imgHeight=canvas.height*(imgWidth/canvas.width);
-        pdf.addImage(imgData,'PNG',20,20,imgWidth,imgHeight,'','FAST');
-        const safe=(d.patientName||'patient').replace(/[^\w\-]+/g,'_');
-        pdf.save(`Victoria_Nurse_${safe}_${new Date().toISOString().slice(0,10)}.pdf`);
-      } finally {
-        wrap.style.position=prevStyle.position; wrap.style.left=prevStyle.left; wrap.style.top=prevStyle.top;
-        wrap.style.visibility=prevStyle.visibility; wrap.className=prevClass;
-      }
+      const logo = new Image();
+      logo.src = './icons/icon-192.png';
+      await new Promise(r => { logo.onload = r; logo.onerror = r; });
+      pdf.addImage(logo, 'PNG', 20, 32, 40, 40);
+
+      pdf.setFont('helvetica','bold'); pdf.setFontSize(20);
+      pdf.setTextColor(14,165,233); // sky-500
+      pdf.text('Victoria Nurse', 70, 52);
+      pdf.setFont('times','italic'); pdf.setFontSize(12);
+      pdf.setTextColor(20,83,136); // sky-800-ish
+      pdf.text('Care Together', 70, 70);
+
+      y = 96;
+      pdf.setDrawColor(230); pdf.line(20, y, W-20, y); y += 18;
+
+      pdf.setFont('helvetica','bold'); pdf.setFontSize(12); pdf.setTextColor(20,23,42);
+      const left = 28, colW = (W - 56) / 2 - 10, right = left + colW + 20;
+
+      const leftRows = [
+        ['Blood Pressure',`${rec.bp.sbp}/${rec.bp.dbp} mmHg`],
+        ['Heart Rate',`${rec.hr} bpm`],
+        ['Temperature',`${rec.temp} °C`],
+        ['SpO₂',`${rec.spo2} %`],
+        ['Respiratory Rate',`${rec.rr} /min`],
+        ['Weight',`${rec.weight} ${settings.unitsWeight}`]
+      ];
+      leftRows.forEach(([k,v],i) => {
+        const yy = y + i*26;
+        pdf.setTextColor(100,116,139); pdf.setFontSize(10); pdf.text(k, left, yy);
+        pdf.setTextColor(15,23,42); pdf.setFontSize(14); pdf.text(v, left, yy+14);
+      });
+
+      // Meds
+      pdf.setTextColor(20,23,42); pdf.setFontSize(12); pdf.setFont('helvetica','bold');
+      pdf.text('Medications', right, y);
+      pdf.setFont('helvetica','normal'); pdf.setFontSize(12);
+      const meds = [
+        `Morning – ${rec.meds.morning.status}${rec.meds.morning.note?` (${rec.meds.morning.note})`:''}`,
+        `Afternoon – ${rec.meds.afternoon.status}${rec.meds.afternoon.note?` (${rec.meds.afternoon.note})`:''}`,
+        `Evening – ${rec.meds.evening.status}${rec.meds.evening.note?` (${rec.meds.evening.note})`:''}`
+      ];
+      let ry = y + 16;
+      meds.forEach(line => { pdf.text(line, right, ry); ry += 18; });
+
+      // Notes
+      y = Math.max(y + leftRows.length*26 + 8, ry + 10);
+      pdf.setDrawColor(230); pdf.line(20, y, W-20, y); y += 18;
+      pdf.setFont('helvetica','bold'); pdf.setFontSize(12); pdf.setTextColor(20,23,42);
+      pdf.text('Notes', 28, y); y += 14;
+      pdf.setFont('helvetica','normal'); pdf.setFontSize(12); pdf.setTextColor(31,41,55);
+      const notes = rec.notes || '-';
+      const lines = pdf.splitTextToSize(notes, W-56);
+      pdf.text(lines, 28, y); y += lines.length * 14 + 10;
+
+      // Footer
+      pdf.setFontSize(10); pdf.setTextColor(107,114,128);
+      pdf.text(`Prepared by: ${rec.preparedBy || '-'} • ${fmtDateTime(new Date(rec.timestamp))}`, 28, y+10);
+      pdf.text('Powered by: KarltheBrown', W-160, y+10);
+
+      return pdf.output('blob');
     }
 
-    function clearAll(){ ids.forEach(k=>{ const e=el(k); if(e) e.value=''; }); }
+    // ------- Share handlers (WhatsApp/Email/PDF) -------
+    function clearAll(){ const f=document.getElementById('formVitals'); if (f) f.reset(); }
 
-    document.getElementById('btnPreview').addEventListener('click', async ()=>{ const d=getData(); await generatePDF(d); clearAll(); });
-    document.getElementById('btnWhatsApp').addEventListener('click', ()=>{ const d=getData(); const url=`https://wa.me/?text=${encodeURIComponent(formatWhatsApp(d))}`; window.open(url,'_blank'); clearAll(); });
-    document.getElementById('btnEmail').addEventListener('click', ()=>{ const d=getData(); try{ generatePDF(d); }catch(_){} const subject=`Patient Vitals — ${d.patientName||'Unnamed'} — Victoria Nurse`; const body=formatWhatsApp(d).replace(/\*/g,''); window.location.href=`mailto:?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`; clearAll(); });
+    function formatWhatsApp(rec){ return shareText(rec); }
 
+    document.getElementById('btnPreview').addEventListener('click', async ()=>{
+      const rec = buildRecord();
+      // Map to PDF placeholders
+      document.getElementById('pdfPatientVal').textContent = (document.getElementById('patientName')?.value||'-');
+      document.getElementById('pdfNurseVal').textContent   = rec.preparedBy || '-';
+      document.getElementById('pdfBPVal').textContent      = `${rec.bp.sbp}/${rec.bp.dbp} mmHg`;
+      document.getElementById('pdfPulseVal').textContent   = `${rec.hr} bpm`;
+      document.getElementById('pdfTempVal').textContent    = `${rec.temp} °C`;
+      document.getElementById('pdfO2Val').textContent      = `${rec.spo2} %`;
+      document.getElementById('pdfRRVal').textContent      = `${rec.rr} /min`;
+      document.getElementById('pdfWeightVal').textContent  = `${rec.weight} ${settings.unitsWeight}`;
+      document.getElementById('pdfPainVal').textContent    = `${rec.pain||document.getElementById('pain')?.value||'-'} /10`;
+      document.getElementById('pdfMedAM').textContent      = `Status: ${rec.meds.morning.status}${rec.meds.morning.note?` (${rec.meds.morning.note})`:''}`;
+      document.getElementById('pdfMedPM').textContent      = `Status: ${rec.meds.afternoon.status}${rec.meds.afternoon.note?` (${rec.meds.afternoon.note})`:''}`;
+      document.getElementById('pdfMedEV').textContent      = `Status: ${rec.meds.evening.status}${rec.meds.evening.note?` (${rec.meds.evening.note})`:''}`;
+      document.getElementById('pdfNotes').textContent      = rec.notes || '-';
+
+      // Render to PDF and download
+      const blob = await makePdf(rec);
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url; a.download = `Victoria_Nurse_${(document.getElementById('patientName')?.value||'patient').replace(/[^\w\-]+/g,'_')}_${new Date().toISOString().slice(0,10)}.pdf`;
+      a.click();
+      setTimeout(()=>URL.revokeObjectURL(url), 3000);
+      clearAll();
+    });
+
+    document.getElementById('btnWhatsApp').addEventListener('click', ()=>{
+      const rec = buildRecord();
+      const url = `https://wa.me/?text=${encodeURIComponent(formatWhatsApp(rec))}`;
+      window.open(url,'_blank');
+      clearAll();
+    });
+
+    document.getElementById('btnEmail').addEventListener('click', async ()=>{
+      const rec = buildRecord();
+      // Create & download PDF (client-side), plus open email with structured text
+      const blob = await makePdf(rec);
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = `Victoria_Nurse_${(document.getElementById('patientName')?.value||'patient').replace(/[^\w\-]+/g,'_')}_${new Date().toISOString().slice(0,10)}.pdf`;
+      a.click();
+      setTimeout(()=>URL.revokeObjectURL(a.href), 3000);
+
+      const subject = `Patient Vitals — ${document.getElementById('patientName')?.value||'Unnamed'} — ${rec.session}`;
+      const body = shareText(rec);
+      window.location.href = `mailto:?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+      clearAll();
+    });
+
+    // ------- Register SW -------
     if('serviceWorker' in navigator){
       window.addEventListener('load',()=>navigator.serviceWorker.register(`./service-worker.js?v=${window.__VN_VER__}`,{scope:'./'}).catch(()=>{}));
     }
