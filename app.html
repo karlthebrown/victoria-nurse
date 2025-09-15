@@ -6,72 +6,38 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
   <title>Victoria Nurse — Care Together</title>
 
-  <!-- VERSION -->
   <script>window.__VN_VER__="2025-09-17-28";</script>
-
-  <!-- PWA -->
   <link rel="manifest" href="./manifest.webmanifest?v=2025-09-17-28"/>
   <meta name="theme-color" content="#0EA5E9"/>
-
-  <!-- Icons -->
   <link rel="icon" type="image/png" href="./icons/favicon.png?v=2025-09-17-28"/>
   <link rel="apple-touch-icon" sizes="180x180" href="./icons/icon-180.png?v=2025-09-17-28"/>
   <link rel="apple-touch-icon" href="./icons/icon-192.png?v=2025-09-17-28"/>
 
-  <!-- Fonts & Tailwind -->
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&display=swap" rel="stylesheet"/>
   <script src="https://cdn.tailwindcss.com"></script>
 
-  <!-- PDF libs -->
   <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
 
   <style>
-    :root{
-      --med-teal:#14B8A6;   /* teal-500 */
-      --med-sky:#0EA5E9;    /* sky-500 */
-      --med-indigo:#1E40AF; /* indigo-800 */
-      --label:#0891B2;      /* cyan-600 for labels/rings */
-    }
+    :root{ --med-teal:#14B8A6; --med-sky:#0EA5E9; --med-indigo:#1E40AF; --label:#0891B2; }
     body { background: linear-gradient(135deg, #0EA5E9 0%, #14B8A6 50%, #1E40AF 100%); }
-
     label{ color:var(--label); }
-    .vn-field{
-      color:var(--label);
-      padding:.95rem 1.1rem; border-radius:.9rem; border:1px solid #cbd5e1; background:#fff; line-height:1.6rem;
-    }
+    .vn-field{ color:var(--label); padding:.95rem 1.1rem; border-radius:.9rem; border:1px solid #cbd5e1; background:#fff; line-height:1.6rem; }
     .vn-field:focus{ outline:none; box-shadow:0 0 0 2px var(--label); border-color:var(--label); }
     .vn-field::placeholder{ color:#98a6b3; opacity:.85; }
-    .vn-input{ height:3.5rem; }
-    .vn-textarea{ min-height:3.5rem; }
-
+    .vn-input{ height:3.5rem; } .vn-textarea{ min-height:3.5rem; }
     .vn-tagline{ font-family:"Playfair Display", ui-serif, Georgia, serif; color:#E6F4FF; }
-
-    .btn-grad{
-      background-image:linear-gradient(90deg, var(--med-teal), var(--med-sky), var(--med-indigo));
-      color:#fff; font-weight:600; padding:.95rem 1.2rem; border-radius:1.1rem;
-      transition: transform .12s ease, opacity .12s ease; box-shadow:0 14px 35px rgba(0,0,0,.25);
-    }
+    .btn-grad{ background-image:linear-gradient(90deg, var(--med-teal), var(--med-sky), var(--med-indigo)); color:#fff; font-weight:600; padding:.95rem 1.2rem; border-radius:1.1rem; transition: transform .12s ease, opacity .12s ease; box-shadow:0 14px 35px rgba(0,0,0,.25); }
     .btn-grad:hover{ opacity:.97; transform: translateY(-1px); }
     .btn-grad:active{ transform: translateY(0) scale(.98); }
 
-    /* PDF styles */
+    /* PDF styling */
     .pdf-page{ width:794px; background:#ffffff; color:#111827; padding:28px; font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto; }
     .pdf-top{ display:flex; align-items:center; gap:14px; }
     .pdf-logo{ width:56px; height:56px; border-radius:14px; }
-    .pdf-brand{ line-height:1.1; }
-    .pdf-title{
-      font-weight:900; font-size:26px;
-      background: linear-gradient(90deg, var(--med-teal), var(--med-sky), var(--med-indigo));
-      -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent; color:transparent;
-      letter-spacing:.2px;
-    }
-    .pdf-tag{
-      font-family:"Playfair Display", ui-serif, Georgia, serif;
-      font-size:14px; margin-top:2px;
-      background: linear-gradient(90deg, var(--med-sky), var(--med-indigo));
-      -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent; color:transparent;
-    }
+    .pdf-title{ font-weight:900; font-size:26px; background: linear-gradient(90deg, var(--med-teal), var(--med-sky), var(--med-indigo)); -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent; color:transparent; }
+    .pdf-tag{ font-family:"Playfair Display", ui-serif, Georgia, serif; font-size:14px; background: linear-gradient(90deg, var(--med-sky), var(--med-indigo)); -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent; color:transparent; }
     .pdf-hr{ border:none; border-top:1px solid #e5e7eb; margin:14px 0 18px; }
     .pdf-section-title{ font-weight:800; color:#111827; margin:12px 0 8px; }
     .pdf-info{ display:grid; grid-template-columns:1fr 1fr; gap:10px; }
@@ -128,7 +94,7 @@
 
               <div><label for="oxygenSaturation" class="block text-sm font-semibold mb-1">Oxygen Saturation (SpO₂ %)</label>
                 <input id="oxygenSaturation" type="number" inputmode="numeric" placeholder="e.g., 98" class="vn-field vn-input w-full"/></div>
-              <div><label for="bloodSugar" class="block text sm font-semibold mb-1">Blood Sugar Level (mg/dL)</label>
+              <div><label for="bloodSugar" class="block text-sm font-semibold mb-1">Blood Sugar Level (mg/dL)</label>
                 <input id="bloodSugar" type="number" step="0.1" inputmode="decimal" placeholder="e.g., 95" class="vn-field vn-input w-full"/></div>
 
               <div><label for="weight" class="block text-sm font-semibold mb-1">Weight (kg)</label>
@@ -195,12 +161,12 @@
     </main>
   </div>
 
-  <!-- PDF Template (unchanged) -->
+  <!-- PDF Template -->
   <div id="pdfCanvas" class="hidden">
     <div class="pdf-page" id="pdfRoot">
       <div class="pdf-top">
         <img class="pdf-logo" src="./icons/icon-192.png" alt="Logo"/>
-        <div class="pdf-brand">
+        <div>
           <div class="pdf-title">Victoria Nurse</div>
           <div class="pdf-tag">Care Together</div>
         </div>
@@ -310,17 +276,14 @@
       pdf.addImage(logo, 'PNG', 20, 32, 40, 40);
 
       pdf.setFont('helvetica','bold'); pdf.setFontSize(20);
-      pdf.setTextColor(14,165,233);
-      pdf.text('Victoria Nurse', 70, 52);
+      pdf.setTextColor(14,165,233); pdf.text('Victoria Nurse', 70, 52);
       pdf.setFont('times','italic'); pdf.setFontSize(12);
-      pdf.setTextColor(20,83,136);
-      pdf.text('Care Together', 70, 70);
+      pdf.setTextColor(20,83,136); pdf.text('Care Together', 70, 70);
 
       y = 96;
       pdf.setDrawColor(230); pdf.line(20, y, W-20, y); y += 18;
 
       const left = 28, colW = (W - 56) / 2 - 10, right = left + colW + 20;
-
       const leftRows = [
         ['Blood Pressure',`${rec.bp.sbp}/${rec.bp.dbp} mmHg`],
         ['Heart Rate',`${rec.hr} bpm`],
@@ -350,8 +313,7 @@
       pdf.setFont('helvetica','bold'); pdf.setFontSize(12); pdf.setTextColor(20,23,42);
       pdf.text('Notes', 28, y); y += 14;
       pdf.setFont('helvetica','normal'); pdf.setFontSize(12); pdf.setTextColor(31,41,55);
-      const notes = rec.notes || '-';
-      const lines = pdf.splitTextToSize(notes, W-56);
+      const lines = pdf.splitTextToSize(rec.notes || '-', W-56);
       pdf.text(lines, 28, y); y += lines.length * 14 + 10;
 
       pdf.setFontSize(10); pdf.setTextColor(107,114,128);
@@ -395,10 +357,6 @@
       window.location.href = `mailto:?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
       clearAll();
     });
-
-    if('serviceWorker' in navigator){
-      window.addEventListener('load',()=>navigator.serviceWorker.register(`./service-worker.js?v=${window.__VN_VER__}`,{scope:'./'}).catch(()=>{}));
-    }
   </script>
 </body>
 </html>
