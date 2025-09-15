@@ -1,5 +1,5 @@
-/* Victoria Nurse — Service Worker (v22) */
-const CACHE_NAME = 'victoria-nurse-v22';
+/* Victoria Nurse — Service Worker (v24) */
+const CACHE_NAME = 'victoria-nurse-v24';
 
 const ASSETS = [
   './',
@@ -12,13 +12,13 @@ const ASSETS = [
   './icons/favicon.png?v=2025-09-12-11',
   './images/welcome-victoria-nurse.jpg',
   './images/welcome-victoria-nurse.jpg?v=2025-09-12-11'
-  // pdf-vitals-bg.jpg not used in v22
 ];
 
 self.addEventListener('install', (event) => {
   event.waitUntil(caches.open(CACHE_NAME).then(c => c.addAll(ASSETS)));
   self.skipWaiting();
 });
+
 self.addEventListener('activate', (event) => {
   event.waitUntil((async ()=>{
     const keys = await caches.keys();
@@ -26,6 +26,7 @@ self.addEventListener('activate', (event) => {
   })());
   self.clients.claim();
 });
+
 self.addEventListener('fetch', (event) => {
   const req = event.request;
   if (req.method !== 'GET') return;
@@ -33,6 +34,7 @@ self.addEventListener('fetch', (event) => {
   const url = new URL(req.url);
   const isHTML = req.destination === 'document' || req.headers.get('accept')?.includes('text/html');
 
+  // Network-first for HTML
   if (isHTML) {
     event.respondWith((async () => {
       try { return await fetch(req); }
@@ -47,6 +49,7 @@ self.addEventListener('fetch', (event) => {
     return;
   }
 
+  // Cache-first for same-origin static assets
   if (url.origin === location.origin) {
     event.respondWith((async () => {
       const cached = await caches.match(req);
