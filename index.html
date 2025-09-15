@@ -9,7 +9,7 @@
   <script src="https://cdn.tailwindcss.com"></script>
 
   <!-- Version + PWA -->
-  <script>window.__VN_VER__="2025-09-17-31";</script>
+  <script>window.__VN_VER__="2025-09-17-33";</script>
   <link rel="manifest" href="./manifest.webmanifest?v=2025-09-17-31"/>
   <meta name="theme-color" content="#0EA5E9"/>
   <link rel="icon" type="image/png" href="./icons/favicon.png?v=2025-09-17-31"/>
@@ -18,37 +18,68 @@
   <link rel="preload" as="image" href="./images/welcome-victoria-nurse-medical.png?v=2025-09-17-31"/>
 
   <style>
+    /* ===== Position real button over artwork button (tweak if needed) ===== */
+    :root{
+      --cta-y: 73vh;      /* vertical center of button (try 71–76 if you need) */
+      --cta-w: 78vw;      /* button width (try 70–85) */
+      --cta-max: 460px;   /* max width on larger phones */
+    }
+
     html, body { height:100%; margin:0; background:#081a2d; }
     .wrap { position:relative; width:100%; height:100svh; overflow:hidden; }
     .hero { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; object-position:center; display:block; }
-    /* Position the real clickable button slightly below the artwork’s button */
-    :root { --cta-y: 72vh; }                 /* tweak (e.g., 70vh/74vh) if needed */
-    .cta { position:absolute; left:50%; transform:translateX(-50%); top:var(--cta-y); }
+
+    .cta-wrap{
+      position:absolute; left:50%;
+      top:var(--cta-y);
+      transform:translate(-50%, -50%);
+      width:min(var(--cta-w), var(--cta-max));
+    }
     .btn {
+      display:block; width:100%;
       background-image:linear-gradient(90deg,#14B8A6,#0EA5E9,#1E40AF);
-      color:#fff; font-weight:700; padding:.7rem 1.3rem; border-radius:1.25rem;
-      box-shadow:0 12px 30px rgba(0,0,0,.28); font-size:1rem;
+      color:#fff; font-weight:700; padding:0.95rem 1.25rem;
+      border-radius:999px; text-align:center; font-size:1.05rem;
+      box-shadow:0 10px 28px rgba(0,0,0,.28);
       transition: transform .12s ease, opacity .12s ease;
     }
-    .btn:hover{ opacity:.97; transform:translateX(-50%) translateY(-1px); }
-    .btn:active{ transform:translateX(-50%) scale(.98); }
+    .btn:hover{ opacity:.97; transform:translateY(-1px); }
+    .btn:active{ transform:translateY(0) scale(.985); }
+
     .footer { position:absolute; bottom:14px; width:100%; text-align:center; color:#e8f1fb; opacity:.85; font-size:.75rem; font-style:italic; }
+
+    /* ===== Smooth page transition (motion-safe) ===== */
+    body { opacity:1; }
+    @media (prefers-reduced-motion: no-preference) {
+      body { transition: opacity .28s ease; }
+      body.leaving { opacity:0; }
+      /* optional: fade a dark veil for a cleaner cut */
+      .veil {
+        pointer-events:none; position:fixed; inset:0; background:#000; opacity:0; transition:opacity .28s ease;
+      }
+      .veil.on { opacity:.55; }
+    }
   </style>
 </head>
 <body class="text-white antialiased">
   <div class="wrap">
     <img src="./images/welcome-victoria-nurse-medical.png?v=2025-09-17-31" alt="Welcome to Victoria Nurse" class="hero"/>
 
-    <!-- Single CTA -->
-    <a href="app.html" class="cta btn inline-block">Get Started</a>
+    <!-- Real clickable button over the artwork button -->
+    <div class="cta-wrap">
+      <a href="app.html" id="ctaStart" class="btn" aria-label="Get Started and open the main recording page">Get Started</a>
+    </div>
 
     <div class="footer">Powered by: karlthebrown</div>
   </div>
 
+  <!-- Optional transition veil (only visible during the fade) -->
+  <div class="veil" id="veil"></div>
+
   <!-- One-time cache refresh for this version -->
   <script>
     (async () => {
-      const KEY = 'vn_migrate_v31';
+      const KEY = 'vn_migrate_v33';
       if (!localStorage.getItem(KEY)) {
         try {
           if ('serviceWorker' in navigator) {
@@ -63,6 +94,21 @@
           location.reload();
         } catch(_) {}
       }
+    })();
+
+    // Smooth fade to app.html (respects reduced motion)
+    (function(){
+      const link = document.getElementById('ctaStart');
+      const veil = document.getElementById('veil');
+      const reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+      link.addEventListener('click', function(ev){
+        if (reduce) return; // no animation; let normal navigation happen
+        ev.preventDefault();
+        document.body.classList.add('leaving');
+        veil?.classList.add('on');
+        setTimeout(() => { window.location.href = link.getAttribute('href'); }, 280);
+      });
     })();
   </script>
 </body>
