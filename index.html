@@ -10,19 +10,18 @@
 
   <!-- Version + PWA -->
   <script>window.__VN_VER__="2025-09-17-33";</script>
-  <link rel="manifest" href="./manifest.webmanifest?v=2025-09-17-31"/>
+  <link rel="manifest" href="./manifest.webmanifest?v=2025-09-17-33"/>
   <meta name="theme-color" content="#0EA5E9"/>
-  <link rel="icon" type="image/png" href="./icons/favicon.png?v=2025-09-17-31"/>
+  <link rel="icon" type="image/png" href="./icons/favicon.png?v=2025-09-17-33"/>
 
   <!-- Preload hero -->
-  <link rel="preload" as="image" href="./images/welcome-victoria-nurse-medical.png?v=2025-09-17-31"/>
+  <link rel="preload" as="image" href="./images/welcome-victoria-nurse-medical.png?v=2025-09-17-33"/>
 
   <style>
-    /* ===== Position real button over artwork button (tweak if needed) ===== */
     :root{
-      --cta-y: 73vh;      /* vertical center of button (try 71–76 if you need) */
-      --cta-w: 78vw;      /* button width (try 70–85) */
-      --cta-max: 460px;   /* max width on larger phones */
+      --cta-y: 73vh;
+      --cta-w: 78vw;
+      --cta-max: 460px;
     }
 
     html, body { height:100%; margin:0; background:#081a2d; }
@@ -48,38 +47,32 @@
 
     .footer { position:absolute; bottom:14px; width:100%; text-align:center; color:#e8f1fb; opacity:.85; font-size:.75rem; font-style:italic; }
 
-    /* ===== Smooth page transition (motion-safe) ===== */
+    /* Smooth fade */
     body { opacity:1; }
     @media (prefers-reduced-motion: no-preference) {
       body { transition: opacity .28s ease; }
       body.leaving { opacity:0; }
-      /* optional: fade a dark veil for a cleaner cut */
-      .veil {
-        pointer-events:none; position:fixed; inset:0; background:#000; opacity:0; transition:opacity .28s ease;
-      }
+      .veil { pointer-events:none; position:fixed; inset:0; background:#000; opacity:0; transition:opacity .28s ease; }
       .veil.on { opacity:.55; }
     }
   </style>
 </head>
 <body class="text-white antialiased">
   <div class="wrap">
-    <img src="./images/welcome-victoria-nurse-medical.png?v=2025-09-17-31" alt="Welcome to Victoria Nurse" class="hero"/>
+    <img src="./images/welcome-victoria-nurse-medical.png?v=2025-09-17-33" alt="Welcome to Victoria Nurse" class="hero"/>
 
-    <!-- Real clickable button over the artwork button -->
     <div class="cta-wrap">
-      <a href="app.html" id="ctaStart" class="btn" aria-label="Get Started and open the main recording page">Get Started</a>
+      <a href="app.html" id="ctaStart" class="btn">Get Started</a>
     </div>
 
     <div class="footer">Powered by: karlthebrown</div>
   </div>
 
-  <!-- Optional transition veil (only visible during the fade) -->
   <div class="veil" id="veil"></div>
 
-  <!-- One-time cache refresh for this version -->
   <script>
     (async () => {
-      const KEY = 'vn_migrate_v33';
+      const KEY = 'vn_migrate_v33_index';
       if (!localStorage.getItem(KEY)) {
         try {
           if ('serviceWorker' in navigator) {
@@ -96,14 +89,13 @@
       }
     })();
 
-    // Smooth fade to app.html (respects reduced motion)
     (function(){
       const link = document.getElementById('ctaStart');
       const veil = document.getElementById('veil');
       const reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
       link.addEventListener('click', function(ev){
-        if (reduce) return; // no animation; let normal navigation happen
+        if (reduce) return;
         ev.preventDefault();
         document.body.classList.add('leaving');
         veil?.classList.add('on');
