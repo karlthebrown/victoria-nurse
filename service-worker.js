@@ -1,17 +1,17 @@
-/* Victoria Nurse — Service Worker (v24) */
-const CACHE_NAME = 'victoria-nurse-v24';
+/* Victoria Nurse — Service Worker (v28) */
+const CACHE_NAME = 'victoria-nurse-v28';
 
 const ASSETS = [
   './',
   './index.html',
   './app.html',
-  './manifest.webmanifest?v=2025-09-12-11',
-  './icons/icon-192.png?v=2025-09-12-11',
-  './icons/icon-512.png?v=2025-09-12-11',
-  './icons/icon-180.png?v=2025-09-12-11',
-  './icons/favicon.png?v=2025-09-12-11',
-  './images/welcome-victoria-nurse.jpg',
-  './images/welcome-victoria-nurse.jpg?v=2025-09-12-11'
+  './manifest.webmanifest?v=2025-09-17-28',
+  './icons/icon-192.png?v=2025-09-17-28',
+  './icons/icon-512.png?v=2025-09-17-28',
+  './icons/icon-180.png?v=2025-09-17-28',
+  './icons/favicon.png?v=2025-09-17-28',
+  './images/welcome-victoria-nurse-medical.png',
+  './images/welcome-victoria-nurse-medical.png?v=2025-09-17-28'
 ];
 
 self.addEventListener('install', (event) => {
