@@ -2,88 +2,38 @@
 <html lang="en">
 <head>
   <meta charset="utf-8"/>
+  <meta http-equiv="Cache-Control" content="no-store, max-age=0"/>
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
-  <title>Victoria Nurse — Care Together</title>
+  <title>Victoria Nurse</title>
 
-  <!-- Tailwind -->
-  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Force a new SW fetch/version -->
+  <script>window.__VN_VER__="2025-09-17-30";</script>
 
-  <!-- Version + PWA (keep existing v28) -->
-  <script>window.__VN_VER__="2025-09-17-28";</script>
-  <link rel="manifest" href="./manifest.webmanifest?v=2025-09-17-28"/>
+  <!-- Minimal quick redirect (works even if JS is blocked later via meta) -->
+  <meta http-equiv="refresh" content="0; url=./app.html">
+
+  <link rel="manifest" href="./manifest.webmanifest?v=2025-09-17-30"/>
   <meta name="theme-color" content="#0EA5E9"/>
-  <link rel="icon" type="image/png" href="./icons/favicon.png?v=2025-09-17-28"/>
-  <link rel="apple-touch-icon" sizes="180x180" href="./icons/icon-180.png?v=2025-09-17-28"/>
-
-  <!-- Preload hero -->
-  <link rel="preload" as="image" href="./images/welcome-victoria-nurse-medical.png?v=2025-09-17-28"/>
+  <link rel="icon" type="image/png" href="./icons/favicon.png?v=2025-09-17-30"/>
 
   <style>
-    html, body { height:100%; margin:0; background:#000; }
-    .landing-wrap { position:relative; width:100%; height:100svh; overflow:hidden; }
-    .landing-img { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; object-position:center; display:block; }
-
-    .btn-grad{
-      background-image:linear-gradient(90deg, #14B8A6, #0EA5E9, #1E40AF); /* teal→sky→indigo */
-      color:#fff; font-weight:600; padding:.625rem 1.25rem; border-radius:1rem; font-size:.95rem;
-      transition: transform .12s ease, opacity .12s ease; box-shadow:0 14px 35px rgba(0,0,0,.25);
-    }
-    @media (min-width:768px){ .btn-grad{ font-size:1rem; } }
-    .btn-grad:hover{ opacity:.97; transform: translateY(-1px); }
-    .btn-grad:active{ transform: translateY(0) scale(.98); }
-
-    /* Soft text shadow to keep text readable on bright hero areas */
-    .soft-shadow { text-shadow: 0 2px 18px rgba(0,0,0,.35); }
+    html,body{height:100%;margin:0;background:#0b1220;color:#e2e8f0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Inter,Arial;}
+    .wrap{height:100%;display:grid;place-items:center;text-align:center;padding:24px}
+    .hint{opacity:.7;font-size:.9rem}
+    a{color:#38bdf8;text-decoration:none}
   </style>
 </head>
-<body class="text-white antialiased">
-  <div class="landing-wrap">
-    <!-- Full-bleed background -->
-    <img
-      src="./images/welcome-victoria-nurse-medical.png?v=2025-09-17-28"
-      alt="Welcome to Victoria Nurse"
-      class="landing-img"
-    />
-
-    <!-- Overlay content: Headline → Tagline → CTA -->
-    <div class="absolute inset-0 flex flex-col items-center justify-center text-center px-5">
-      <!-- Headline -->
-      <h1 class="soft-shadow font-extrabold tracking-tight text-white text-4xl md:text-5xl mb-4">
-        Welcome to Victoria Nurse
-      </h1>
-      <!-- Tagline -->
-      <p class="soft-shadow text-white/90 text-sm md:text-base mb-6">
-        Record patient readings in seconds, share in moments.
-      </p>
-      <!-- Single CTA -->
-      <a href="app.html" class="btn-grad inline-flex items-center justify-center">Get Started</a>
+<body>
+  <div class="wrap">
+    <div>
+      <div style="font-weight:800;font-size:1.15rem;margin-bottom:.25rem">Loading Victoria Nurse…</div>
+      <div class="hint">If you’re not redirected, <a href="./app.html">tap here</a>.</div>
     </div>
-
-    <!-- Footer -->
-    <footer class="absolute bottom-4 w-full text-center text-white/80 text-xs italic">
-      Powered by: karlthebrown
-    </footer>
   </div>
 
-  <!-- One-time SW/cache migration (keep) -->
   <script>
-    (async () => {
-      const KEY = 'vn_migrate_v28';
-      if (!localStorage.getItem(KEY)) {
-        try {
-          if ('serviceWorker' in navigator) {
-            const regs = await navigator.serviceWorker.getRegistrations();
-            await Promise.all(regs.map(r => r.unregister().catch(()=>{})));
-          }
-          if (window.caches?.keys) {
-            const names = await caches.keys();
-            await Promise.all(names.map(n => caches.delete(n).catch(()=>{})));
-          }
-          localStorage.setItem(KEY,'1');
-          location.reload();
-        } catch(_) {}
-      }
-    })();
+    // Hard redirect so the back button doesn’t return to this page
+    location.replace('./app.html');
   </script>
 </body>
 </html>
