@@ -31,7 +31,7 @@
       --med-teal:#14B8A6;   /* teal-500 */
       --med-sky:#0EA5E9;    /* sky-500 */
       --med-indigo:#1E40AF; /* indigo-800 */
-      --label:#0891B2;      /* cyan-600 */
+      --label:#0891B2;      /* cyan-600 for labels/rings */
     }
     body { background: linear-gradient(135deg, #0EA5E9 0%, #14B8A6 50%, #1E40AF 100%); }
 
@@ -128,7 +128,7 @@
 
               <div><label for="oxygenSaturation" class="block text-sm font-semibold mb-1">Oxygen Saturation (SpO₂ %)</label>
                 <input id="oxygenSaturation" type="number" inputmode="numeric" placeholder="e.g., 98" class="vn-field vn-input w-full"/></div>
-              <div><label for="bloodSugar" class="block text-sm font-semibold mb-1">Blood Sugar Level (mg/dL)</label>
+              <div><label for="bloodSugar" class="block text sm font-semibold mb-1">Blood Sugar Level (mg/dL)</label>
                 <input id="bloodSugar" type="number" step="0.1" inputmode="decimal" placeholder="e.g., 95" class="vn-field vn-input w-full"/></div>
 
               <div><label for="weight" class="block text-sm font-semibold mb-1">Weight (kg)</label>
@@ -195,7 +195,7 @@
     </main>
   </div>
 
-  <!-- PDF Template -->
+  <!-- PDF Template (unchanged) -->
   <div id="pdfCanvas" class="hidden">
     <div class="pdf-page" id="pdfRoot">
       <div class="pdf-top">
@@ -237,25 +237,11 @@
     </div>
   </div>
 
-  <!-- One-time SW/cache migration -->
+  <!-- SW register -->
   <script>
-    (async () => {
-      const KEY = 'vn_migrate_v28';
-      if (!localStorage.getItem(KEY)) {
-        try {
-          if ('serviceWorker' in navigator) {
-            const regs = await navigator.serviceWorker.getRegistrations();
-            await Promise.all(regs.map(r => r.unregister().catch(()=>{})));
-          }
-          if (window.caches?.keys) {
-            const names = await caches.keys();
-            await Promise.all(names.map(n => caches.delete(n).catch(()=>{})));
-          }
-          localStorage.setItem(KEY,'1');
-          location.reload();
-        } catch(_) {}
-      }
-    })();
+    if('serviceWorker' in navigator){
+      window.addEventListener('load',()=>navigator.serviceWorker.register(`./service-worker.js?v=${window.__VN_VER__}`,{scope:'./'}).catch(()=>{}));
+    }
   </script>
 
   <script>
@@ -379,20 +365,6 @@
 
     document.getElementById('btnPreview').addEventListener('click', async ()=>{
       const rec = buildRecord();
-      el('pdfPatientVal').textContent = rec.patient || '-';
-      el('pdfNurseVal').textContent   = rec.preparedBy || '-';
-      el('pdfBPVal').textContent      = `${rec.bp.sbp}/${rec.bp.dbp} mmHg`;
-      el('pdfPulseVal').textContent   = `${rec.hr} bpm`;
-      el('pdfTempVal').textContent    = `${rec.temp} °C`;
-      el('pdfO2Val').textContent      = `${rec.spo2} %`;
-      el('pdfRRVal').textContent      = `${rec.rr} /min`;
-      el('pdfWeightVal').textContent  = `${rec.weight} kg`;
-      el('pdfPainVal').textContent    = `${rec.pain||'-'} /10`;
-      el('pdfMedAM').textContent      = `Status: ${rec.meds.morning.status}${rec.meds.morning.note?` (${rec.meds.morning.note})`:''}`;
-      el('pdfMedPM').textContent      = `Status: ${rec.meds.afternoon.status}${rec.meds.afternoon.note?` (${rec.meds.afternoon.note})`:''}`;
-      el('pdfMedEV').textContent      = `Status: ${rec.meds.evening.status}${rec.meds.evening.note?` (${rec.meds.evening.note})`:''}`;
-      el('pdfNotes').textContent      = rec.notes || '-';
-
       const blob = await makePdf(rec);
       const url = URL.createObjectURL(blob);
       const a = document.createElement('a');
