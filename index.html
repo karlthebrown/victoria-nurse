@@ -8,7 +8,7 @@
   <!-- Tailwind -->
   <script src="https://cdn.tailwindcss.com"></script>
 
-  <!-- Version + PWA -->
+  <!-- Version + PWA (keep existing v28) -->
   <script>window.__VN_VER__="2025-09-17-28";</script>
   <link rel="manifest" href="./manifest.webmanifest?v=2025-09-17-28"/>
   <meta name="theme-color" content="#0EA5E9"/>
@@ -22,6 +22,7 @@
     html, body { height:100%; margin:0; background:#000; }
     .landing-wrap { position:relative; width:100%; height:100svh; overflow:hidden; }
     .landing-img { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; object-position:center; display:block; }
+
     .btn-grad{
       background-image:linear-gradient(90deg, #14B8A6, #0EA5E9, #1E40AF); /* teal→sky→indigo */
       color:#fff; font-weight:600; padding:.625rem 1.25rem; border-radius:1rem; font-size:.95rem;
@@ -30,22 +31,31 @@
     @media (min-width:768px){ .btn-grad{ font-size:1rem; } }
     .btn-grad:hover{ opacity:.97; transform: translateY(-1px); }
     .btn-grad:active{ transform: translateY(0) scale(.98); }
+
+    /* Soft text shadow to keep text readable on bright hero areas */
+    .soft-shadow { text-shadow: 0 2px 18px rgba(0,0,0,.35); }
   </style>
 </head>
 <body class="text-white antialiased">
   <div class="landing-wrap">
-    <!-- Background image only -->
+    <!-- Full-bleed background -->
     <img
       src="./images/welcome-victoria-nurse-medical.png?v=2025-09-17-28"
       alt="Victoria Nurse"
       class="landing-img"
     />
 
-    <!-- Minimal overlay (NO headline). Tagline + single button stacked -->
-    <div class="absolute inset-0 flex flex-col items-center justify-center text-center px-5 space-y-4">
-      <p class="text-white/90 text-sm md:text-base">
+    <!-- Overlay content: Headline → Tagline → CTA -->
+    <div class="absolute inset-0 flex flex-col items-center justify-center text-center px-5">
+      <!-- Headline -->
+      <h1 class="soft-shadow font-extrabold tracking-tight text-white text-4xl md:text-5xl mb-4">
+        Victoria Nurse
+      </h1>
+      <!-- Tagline -->
+      <p class="soft-shadow text-white/90 text-sm md:text-base mb-6">
         Record patient readings in seconds, share in moments.
       </p>
+      <!-- Single CTA -->
       <a href="app.html" class="btn-grad inline-flex items-center justify-center">Get Started</a>
     </div>
 
@@ -55,7 +65,7 @@
     </footer>
   </div>
 
-  <!-- One-time SW/cache migration (kept) -->
+  <!-- One-time SW/cache migration (keep) -->
   <script>
     (async () => {
       const KEY = 'vn_migrate_v28';
