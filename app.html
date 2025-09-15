@@ -6,12 +6,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
   <title>Victoria Nurse — Care Together</title>
 
-  <script>window.__VN_VER__="2025-09-17-28";</script>
-  <link rel="manifest" href="./manifest.webmanifest?v=2025-09-17-28"/>
+  <script>window.__VN_VER__="2025-09-17-31";</script>
+  <link rel="manifest" href="./manifest.webmanifest?v=2025-09-17-31"/>
   <meta name="theme-color" content="#0EA5E9"/>
-  <link rel="icon" type="image/png" href="./icons/favicon.png?v=2025-09-17-28"/>
-  <link rel="apple-touch-icon" sizes="180x180" href="./icons/icon-180.png?v=2025-09-17-28"/>
-  <link rel="apple-touch-icon" href="./icons/icon-192.png?v=2025-09-17-28"/>
+  <link rel="icon" type="image/png" href="./icons/favicon.png?v=2025-09-17-31"/>
+  <link rel="apple-touch-icon" sizes="180x180" href="./icons/icon-180.png?v=2025-09-17-31"/>
 
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&display=swap" rel="stylesheet"/>
   <script src="https://cdn.tailwindcss.com"></script>
@@ -28,12 +27,12 @@
     .vn-field::placeholder{ color:#98a6b3; opacity:.85; }
     .vn-input{ height:3.5rem; } .vn-textarea{ min-height:3.5rem; }
     .vn-tagline{ font-family:"Playfair Display", ui-serif, Georgia, serif; color:#E6F4FF; }
-    .btn-grad{ background-image:linear-gradient(90deg, var(--med-teal), var(--med-sky), var(--med-indigo)); color:#fff; font-weight:600; padding:.95rem 1.2rem; border-radius:1.1rem; transition: transform .12s ease, opacity .12s ease; box-shadow:0 14px 35px rgba(0,0,0,.25); }
+    .btn-grad{ background-image:linear-gradient(90deg, var(--med-teal), var(--med-sky), var(--med-indigo)); color:#fff; font-weight:600; padding:.95rem 1.2rem; border-radius:1.1rem; box-shadow:0 14px 35px rgba(0,0,0,.25); transition: transform .12s ease, opacity .12s ease; }
     .btn-grad:hover{ opacity:.97; transform: translateY(-1px); }
     .btn-grad:active{ transform: translateY(0) scale(.98); }
 
-    /* PDF styling */
-    .pdf-page{ width:794px; background:#ffffff; color:#111827; padding:28px; font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto; }
+    /* PDF */
+    .pdf-page{ width:794px; background:#fff; color:#111827; padding:28px; font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto; }
     .pdf-top{ display:flex; align-items:center; gap:14px; }
     .pdf-logo{ width:56px; height:56px; border-radius:14px; }
     .pdf-title{ font-weight:900; font-size:26px; background: linear-gradient(90deg, var(--med-teal), var(--med-sky), var(--med-indigo)); -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent; color:transparent; }
@@ -59,7 +58,7 @@
         <header class="p-6" style="background:linear-gradient(90deg, var(--med-teal), var(--med-sky), var(--med-indigo));">
           <div class="flex items-center gap-4">
             <a href="./index.html" aria-label="Home">
-              <img src="./icons/icon-192.png?v=2025-09-17-28" alt="Victoria Nurse" class="h-14 w-14 rounded-2xl shadow"/>
+              <img src="./icons/icon-192.png?v=2025-09-17-31" alt="Victoria Nurse" class="h-14 w-14 rounded-2xl shadow"/>
             </a>
             <div>
               <h1 class="text-white text-2xl font-extrabold tracking-tight">Victoria Nurse</h1>
@@ -109,27 +108,21 @@
               <div>
                 <label class="block text-sm font-semibold mb-1">Medication – Morning</label>
                 <select id="medMorningStatus" class="vn-field vn-input w-full">
-                  <option value="taken">Taken</option>
-                  <option value="skipped">Skipped</option>
-                  <option value="delayed">Delayed</option>
+                  <option value="taken">Taken</option><option value="skipped">Skipped</option><option value="delayed">Delayed</option>
                 </select>
                 <input id="medMorningNote" class="vn-field vn-input w-full mt-2" placeholder="Optional note"/>
               </div>
               <div>
                 <label class="block text-sm font-semibold mb-1">Medication – Afternoon</label>
                 <select id="medAfternoonStatus" class="vn-field vn-input w-full">
-                  <option value="taken">Taken</option>
-                  <option value="skipped">Skipped</option>
-                  <option value="delayed">Delayed</option>
+                  <option value="taken">Taken</option><option value="skipped">Skipped</option><option value="delayed">Delayed</option>
                 </select>
                 <input id="medAfternoonNote" class="vn-field vn-input w-full mt-2" placeholder="Optional note"/>
               </div>
               <div>
                 <label class="block text-sm font-semibold mb-1">Medication – Evening</label>
                 <select id="medEveningStatus" class="vn-field vn-input w-full">
-                  <option value="taken">Taken</option>
-                  <option value="skipped">Skipped</option>
-                  <option value="delayed">Delayed</option>
+                  <option value="taken">Taken</option><option value="skipped">Skipped</option><option value="delayed">Delayed</option>
                 </select>
                 <input id="medEveningNote" class="vn-field vn-input w-full mt-2" placeholder="Optional note"/>
               </div>
