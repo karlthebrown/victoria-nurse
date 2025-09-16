@@ -1,21 +1,21 @@
-/* Victoria Nurse — Service Worker (v41) */
-const CACHE_NAME = 'victoria-nurse-v41';
+/* Victoria Nurse — Service Worker (v42) */
+const CACHE_NAME = 'victoria-nurse-v42';
 
 const ASSETS = [
   './',
 
   // HTML
   './index.html',
-  './index.html?v=2025-09-17-41',
+  './index.html?v=2025-09-17-42',
   './app.html',
-  './app.html?v=2025-09-17-39',
+  './app.html?v=2025-09-17-41',
 
-  // PWA manifest & icons (v39)
-  './manifest.webmanifest?v=2025-09-17-39',
-  './icons/icon-192.png?v=2025-09-17-39',
-  './icons/icon-512.png?v=2025-09-17-39',
-  './icons/icon-180.png?v=2025-09-17-39',
-  './icons/favicon.png?v=2025-09-17-39',
+  // PWA manifest & icons (v41)
+  './manifest.webmanifest?v=2025-09-17-41',
+  './icons/icon-192.png?v=2025-09-17-41',
+  './icons/icon-512.png?v=2025-09-17-41',
+  './icons/icon-180.png?v=2025-09-17-41',
+  './icons/favicon.png?v=2025-09-17-41',
 
   // Logo/hero image (still v35)
   './images/welcome-victoria-nurse-medical.png',
@@ -23,14 +23,14 @@ const ASSETS = [
 ];
 
 self.addEventListener('install', (event) => {
-  event.waitUntil(caches.open(CACHE_NAME).then(c => c.addAll(ASSETS)));
+  event.waitUntil(caches.open(CACHE_NAME).then((c) => c.addAll(ASSETS)));
   self.skipWaiting();
 });
 
 self.addEventListener('activate', (event) => {
   event.waitUntil((async () => {
     const keys = await caches.keys();
-    await Promise.all(keys.filter(k => k !== CACHE_NAME).map(k => caches.delete(k)));
+    await Promise.all(keys.filter((k) => k !== CACHE_NAME).map((k) => caches.delete(k)));
   })());
   self.clients.claim();
 });
