@@ -27,12 +27,8 @@
     :root{ --med-teal:#14B8A6; --med-sky:#0EA5E9; --med-indigo:#1E40AF; --label:#0891B2; }
     body { background: linear-gradient(135deg, #0EA5E9 0%, #14B8A6 50%, #1E40AF 100%); }
 
-    /* Smooth fade */
     body { opacity:1; }
-    @media (prefers-reduced-motion: no-preference) {
-      body { transition: opacity .28s ease; }
-      body.leaving { opacity:0; }
-    }
+    @media (prefers-reduced-motion: no-preference) { body { transition: opacity .28s ease; } body.leaving { opacity:0; } }
 
     label{ color:var(--label); }
     .vn-field{ color:var(--label); padding:.95rem 1.1rem; border-radius:.9rem; border:1px solid #cbd5e1; background:#fff; line-height:1.6rem; }
@@ -237,6 +233,25 @@
   </script>
 
   <script>
+    /* One-time cache reset guard in case an old SW/page is stuck */
+    (async () => {
+      const KEY = 'vn_migrate_v42_app';
+      if (!localStorage.getItem(KEY)) {
+        try {
+          if ('serviceWorker' in navigator) {
+            const regs = await navigator.serviceWorker.getRegistrations();
+            await Promise.all(regs.map(r => r.unregister().catch(()=>{})));
+          }
+          if (window.caches?.keys) {
+            const names = await caches.keys();
+            await Promise.all(names.map(n => caches.delete(n).catch(()=>{})));
+          }
+          localStorage.setItem(KEY,'1');
+          location.reload();
+        } catch(_) {}
+      }
+    })();
+
     document.getElementById('year').textContent = new Date().getFullYear();
     const el=id=>document.getElementById(id);
     const getVal=id=>(el(id)?.value||'').trim();
@@ -288,7 +303,6 @@
       ].join('\n');
     }
 
-    /* Smooth navigate back to landing */
     function navigateHome(){
       const reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
       if (!reduce) document.body.classList.add('leaving');
@@ -374,7 +388,7 @@
       const url = `https://wa.me/?text=${encodeURIComponent(shareText(rec))}`;
       window.open(url,'_blank');
       clearAll();
-      navigateHome(); // smooth back to landing
+      navigateHome();
     });
 
     document.getElementById('btnEmail').addEventListener('click', async ()=>{
@@ -391,7 +405,7 @@
       window.location.href = `mailto:?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
 
       clearAll();
-      navigateHome(); // smooth back to landing
+      navigateHome();
     });
   </script>
 </body>
