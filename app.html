@@ -604,5 +604,39 @@
       setTimeout(()=>{ clearAll(); navigateHome(); }, 1000);
     });
   </script>
+  <!-- Self-cleanup script -->
+<script>
+  (async () => {
+    const VER = "2025-09-17-44";
+    const KEY = `vn_self_cleanup_${VER}`;
+    const mustReset = new URLSearchParams(location.search).has('reset');
+
+    if (mustReset || !localStorage.getItem(KEY)) {
+      try {
+        // 1) Unregister ALL service workers
+        if ('serviceWorker' in navigator) {
+          const regs = await navigator.serviceWorker.getRegistrations();
+          await Promise.all(regs.map(r => r.unregister().catch(()=>{})));
+        }
+
+        // 2) Clear ALL caches
+        if (window.caches?.keys) {
+          const names = await caches.keys();
+          await Promise.all(names.map(n => caches.delete(n).catch(()=>{})));
+        }
+
+        // 3) Mark cleanup done for this version
+        localStorage.setItem(KEY, '1');
+
+        // 4) Reload once to pick up fresh SW & assets (avoid loops)
+        if (!sessionStorage.getItem(KEY)) {
+          sessionStorage.setItem(KEY, '1');
+          location.replace(location.pathname + location.search + location.hash);
+          return;
+        }
+      } catch(_) {}
+    }
+  })();
+</script>
 </body>
 </html>
