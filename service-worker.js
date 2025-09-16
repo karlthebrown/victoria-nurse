@@ -1,17 +1,22 @@
-/* Victoria Nurse — Service Worker (v36) */
-const CACHE_NAME = 'victoria-nurse-v36';
+/* Victoria Nurse — Service Worker (v37) */
+const CACHE_NAME = 'victoria-nurse-v37';
 
 const ASSETS = [
   './',
+  // HTML
   './index.html',
-  './index.html?v=2025-09-17-36',
+  './index.html?v=2025-09-17-37',
   './app.html',
-  './app.html?v=2025-09-17-35',  // app remains at v35
+  './app.html?v=2025-09-17-35',
+
+  // PWA manifest & icons (still v35)
   './manifest.webmanifest?v=2025-09-17-35',
   './icons/icon-192.png?v=2025-09-17-35',
   './icons/icon-512.png?v=2025-09-17-35',
   './icons/icon-180.png?v=2025-09-17-35',
   './icons/favicon.png?v=2025-09-17-35',
+
+  // Hero/logo image (transparent) (v35)
   './images/welcome-victoria-nurse-medical.png',
   './images/welcome-victoria-nurse-medical.png?v=2025-09-17-35'
 ];
@@ -34,8 +39,11 @@ self.addEventListener('fetch', (event) => {
   if (req.method !== 'GET') return;
 
   const url = new URL(req.url);
-  const isHTML = req.destination === 'document' || req.headers.get('accept')?.includes('text/html');
+  const isHTML =
+    req.destination === 'document' ||
+    req.headers.get('accept')?.includes('text/html');
 
+  // Network-first for HTML, fallback to cached pages
   if (isHTML) {
     event.respondWith((async () => {
       try { return await fetch(req); }
@@ -50,10 +58,12 @@ self.addEventListener('fetch', (event) => {
     return;
   }
 
+  // Cache-first for same-origin static assets in ASSETS
   if (url.origin === location.origin) {
     event.respondWith((async () => {
       const cached = await caches.match(req);
       if (cached) return cached;
+
       try {
         const res = await fetch(req);
         const pathWithQ = url.pathname + (url.search || '');
@@ -70,5 +80,6 @@ self.addEventListener('fetch', (event) => {
     return;
   }
 
+  // Passthrough for cross-origin requests
   event.respondWith(fetch(req));
 });
