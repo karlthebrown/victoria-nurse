@@ -1,14 +1,14 @@
-/* Victoria Nurse — Service Worker (v38) */
-const CACHE_NAME = 'victoria-nurse-v38';
+/* Victoria Nurse — Service Worker (v39) */
+const CACHE_NAME = 'victoria-nurse-v39';
 
 const ASSETS = [
   './',
 
   // HTML
   './index.html',
-  './index.html?v=2025-09-17-38',
+  './index.html?v=2025-09-17-39',
   './app.html',
-  './app.html?v=2025-09-17-38',
+  './app.html?v=2025-09-17-39',
 
   // PWA manifest & icons (still v35)
   './manifest.webmanifest?v=2025-09-17-35',
@@ -17,7 +17,7 @@ const ASSETS = [
   './icons/icon-180.png?v=2025-09-17-35',
   './icons/favicon.png?v=2025-09-17-35',
 
-  // Hero/logo image (transparent) (v35)
+  // Hero/logo image (transparent, v35)
   './images/welcome-victoria-nurse-medical.png',
   './images/welcome-victoria-nurse-medical.png?v=2025-09-17-35'
 ];
@@ -44,7 +44,7 @@ self.addEventListener('fetch', (event) => {
     req.destination === 'document' ||
     req.headers.get('accept')?.includes('text/html');
 
-  // Network-first for HTML; fallback to cached pages
+  // Network-first for HTML
   if (isHTML) {
     event.respondWith((async () => {
       try {
@@ -60,7 +60,7 @@ self.addEventListener('fetch', (event) => {
     return;
   }
 
-  // Cache-first for same-origin static assets listed in ASSETS
+  // Cache-first for same-origin static assets in ASSETS
   if (url.origin === location.origin) {
     event.respondWith((async () => {
       const cached = await caches.match(req);
