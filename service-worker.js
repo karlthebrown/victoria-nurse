@@ -1,17 +1,19 @@
-/* Victoria Nurse — Service Worker (v34) */
-const CACHE_NAME = 'victoria-nurse-v34';
+/* Victoria Nurse — Service Worker (v35) */
+const CACHE_NAME = 'victoria-nurse-v35';
 
 const ASSETS = [
   './',
   './index.html',
+  './index.html?v=2025-09-17-35',
   './app.html',
-  './manifest.webmanifest?v=2025-09-17-34',
-  './icons/icon-192.png?v=2025-09-17-34',
-  './icons/icon-512.png?v=2025-09-17-34',
-  './icons/icon-180.png?v=2025-09-17-34',
-  './icons/favicon.png?v=2025-09-17-34',
+  './app.html?v=2025-09-17-35',
+  './manifest.webmanifest?v=2025-09-17-35',
+  './icons/icon-192.png?v=2025-09-17-35',
+  './icons/icon-512.png?v=2025-09-17-35',
+  './icons/icon-180.png?v=2025-09-17-35',
+  './icons/favicon.png?v=2025-09-17-35',
   './images/welcome-victoria-nurse-medical.png',
-  './images/welcome-victoria-nurse-medical.png?v=2025-09-17-34'
+  './images/welcome-victoria-nurse-medical.png?v=2025-09-17-35'
 ];
 
 self.addEventListener('install', (event) => {
@@ -38,7 +40,7 @@ self.addEventListener('fetch', (event) => {
     event.respondWith((async () => {
       try { return await fetch(req); }
       catch {
-        if (url.pathname.endsWith('/app.html')) {
+        if (url.pathname.endsWith('/app.html') || url.pathname.endsWith('/app.html/')) {
           const app = await caches.match('./app.html'); if (app) return app;
         }
         const landing = await caches.match('./index.html');
