@@ -9,7 +9,7 @@
   <script src="https://cdn.tailwindcss.com"></script>
 
   <!-- Version + PWA -->
-  <script>window.__VN_VER__="2025-09-17-36";</script>
+  <script>window.__VN_VER__="2025-09-17-37";</script>
   <link rel="manifest" href="./manifest.webmanifest?v=2025-09-17-35"/>
   <meta name="theme-color" content="#0EA5E9"/>
   <link rel="icon" type="image/png" href="./icons/favicon.png?v=2025-09-17-35"/>
@@ -19,7 +19,7 @@
 
   <style>
     :root{
-      --stack-shift: -4vh; /* positions title+tagline around visual middle */
+      --stack-shift: -4vh; /* vertical centering adjustment */
       --cta-w: 78vw;
       --cta-max: 460px;
     }
@@ -35,7 +35,7 @@
         linear-gradient(180deg, #0a1830 0%, #030b1a 35%, #030a17 100%);
     }
 
-    /* Center stack and nudge slightly upward for middle placement */
+    /* Stack for logo + text + CTA */
     .stack{
       position:absolute; inset:0;
       display:flex; flex-direction:column;
@@ -54,7 +54,7 @@
       font-weight:800;
       letter-spacing:.2px;
       font-size: clamp(24px, 5.6vw, 36px);
-      color:#ffffff;
+      color:#268DCB; /* extracted from your design */
       margin-top: 2px;
     }
 
@@ -70,27 +70,36 @@
       width:min(var(--cta-w), var(--cta-max));
     }
 
-    /* CTA gradient: navy–indigo (approved) */
+    /* Get Started Button */
     .get-started-btn {
       display:block; width:100%;
-      background: linear-gradient(90deg, #001c4b 0%, #001d49 50%, #001c4b 100%);
-      color: #ffffff;
-      border: none;
-      border-radius: 999px;
-      padding: 14px 30px;
-      font-size: 17px;
-      font-weight: 800;
-      cursor: pointer;
+      text-align:center;
+      border:none;
+      border-radius:999px;
+      cursor:pointer;
+
+      /* Gradient */
+      background: linear-gradient(90deg, #1dd6e6 0%, #0ea5e9 50%, #1e40af 100%);
+      color:#79E7FF;
+
+      /* Typography */
+      font-size:1.05rem;
+      font-weight:700;
+
+      /* Spacing */
+      padding:14px 32px;
+
+      /* Effects */
+      box-shadow:0 14px 35px rgba(0,0,0,0.28);
       transition: background 0.3s ease, transform 0.2s ease, box-shadow 0.2s ease;
-      box-shadow: 0 14px 35px rgba(0,0,0,0.28);
     }
     .get-started-btn:hover {
-      background: linear-gradient(90deg, #002d6e 0%, #003366 50%, #002d6e 100%);
+      background: linear-gradient(90deg, #26e4f4 0%, #14b8a6 50%, #2563eb 100%);
       transform: translateY(-1px);
       box-shadow: 0 18px 40px rgba(0,0,0,0.35);
     }
     .get-started-btn:active {
-      background: linear-gradient(90deg, #001636 0%, #001c40 50%, #001636 100%);
+      background: linear-gradient(90deg, #0ea5e9 0%, #1e40af 50%, #0c2340 100%);
       transform: scale(0.96);
       box-shadow: 0 2px 8px rgba(0,0,0,0.35) inset;
     }
@@ -116,12 +125,10 @@
     <div class="hero-bg"></div>
 
     <div class="stack">
-      <!-- Transparent logo from images folder -->
       <img src="./images/welcome-victoria-nurse-medical.png?v=2025-09-17-35"
            alt="Victoria Nurse logo"
            class="logo"/>
 
-      <!-- Kept, centered -->
       <h1 class="title-victoria">Welcome to Victoria Nurse</h1>
       <p class="tagline">Record patient readings in seconds, share in moments.</p>
 
@@ -137,7 +144,7 @@
 
   <script>
     (async () => {
-      const KEY = 'vn_migrate_v36_index';
+      const KEY = 'vn_migrate_v37_index';
       if (!localStorage.getItem(KEY)) {
         try {
           if ('serviceWorker' in navigator) {
@@ -154,10 +161,10 @@
       }
     })();
 
-    // Explicit service worker registration with v36
+    // Register SW
     if ('serviceWorker' in navigator) {
       window.addEventListener('load', () => {
-        navigator.serviceWorker.register('./service-worker.js?v=2025-09-17-36', {scope:'./'})
+        navigator.serviceWorker.register('./service-worker.js?v=2025-09-17-37', {scope:'./'})
           .catch(()=>{});
       });
     }
@@ -167,7 +174,6 @@
       const veil = document.getElementById('veil');
       const reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-      // No preventDefault => let navigation happen
       link.addEventListener('click', function(){
         if (reduce) return;
         document.body.classList.add('leaving');
