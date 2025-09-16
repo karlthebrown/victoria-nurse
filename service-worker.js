@@ -1,12 +1,12 @@
-/* Victoria Nurse — Service Worker (v35) */
-const CACHE_NAME = 'victoria-nurse-v35';
+/* Victoria Nurse — Service Worker (v36) */
+const CACHE_NAME = 'victoria-nurse-v36';
 
 const ASSETS = [
   './',
   './index.html',
-  './index.html?v=2025-09-17-35',
+  './index.html?v=2025-09-17-36',
   './app.html',
-  './app.html?v=2025-09-17-35',
+  './app.html?v=2025-09-17-35',  // app remains at v35
   './manifest.webmanifest?v=2025-09-17-35',
   './icons/icon-192.png?v=2025-09-17-35',
   './icons/icon-512.png?v=2025-09-17-35',
