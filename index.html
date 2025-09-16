@@ -9,19 +9,21 @@
   <script src="https://cdn.tailwindcss.com"></script>
 
   <!-- Version + PWA -->
-  <script>window.__VN_VER__="2025-09-17-34";</script>
-  <link rel="manifest" href="./manifest.webmanifest?v=2025-09-17-34"/>
+  <script>window.__VN_VER__="2025-09-17-35";</script>
+  <link rel="manifest" href="./manifest.webmanifest?v=2025-09-17-35"/>
   <meta name="theme-color" content="#0EA5E9"/>
-  <link rel="icon" type="image/png" href="./icons/favicon.png?v=2025-09-17-34"/>
+  <link rel="icon" type="image/png" href="./icons/favicon.png?v=2025-09-17-35"/>
 
   <!-- Preload logo (transparent) -->
-  <link rel="preload" as="image" href="./images/welcome-victoria-nurse-medical.png?v=2025-09-17-34"/>
+  <link rel="preload" as="image" href="./images/welcome-victoria-nurse-medical.png?v=2025-09-17-35"/>
 
   <style>
     :root{
-      --cta-y: 73vh;
+      /* Controls vertical placement of the stack */
+      --stack-shift: -4vh; /* negative moves it a bit upward toward middle */
       --cta-w: 78vw;
       --cta-max: 460px;
+      --title-nurse-lucy: #011C4B; /* picture-matching deep navy/indigo */
     }
 
     html, body { height:100%; margin:0; background:#081a2d; }
@@ -35,31 +37,44 @@
         linear-gradient(180deg, #0a1830 0%, #030b1a 35%, #030a17 100%);
     }
 
-    /* Center stack */
+    /* Center stack and nudge slightly upward for middle placement */
     .stack{
       position:absolute; inset:0;
       display:flex; flex-direction:column;
       align-items:center; justify-content:center;
-      text-align:center; gap:16px; padding:24px;
+      text-align:center; gap:14px; padding:24px;
+      transform: translateY(var(--stack-shift));
     }
 
     .logo {
-      width:min(65vw, 260px);
+      width:min(62vw, 250px);
       height:auto;
       filter: drop-shadow(0 10px 28px rgba(0,0,0,.35));
     }
 
-    .title{
+    /* New “Welcome to Nurse Lucy” in picture-like color */
+    .title-lucy{
+      font-weight:900;
+      letter-spacing:.2px;
+      font-size: clamp(26px, 6vw, 38px);
+      color: var(--title-nurse-lucy);
+      text-shadow: 0 1px 0 rgba(255,255,255,0.04);
+    }
+
+    /* Existing Victoria Nurse headline moved to the middle, just under Lucy */
+    .title-victoria{
       font-weight:800;
       letter-spacing:.2px;
-      font-size: clamp(28px, 6vw, 40px);
+      font-size: clamp(24px, 5.6vw, 36px);
       color:#ffffff;
+      margin-top: 2px;
     }
 
     .tagline{
       font-size: clamp(14px, 3.6vw, 18px);
       color:#e6efff;
-      opacity:.92;
+      opacity:.95;
+      margin-top: 2px;
     }
 
     .cta-wrap{
@@ -67,7 +82,7 @@
       width:min(var(--cta-w), var(--cta-max));
     }
 
-    /* CTA gradient: navy–indigo */
+    /* CTA gradient: navy–indigo (approved) */
     .get-started-btn {
       display:block; width:100%;
       background: linear-gradient(90deg, #001c4b 0%, #001d49 50%, #001c4b 100%);
@@ -81,15 +96,11 @@
       transition: background 0.3s ease, transform 0.2s ease, box-shadow 0.2s ease;
       box-shadow: 0 14px 35px rgba(0,0,0,0.28);
     }
-
-    /* Hover (desktop) */
     .get-started-btn:hover {
       background: linear-gradient(90deg, #002d6e 0%, #003366 50%, #002d6e 100%);
       transform: translateY(-1px);
       box-shadow: 0 18px 40px rgba(0,0,0,0.35);
     }
-
-    /* Pressed / Active (tap) */
     .get-started-btn:active {
       background: linear-gradient(90deg, #001636 0%, #001c40 50%, #001636 100%);
       transform: scale(0.96);
@@ -118,15 +129,19 @@
 
     <div class="stack">
       <!-- Transparent logo from images folder -->
-      <img src="./images/welcome-victoria-nurse-medical.png?v=2025-09-17-34"
+      <img src="./images/welcome-victoria-nurse-medical.png?v=2025-09-17-35"
            alt="Victoria Nurse logo"
            class="logo"/>
 
-      <h1 class="title">Welcome to Victoria Nurse</h1>
+      <!-- New line in picture-like color -->
+      <h2 class="title-lucy">Welcome to Nurse Lucy</h2>
+
+      <!-- Keep and reposition these to the middle under Lucy -->
+      <h1 class="title-victoria">Welcome to Victoria Nurse</h1>
       <p class="tagline">Record patient readings in seconds, share in moments.</p>
 
       <div class="cta-wrap">
-        <a href="app.html" id="ctaStart" class="get-started-btn">Get Started</a>
+        <a href="./app.html?v=2025-09-17-35" id="ctaStart" class="get-started-btn">Get Started</a>
       </div>
     </div>
 
@@ -137,7 +152,7 @@
 
   <script>
     (async () => {
-      const KEY = 'vn_migrate_v34_index';
+      const KEY = 'vn_migrate_v35_index';
       if (!localStorage.getItem(KEY)) {
         try {
           if ('serviceWorker' in navigator) {
@@ -154,10 +169,10 @@
       }
     })();
 
-    // Explicit service worker registration with v34
+    // Explicit service worker registration with v35
     if ('serviceWorker' in navigator) {
       window.addEventListener('load', () => {
-        navigator.serviceWorker.register('./service-worker.js?v=2025-09-17-34', {scope:'./'})
+        navigator.serviceWorker.register('./service-worker.js?v=2025-09-17-35', {scope:'./'})
           .catch(()=>{});
       });
     }
@@ -167,12 +182,11 @@
       const veil = document.getElementById('veil');
       const reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-      link.addEventListener('click', function(ev){
+      // No preventDefault => let navigation happen
+      link.addEventListener('click', function(){
         if (reduce) return;
-        ev.preventDefault();
         document.body.classList.add('leaving');
         veil?.classList.add('on');
-        setTimeout(() => { window.location.href = link.getAttribute('href'); }, 280);
       });
     })();
   </script>
