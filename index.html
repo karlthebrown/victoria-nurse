@@ -9,60 +9,57 @@
   <script src="https://cdn.tailwindcss.com"></script>
 
   <!-- Version + PWA -->
-  <script>window.__VN_VER__="2025-09-17-39";</script>
-  <link rel="manifest" href="./manifest.webmanifest?v=2025-09-17-35"/>
+  <script>window.__VN_VER__="2025-09-17-40";</script>
+  <link rel="manifest" href="./manifest.webmanifest?v=2025-09-17-39"/>
   <meta name="theme-color" content="#0EA5E9"/>
-  <link rel="icon" type="image/png" href="./icons/favicon.png?v=2025-09-17-35"/>
+  <link rel="icon" type="image/png" href="./icons/favicon.png?v=2025-09-17-39"/>
 
   <!-- Preload hero/logo -->
   <link rel="preload" as="image" href="./images/welcome-victoria-nurse-medical.png?v=2025-09-17-35"/>
 
   <style>
     :root {
-      --cta-y: 72vh;
+      --cta-y: 75vh;
       --cta-w: 78vw;
       --cta-max: 460px;
     }
 
-    html, body { height:100%; margin:0; background:#081a2d; }
-    .wrap { position:relative; width:100%; height:100svh; overflow:hidden; }
-    .hero { position:absolute; inset:0; width:100%; height:100%; object-fit:contain; object-position:center; display:block; }
+    html, body { height:100%; margin:0; background:#081a2d; display:flex; justify-content:center; align-items:center; }
+    .wrap { position:relative; width:100%; height:100svh; overflow:hidden; text-align:center; }
 
     .headline {
-      position:absolute;
-      top:40%;
-      left:50%;
-      transform:translate(-50%, -50%);
-      text-align:center;
+      margin-top: 10vh;
       font-weight:900;
-      font-size:2.4rem; /* increased size */
-      color:#268dcb; /* sampled from your provided image */
+      font-size:2.4rem;
+      color:#268dcb; /* sampled hex */
       text-shadow:0 2px 6px rgba(0,0,0,.55);
     }
 
     .tagline {
-      position:absolute;
-      top:calc(40% + 3rem);
-      left:50%;
-      transform:translate(-50%, -50%);
+      margin-top: 1rem;
       font-size:1.15rem;
       font-weight:500;
       color:#e8f1fb;
-      text-align:center;
       opacity:.9;
     }
 
+    .hero {
+      margin: 4vh auto 0 auto;
+      max-width: 80%;
+      height:auto;
+      display:block;
+    }
+
     .cta-wrap {
-      position:absolute;
-      left:50%;
-      top:var(--cta-y);
-      transform:translate(-50%, -50%);
+      margin-top: 5vh;
       width:min(var(--cta-w), var(--cta-max));
+      margin-left:auto;
+      margin-right:auto;
     }
     .btn {
       display:block; width:100%;
       background-image:linear-gradient(90deg,#14B8A6,#0EA5E9,#1E40AF);
-      color:#79E7FF; /* text color sampled */
+      color:#79E7FF;
       font-weight:700; padding:0.95rem 1.25rem;
       border-radius:999px; text-align:center; font-size:1.05rem;
       box-shadow:0 10px 28px rgba(0,0,0,.28);
@@ -94,10 +91,10 @@
 </head>
 <body class="text-white antialiased">
   <div class="wrap">
-    <img src="./images/welcome-victoria-nurse-medical.png?v=2025-09-17-35" alt="Victoria Nurse Logo" class="hero"/>
-
     <div class="headline">Welcome to Victoria Nurse</div>
     <div class="tagline">Record patient readings in seconds, share in moments</div>
+
+    <img src="./images/welcome-victoria-nurse-medical.png?v=2025-09-17-35" alt="Victoria Nurse Logo" class="hero"/>
 
     <div class="cta-wrap">
       <a href="app.html?v=2025-09-17-39" id="ctaStart" class="btn">Get Started</a>
