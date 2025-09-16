@@ -8,10 +8,10 @@
   <script src="https://cdn.tailwindcss.com"></script>
 
   <!-- Version + PWA -->
-  <script>window.__VN_VER__="2025-09-17-42";</script>
-  <link rel="manifest" href="./manifest.webmanifest?v=2025-09-17-42"/>
+  <script>window.__VN_VER__="2025-09-17-44";</script>
+  <link rel="manifest" href="./manifest.webmanifest?v=2025-09-17-44"/>
   <meta name="theme-color" content="#0EA5E9"/>
-  <link rel="icon" type="image/png" href="./icons/favicon.png?v=2025-09-17-42"/>
+  <link rel="icon" type="image/png" href="./icons/favicon.png?v=2025-09-17-44"/>
 
   <link rel="preload" as="image" href="./images/welcome-victoria-nurse-medical.png?v=2025-09-17-35"/>
 
@@ -20,7 +20,7 @@
       --bg1:#0a1830; --bg2:#030b1a; --bg3:#030a17;
       --accent:#268DCB;
       --ctaText:#79E7FF;
-      --ctaW: min(68vw, 360px);  /* reduced width */
+      --ctaW: min(68vw, 360px);
       --logoW: clamp(140px, 34vw, 240px);
       --gap: clamp(14px, 2.8vh, 22px);
       --gapLg: clamp(18px, 4vh, 28px);
@@ -33,10 +33,16 @@
         linear-gradient(180deg, var(--bg1) 0%, var(--bg2) 35%, var(--bg3) 100%);
       color:#fff;
       font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      opacity:1;
+    }
+    @media (prefers-reduced-motion: no-preference){
+      body{ transition: opacity .28s ease; }
+      body.leaving{ opacity:0; }
+      .veil{ pointer-events:none; position:fixed; inset:0; background:#000; opacity:0; transition:opacity .28s ease; }
+      .veil.on{ opacity:.55; }
     }
 
     .page{ min-height:100svh; display:grid; grid-template-rows:auto 1fr auto; }
-
     .hero{
       display:flex; flex-direction:column; align-items:center; justify-content:center;
       text-align:center; padding: clamp(16px, 5vw, 28px); gap: var(--gap);
@@ -62,7 +68,6 @@
       background: linear-gradient(90deg, #1dd6e6 0%, #0ea5e9 50%, #1e40af 100%);
       opacity:.85; margin: 6px 0;
     }
-
     .cta{ width: var(--ctaW); margin-top: var(--gapLg); }
     .btn{
       display:block; width:100%; text-align:center; border:none; cursor:pointer;
@@ -80,16 +85,7 @@
       background: linear-gradient(90deg, #0ea5e9 0%, #1e40af 50%, #0c2340 100%);
       transform: scale(0.96); box-shadow: 0 2px 8px rgba(0,0,0,.35) inset;
     }
-
     .foot{ padding:14px 10px 18px; text-align:center; color:#e8f1fb; opacity:.85; font-size:.8rem; font-style:italic; }
-
-    body{ opacity:1; }
-    @media (prefers-reduced-motion: no-preference){
-      body{ transition: opacity .28s ease; }
-      body.leaving{ opacity:0; }
-      .veil{ pointer-events:none; position:fixed; inset:0; background:#000; opacity:0; transition:opacity .28s ease; }
-      .veil.on{ opacity:.55; }
-    }
   </style>
 </head>
 <body>
@@ -103,7 +99,7 @@
         <span class="line">share in moments</span>
       </p>
       <div class="cta">
-        <a href="./app.html?v=2025-09-17-42" id="ctaStart" class="btn">Get Started</a>
+        <a href="./app.html?v=2025-09-17-44" id="ctaStart" class="btn">Get Started</a>
       </div>
     </main>
     <footer class="foot">Powered by: karlthebrown</footer>
