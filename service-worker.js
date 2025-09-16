@@ -5,12 +5,11 @@ const ASSETS = [
   './',
   './index.html',
   './app.html',
-  './manifest.webmanifest?v=2025-09-17-33',
-  './icons/icon-192.png?v=2025-09-17-31',
-  './icons/icon-512.png?v=2025-09-17-31',
-  './icons/icon-180.png?v=2025-09-17-31',
-  './icons/favicon.png?v=2025-09-17-33',
-  // Transparent hero/logo (include both bare and versioned to be safe)
+  './manifest.webmanifest?v=2025-09-17-34',
+  './icons/icon-192.png?v=2025-09-17-34',
+  './icons/icon-512.png?v=2025-09-17-34',
+  './icons/icon-180.png?v=2025-09-17-34',
+  './icons/favicon.png?v=2025-09-17-34',
   './images/welcome-victoria-nurse-medical.png',
   './images/welcome-victoria-nurse-medical.png?v=2025-09-17-34'
 ];
