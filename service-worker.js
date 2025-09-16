@@ -8,78 +8,18 @@ const ASSETS = [
   './index.html',
   './index.html?v=2025-09-17-42',
   './app.html',
-  './app.html?v=2025-09-17-41',
+  './app.html?v=2025-09-17-42',   // <-- updated to v42
 
-  // PWA manifest & icons (v41)
-  './manifest.webmanifest?v=2025-09-17-41',
-  './icons/icon-192.png?v=2025-09-17-41',
-  './icons/icon-512.png?v=2025-09-17-41',
-  './icons/icon-180.png?v=2025-09-17-41',
-  './icons/favicon.png?v=2025-09-17-41',
+  // PWA manifest & icons (v42)
+  './manifest.webmanifest?v=2025-09-17-42',   // <-- updated to v42
+  './icons/icon-192.png?v=2025-09-17-42',     // <-- updated to v42
+  './icons/icon-512.png?v=2025-09-17-42',     // <-- updated to v42
+  './icons/icon-180.png?v=2025-09-17-42',     // <-- updated to v42
+  './icons/favicon.png?v=2025-09-17-42',      // <-- updated to v42
 
-  // Logo/hero image (still v35)
+  // Logo/hero image (kept at v35 – image unchanged)
   './images/welcome-victoria-nurse-medical.png',
   './images/welcome-victoria-nurse-medical.png?v=2025-09-17-35'
 ];
 
-self.addEventListener('install', (event) => {
-  event.waitUntil(caches.open(CACHE_NAME).then((c) => c.addAll(ASSETS)));
-  self.skipWaiting();
-});
-
-self.addEventListener('activate', (event) => {
-  event.waitUntil((async () => {
-    const keys = await caches.keys();
-    await Promise.all(keys.filter((k) => k !== CACHE_NAME).map((k) => caches.delete(k)));
-  })());
-  self.clients.claim();
-});
-
-self.addEventListener('fetch', (event) => {
-  const req = event.request;
-  if (req.method !== 'GET') return;
-
-  const url = new URL(req.url);
-  const isHTML = req.destination === 'document' || req.headers.get('accept')?.includes('text/html');
-
-  // Network-first for HTML with cached fallback
-  if (isHTML) {
-    event.respondWith((async () => {
-      try {
-        return await fetch(req);
-      } catch {
-        if (url.pathname.endsWith('/app.html') || url.pathname.endsWith('/app.html/')) {
-          const app = await caches.match('./app.html'); if (app) return app;
-        }
-        const landing = await caches.match('./index.html');
-        return landing || new Response('Offline', { status: 503 });
-      }
-    })());
-    return;
-  }
-
-  // Cache-first for same-origin static assets
-  if (url.origin === location.origin) {
-    event.respondWith((async () => {
-      const cached = await caches.match(req);
-      if (cached) return cached;
-
-      try {
-        const res = await fetch(req);
-        const pathWithQ = url.pathname + (url.search || '');
-        const normalized = pathWithQ.startsWith('.') ? pathWithQ : '.' + pathWithQ;
-        if (ASSETS.includes(normalized)) {
-          const cache = await caches.open(CACHE_NAME);
-          cache.put(req, res.clone());
-        }
-        return res;
-      } catch {
-        return new Response('', { status: 504 });
-      }
-    })());
-    return;
-  }
-
-  // Passthrough for cross-origin requests
-  event.respondWith(fetch(req));
-});
+// (rest of your SW v42 code stays exactly the same)
