@@ -9,7 +9,7 @@
   <script src="https://cdn.tailwindcss.com"></script>
 
   <!-- Version + PWA -->
-  <script>window.__VN_VER__="2025-09-17-37";</script>
+  <script>window.__VN_VER__="2025-09-17-38";</script>
   <link rel="manifest" href="./manifest.webmanifest?v=2025-09-17-35"/>
   <meta name="theme-color" content="#0EA5E9"/>
   <link rel="icon" type="image/png" href="./icons/favicon.png?v=2025-09-17-35"/>
@@ -50,10 +50,12 @@
       filter: drop-shadow(0 10px 28px rgba(0,0,0,.35));
     }
 
+    /* Increased font size */
     .title-victoria{
       font-weight:800;
       letter-spacing:.2px;
-      font-size: clamp(24px, 5.6vw, 36px);
+      font-size: clamp(28px, 6.6vw, 46px);
+      line-height: 1.15;
       color:#268DCB; /* extracted from your design */
       margin-top: 2px;
     }
@@ -70,26 +72,14 @@
       width:min(var(--cta-w), var(--cta-max));
     }
 
-    /* Get Started Button */
+    /* Get Started Button (brand gradient + hover/active) */
     .get-started-btn {
       display:block; width:100%;
       text-align:center;
-      border:none;
-      border-radius:999px;
-      cursor:pointer;
-
-      /* Gradient */
+      border:none; border-radius:999px; cursor:pointer;
       background: linear-gradient(90deg, #1dd6e6 0%, #0ea5e9 50%, #1e40af 100%);
-      color:#79E7FF;
-
-      /* Typography */
-      font-size:1.05rem;
-      font-weight:700;
-
-      /* Spacing */
+      color:#79E7FF; font-size:1.05rem; font-weight:700;
       padding:14px 32px;
-
-      /* Effects */
       box-shadow:0 14px 35px rgba(0,0,0,0.28);
       transition: background 0.3s ease, transform 0.2s ease, box-shadow 0.2s ease;
     }
@@ -144,7 +134,7 @@
 
   <script>
     (async () => {
-      const KEY = 'vn_migrate_v37_index';
+      const KEY = 'vn_migrate_v38_index';
       if (!localStorage.getItem(KEY)) {
         try {
           if ('serviceWorker' in navigator) {
@@ -161,7 +151,7 @@
       }
     })();
 
-    // Register SW
+    // Register SW (keep current SW version unless you bump it)
     if ('serviceWorker' in navigator) {
       window.addEventListener('load', () => {
         navigator.serviceWorker.register('./service-worker.js?v=2025-09-17-37', {scope:'./'})
