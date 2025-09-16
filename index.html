@@ -10,9 +10,9 @@
 
   <!-- Version + PWA -->
   <script>window.__VN_VER__="2025-09-17-34";</script>
-  <link rel="manifest" href="./manifest.webmanifest?v=2025-09-17-33"/>
+  <link rel="manifest" href="./manifest.webmanifest?v=2025-09-17-34"/>
   <meta name="theme-color" content="#0EA5E9"/>
-  <link rel="icon" type="image/png" href="./icons/favicon.png?v=2025-09-17-33"/>
+  <link rel="icon" type="image/png" href="./icons/favicon.png?v=2025-09-17-34"/>
 
   <!-- Preload logo (transparent) -->
   <link rel="preload" as="image" href="./images/welcome-victoria-nurse-medical.png?v=2025-09-17-34"/>
@@ -67,7 +67,7 @@
       width:min(var(--cta-w), var(--cta-max));
     }
 
-    /* CTA gradient: navy–indigo (your approved set) */
+    /* CTA gradient: navy–indigo */
     .get-started-btn {
       display:block; width:100%;
       background: linear-gradient(90deg, #001c4b 0%, #001d49 50%, #001c4b 100%);
@@ -98,7 +98,7 @@
 
     .footer {
       position:absolute; bottom:14px; width:100%;
-      text-align:center; color:#0EA5E9; /* teal-blue brand */
+      text-align:center; color:#0EA5E9;
       opacity:.95; font-size:.8rem; font-style:italic;
     }
 
@@ -153,6 +153,14 @@
         } catch(_) {}
       }
     })();
+
+    // Explicit service worker registration with v34
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('./service-worker.js?v=2025-09-17-34', {scope:'./'})
+          .catch(()=>{});
+      });
+    }
 
     (function(){
       const link = document.getElementById('ctaStart');
