@@ -5,81 +5,116 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
   <title>Victoria Nurse — Care Together</title>
 
-  <!-- Tailwind -->
+  <!-- Tailwind (utility not strictly required but already in project) -->
   <script src="https://cdn.tailwindcss.com"></script>
 
   <!-- Version + PWA -->
-  <script>window.__VN_VER__="2025-09-17-40";</script>
+  <script>window.__VN_VER__="2025-09-17-41";</script>
   <link rel="manifest" href="./manifest.webmanifest?v=2025-09-17-39"/>
   <meta name="theme-color" content="#0EA5E9"/>
   <link rel="icon" type="image/png" href="./icons/favicon.png?v=2025-09-17-39"/>
 
-  <!-- Preload hero/logo -->
+  <!-- Preload logo -->
   <link rel="preload" as="image" href="./images/welcome-victoria-nurse-medical.png?v=2025-09-17-35"/>
 
   <style>
-    :root {
-      --cta-y: 75vh;
-      --cta-w: 78vw;
-      --cta-max: 460px;
+    :root{
+      --gap-lg: clamp(18px, 3.5vh, 28px);
+      --gap-xl: clamp(22px, 4.2vh, 34px);
+      --stack-pad: clamp(18px, 4vw, 28px);
+      --logo-w: clamp(160px, 38vw, 260px);
+      --cta-w: min(78vw, 460px);
     }
 
-    html, body { height:100%; margin:0; background:#081a2d; display:flex; justify-content:center; align-items:center; }
-    .wrap { position:relative; width:100%; height:100svh; overflow:hidden; text-align:center; }
+    html, body { height:100%; margin:0; }
+    body {
+      background:
+        radial-gradient(1200px 700px at 50% 12%, rgba(12,45,84,.55), transparent 70%),
+        linear-gradient(180deg, #0a1830 0%, #030b1a 35%, #030a17 100%);
+      color:#fff;
+      font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+    }
 
-    .headline {
-      margin-top: 10vh;
-      font-weight:900;
-      font-size:2.4rem;
-      color:#268dcb; /* sampled hex */
-      text-shadow:0 2px 6px rgba(0,0,0,.55);
+    .wrap {
+      min-height: 100svh;
+      display: grid;
+      grid-template-rows: 1fr auto;
+    }
+
+    /* Centered vertical stack */
+    .stack {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: var(--stack-pad);
+      gap: var(--gap-lg);
+    }
+
+    .title {
+      color: #268DCB;              /* sampled from your design */
+      font-weight: 900;
+      letter-spacing: .2px;
+      font-size: clamp(28px, 6.2vw, 46px);
+      line-height: 1.15;
+      text-shadow: 0 2px 6px rgba(0,0,0,.55);
+      margin: 0;
     }
 
     .tagline {
-      margin-top: 1rem;
-      font-size:1.15rem;
-      font-weight:500;
-      color:#e8f1fb;
-      opacity:.9;
+      color: #E6F1FF;
+      font-size: clamp(14px, 3.6vw, 18px);
+      font-weight: 500;
+      opacity: .95;
+      margin: 0;
+      margin-top: -4px; /* tuck slightly closer to title */
     }
 
-    .hero {
-      margin: 4vh auto 0 auto;
-      max-width: 80%;
-      height:auto;
-      display:block;
+    .logo {
+      width: var(--logo-w);
+      height: auto;
+      filter: drop-shadow(0 12px 28px rgba(0,0,0,.35));
+      margin-top: var(--gap-xl);
     }
 
-    .cta-wrap {
-      margin-top: 5vh;
-      width:min(var(--cta-w), var(--cta-max));
-      margin-left:auto;
-      margin-right:auto;
+    .cta {
+      width: var(--cta-w);
+      margin-top: var(--gap-lg);
     }
+
     .btn {
       display:block; width:100%;
-      background-image:linear-gradient(90deg,#14B8A6,#0EA5E9,#1E40AF);
-      color:#79E7FF;
-      font-weight:700; padding:0.95rem 1.25rem;
-      border-radius:999px; text-align:center; font-size:1.05rem;
-      box-shadow:0 10px 28px rgba(0,0,0,.28);
-      transition: transform .12s ease, opacity .12s ease;
+      text-align:center; border:none; cursor:pointer;
+      border-radius: 999px;
+      padding: 14px 32px;
+      font-size: 1.05rem; font-weight: 700;
+
+      /* Brand gradient + sampled text color */
+      background: linear-gradient(90deg, #1dd6e6 0%, #0ea5e9 50%, #1e40af 100%);
+      color: #79E7FF;
+
+      box-shadow: 0 14px 35px rgba(0,0,0,.28);
+      transition: background .3s ease, transform .2s ease, box-shadow .2s ease;
     }
-    .btn:hover { opacity:.97; transform:translateY(-1px); }
-    .btn:active { transform:translateY(0) scale(.985); }
+    .btn:hover {
+      background: linear-gradient(90deg, #26e4f4 0%, #14b8a6 50%, #2563eb 100%);
+      transform: translateY(-1px);
+      box-shadow: 0 18px 40px rgba(0,0,0,.35);
+    }
+    .btn:active {
+      background: linear-gradient(90deg, #0ea5e9 0%, #1e40af 50%, #0c2340 100%);
+      transform: scale(0.96);
+      box-shadow: 0 2px 8px rgba(0,0,0,.35) inset;
+    }
 
     .footer {
-      position:absolute;
-      bottom:14px;
-      width:100%;
-      text-align:center;
-      color:#e8f1fb;
-      opacity:.85;
-      font-size:.75rem;
-      font-style:italic;
+      padding: 14px 10px 18px;
+      text-align:center; color:#e8f1fb; opacity:.85;
+      font-size:.8rem; font-style:italic;
     }
 
-    /* Smooth fade */
+    /* Smooth veil transition on navigation */
     body { opacity:1; }
     @media (prefers-reduced-motion: no-preference) {
       body { transition: opacity .28s ease; }
@@ -89,29 +124,38 @@
     }
   </style>
 </head>
-<body class="text-white antialiased">
+<body>
   <div class="wrap">
-    <div class="headline">Welcome to Victoria Nurse</div>
-    <div class="tagline">Record patient readings in seconds, share in moments</div>
+    <!-- Centered stack -->
+    <main class="stack">
+      <h1 class="title">Welcome to Victoria Nurse</h1>
+      <p class="tagline">Record patient readings in seconds, share in moments</p>
 
-    <img src="./images/welcome-victoria-nurse-medical.png?v=2025-09-17-35" alt="Victoria Nurse Logo" class="hero"/>
+      <!-- Transparent logo, consistently centered -->
+      <img
+        src="./images/welcome-victoria-nurse-medical.png?v=2025-09-17-35"
+        alt="Victoria Nurse Logo"
+        class="logo"
+      />
 
-    <div class="cta-wrap">
-      <a href="app.html?v=2025-09-17-39" id="ctaStart" class="btn">Get Started</a>
-    </div>
+      <!-- CTA restored and visible -->
+      <div class="cta">
+        <a href="./app.html?v=2025-09-17-39" id="ctaStart" class="btn">Get Started</a>
+      </div>
+    </main>
 
-    <div class="footer">Powered by: karlthebrown</div>
+    <footer class="footer">Powered by: karlthebrown</footer>
   </div>
 
   <div class="veil" id="veil"></div>
 
   <script>
+    // Smooth fade-out on CTA click; then navigate
     (function(){
       const link = document.getElementById('ctaStart');
       const veil = document.getElementById('veil');
       const reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-      link.addEventListener('click', function(ev){
+      link?.addEventListener('click', function(ev){
         if (reduce) return;
         ev.preventDefault();
         document.body.classList.add('leaving');
