@@ -1,12 +1,12 @@
-/* Victoria Nurse — Service Worker (v40) */
-const CACHE_NAME = 'victoria-nurse-v40';
+/* Victoria Nurse — Service Worker (v41) */
+const CACHE_NAME = 'victoria-nurse-v41';
 
 const ASSETS = [
   './',
 
   // HTML
   './index.html',
-  './index.html?v=2025-09-17-40',
+  './index.html?v=2025-09-17-41',
   './app.html',
   './app.html?v=2025-09-17-39',
 
@@ -17,20 +17,20 @@ const ASSETS = [
   './icons/icon-180.png?v=2025-09-17-39',
   './icons/favicon.png?v=2025-09-17-39',
 
-  // Hero/logo image (still v35)
+  // Logo/hero image (still v35)
   './images/welcome-victoria-nurse-medical.png',
   './images/welcome-victoria-nurse-medical.png?v=2025-09-17-35'
 ];
 
 self.addEventListener('install', (event) => {
-  event.waitUntil(caches.open(CACHE_NAME).then((c) => c.addAll(ASSETS)));
+  event.waitUntil(caches.open(CACHE_NAME).then(c => c.addAll(ASSETS)));
   self.skipWaiting();
 });
 
 self.addEventListener('activate', (event) => {
   event.waitUntil((async () => {
     const keys = await caches.keys();
-    await Promise.all(keys.filter((k) => k !== CACHE_NAME).map((k) => caches.delete(k)));
+    await Promise.all(keys.filter(k => k !== CACHE_NAME).map(k => caches.delete(k)));
   })());
   self.clients.claim();
 });
@@ -58,7 +58,7 @@ self.addEventListener('fetch', (event) => {
     return;
   }
 
-  // Cache-first for same-origin static assets listed above
+  // Cache-first for same-origin static assets
   if (url.origin === location.origin) {
     event.respondWith((async () => {
       const cached = await caches.match(req);
