@@ -1,36 +1,36 @@
-/* Victoria Nurse — Service Worker (v39) */
-const CACHE_NAME = 'victoria-nurse-v39';
+/* Victoria Nurse — Service Worker (v40) */
+const CACHE_NAME = 'victoria-nurse-v40';
 
 const ASSETS = [
   './',
 
   // HTML
   './index.html',
-  './index.html?v=2025-09-17-39',
+  './index.html?v=2025-09-17-40',
   './app.html',
   './app.html?v=2025-09-17-39',
 
-  // PWA manifest & icons (still v35)
-  './manifest.webmanifest?v=2025-09-17-35',
-  './icons/icon-192.png?v=2025-09-17-35',
-  './icons/icon-512.png?v=2025-09-17-35',
-  './icons/icon-180.png?v=2025-09-17-35',
-  './icons/favicon.png?v=2025-09-17-35',
+  // PWA manifest & icons (v39)
+  './manifest.webmanifest?v=2025-09-17-39',
+  './icons/icon-192.png?v=2025-09-17-39',
+  './icons/icon-512.png?v=2025-09-17-39',
+  './icons/icon-180.png?v=2025-09-17-39',
+  './icons/favicon.png?v=2025-09-17-39',
 
-  // Hero/logo image (transparent, v35)
+  // Hero/logo image (still v35)
   './images/welcome-victoria-nurse-medical.png',
   './images/welcome-victoria-nurse-medical.png?v=2025-09-17-35'
 ];
 
 self.addEventListener('install', (event) => {
-  event.waitUntil(caches.open(CACHE_NAME).then(c => c.addAll(ASSETS)));
+  event.waitUntil(caches.open(CACHE_NAME).then((c) => c.addAll(ASSETS)));
   self.skipWaiting();
 });
 
 self.addEventListener('activate', (event) => {
-  event.waitUntil((async ()=>{
+  event.waitUntil((async () => {
     const keys = await caches.keys();
-    await Promise.all(keys.filter(k => k !== CACHE_NAME).map(k => caches.delete(k)));
+    await Promise.all(keys.filter((k) => k !== CACHE_NAME).map((k) => caches.delete(k)));
   })());
   self.clients.claim();
 });
@@ -40,11 +40,9 @@ self.addEventListener('fetch', (event) => {
   if (req.method !== 'GET') return;
 
   const url = new URL(req.url);
-  const isHTML =
-    req.destination === 'document' ||
-    req.headers.get('accept')?.includes('text/html');
+  const isHTML = req.destination === 'document' || req.headers.get('accept')?.includes('text/html');
 
-  // Network-first for HTML
+  // Network-first for HTML with cached fallback
   if (isHTML) {
     event.respondWith((async () => {
       try {
@@ -60,7 +58,7 @@ self.addEventListener('fetch', (event) => {
     return;
   }
 
-  // Cache-first for same-origin static assets in ASSETS
+  // Cache-first for same-origin static assets listed above
   if (url.origin === location.origin) {
     event.respondWith((async () => {
       const cached = await caches.match(req);
