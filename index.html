@@ -9,95 +9,77 @@
   <script src="https://cdn.tailwindcss.com"></script>
 
   <!-- Version + PWA -->
-  <script>window.__VN_VER__="2025-09-17-38";</script>
+  <script>window.__VN_VER__="2025-09-17-39";</script>
   <link rel="manifest" href="./manifest.webmanifest?v=2025-09-17-35"/>
   <meta name="theme-color" content="#0EA5E9"/>
   <link rel="icon" type="image/png" href="./icons/favicon.png?v=2025-09-17-35"/>
 
-  <!-- Preload logo (transparent) -->
+  <!-- Preload hero/logo -->
   <link rel="preload" as="image" href="./images/welcome-victoria-nurse-medical.png?v=2025-09-17-35"/>
 
   <style>
-    :root{
-      --stack-shift: -4vh; /* vertical centering adjustment */
+    :root {
+      --cta-y: 72vh;
       --cta-w: 78vw;
       --cta-max: 460px;
     }
 
     html, body { height:100%; margin:0; background:#081a2d; }
     .wrap { position:relative; width:100%; height:100svh; overflow:hidden; }
+    .hero { position:absolute; inset:0; width:100%; height:100%; object-fit:contain; object-position:center; display:block; }
 
-    /* Dark hero background */
-    .hero-bg{
-      position:absolute; inset:0;
-      background:
-        radial-gradient(1200px 700px at 50% 20%, rgba(12,45,84,.55), transparent 70%),
-        linear-gradient(180deg, #0a1830 0%, #030b1a 35%, #030a17 100%);
+    .headline {
+      position:absolute;
+      top:40%;
+      left:50%;
+      transform:translate(-50%, -50%);
+      text-align:center;
+      font-weight:900;
+      font-size:2.4rem; /* increased size */
+      color:#268dcb; /* sampled from your provided image */
+      text-shadow:0 2px 6px rgba(0,0,0,.55);
     }
 
-    /* Stack for logo + text + CTA */
-    .stack{
-      position:absolute; inset:0;
-      display:flex; flex-direction:column;
-      align-items:center; justify-content:center;
-      text-align:center; gap:14px; padding:24px;
-      transform: translateY(var(--stack-shift));
+    .tagline {
+      position:absolute;
+      top:calc(40% + 3rem);
+      left:50%;
+      transform:translate(-50%, -50%);
+      font-size:1.15rem;
+      font-weight:500;
+      color:#e8f1fb;
+      text-align:center;
+      opacity:.9;
     }
 
-    .logo {
-      width:min(62vw, 250px);
-      height:auto;
-      filter: drop-shadow(0 10px 28px rgba(0,0,0,.35));
-    }
-
-    /* Increased font size */
-    .title-victoria{
-      font-weight:800;
-      letter-spacing:.2px;
-      font-size: clamp(28px, 6.6vw, 46px);
-      line-height: 1.15;
-      color:#268DCB; /* extracted from your design */
-      margin-top: 2px;
-    }
-
-    .tagline{
-      font-size: clamp(14px, 3.6vw, 18px);
-      color:#e6efff;
-      opacity:.95;
-      margin-top: 2px;
-    }
-
-    .cta-wrap{
-      margin-top:16px;
+    .cta-wrap {
+      position:absolute;
+      left:50%;
+      top:var(--cta-y);
+      transform:translate(-50%, -50%);
       width:min(var(--cta-w), var(--cta-max));
     }
-
-    /* Get Started Button (brand gradient + hover/active) */
-    .get-started-btn {
+    .btn {
       display:block; width:100%;
-      text-align:center;
-      border:none; border-radius:999px; cursor:pointer;
-      background: linear-gradient(90deg, #1dd6e6 0%, #0ea5e9 50%, #1e40af 100%);
-      color:#79E7FF; font-size:1.05rem; font-weight:700;
-      padding:14px 32px;
-      box-shadow:0 14px 35px rgba(0,0,0,0.28);
-      transition: background 0.3s ease, transform 0.2s ease, box-shadow 0.2s ease;
+      background-image:linear-gradient(90deg,#14B8A6,#0EA5E9,#1E40AF);
+      color:#79E7FF; /* text color sampled */
+      font-weight:700; padding:0.95rem 1.25rem;
+      border-radius:999px; text-align:center; font-size:1.05rem;
+      box-shadow:0 10px 28px rgba(0,0,0,.28);
+      transition: transform .12s ease, opacity .12s ease;
     }
-    .get-started-btn:hover {
-      background: linear-gradient(90deg, #26e4f4 0%, #14b8a6 50%, #2563eb 100%);
-      transform: translateY(-1px);
-      box-shadow: 0 18px 40px rgba(0,0,0,0.35);
-    }
-    .get-started-btn:active {
-      background: linear-gradient(90deg, #0ea5e9 0%, #1e40af 50%, #0c2340 100%);
-      transform: scale(0.96);
-      box-shadow: 0 2px 8px rgba(0,0,0,0.35) inset;
-    }
+    .btn:hover { opacity:.97; transform:translateY(-1px); }
+    .btn:active { transform:translateY(0) scale(.985); }
 
     .footer {
-      position:absolute; bottom:14px; width:100%;
-      text-align:center; color:#0EA5E9;
-      opacity:.95; font-size:.8rem; font-style:italic;
+      position:absolute;
+      bottom:14px;
+      width:100%;
+      text-align:center;
+      color:#e8f1fb;
+      opacity:.85;
+      font-size:.75rem;
+      font-style:italic;
     }
 
     /* Smooth fade */
@@ -112,19 +94,13 @@
 </head>
 <body class="text-white antialiased">
   <div class="wrap">
-    <div class="hero-bg"></div>
+    <img src="./images/welcome-victoria-nurse-medical.png?v=2025-09-17-35" alt="Victoria Nurse Logo" class="hero"/>
 
-    <div class="stack">
-      <img src="./images/welcome-victoria-nurse-medical.png?v=2025-09-17-35"
-           alt="Victoria Nurse logo"
-           class="logo"/>
+    <div class="headline">Welcome to Victoria Nurse</div>
+    <div class="tagline">Record patient readings in seconds, share in moments</div>
 
-      <h1 class="title-victoria">Welcome to Victoria Nurse</h1>
-      <p class="tagline">Record patient readings in seconds, share in moments.</p>
-
-      <div class="cta-wrap">
-        <a href="./app.html?v=2025-09-17-35" id="ctaStart" class="get-started-btn">Get Started</a>
-      </div>
+    <div class="cta-wrap">
+      <a href="app.html?v=2025-09-17-39" id="ctaStart" class="btn">Get Started</a>
     </div>
 
     <div class="footer">Powered by: karlthebrown</div>
@@ -133,41 +109,17 @@
   <div class="veil" id="veil"></div>
 
   <script>
-    (async () => {
-      const KEY = 'vn_migrate_v38_index';
-      if (!localStorage.getItem(KEY)) {
-        try {
-          if ('serviceWorker' in navigator) {
-            const regs = await navigator.serviceWorker.getRegistrations();
-            await Promise.all(regs.map(r => r.unregister().catch(()=>{})));
-          }
-          if (window.caches?.keys) {
-            const names = await caches.keys();
-            await Promise.all(names.map(n => caches.delete(n).catch(()=>{})));
-          }
-          localStorage.setItem(KEY,'1');
-          location.reload();
-        } catch(_) {}
-      }
-    })();
-
-    // Register SW (keep current SW version unless you bump it)
-    if ('serviceWorker' in navigator) {
-      window.addEventListener('load', () => {
-        navigator.serviceWorker.register('./service-worker.js?v=2025-09-17-37', {scope:'./'})
-          .catch(()=>{});
-      });
-    }
-
     (function(){
       const link = document.getElementById('ctaStart');
       const veil = document.getElementById('veil');
       const reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-      link.addEventListener('click', function(){
+      link.addEventListener('click', function(ev){
         if (reduce) return;
+        ev.preventDefault();
         document.body.classList.add('leaving');
         veil?.classList.add('on');
+        setTimeout(() => { window.location.href = link.getAttribute('href'); }, 280);
       });
     })();
   </script>
