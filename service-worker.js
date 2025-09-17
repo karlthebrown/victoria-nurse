@@ -1,23 +1,23 @@
-/* Victoria Nurse — Service Worker (v44) */
-const CACHE_NAME = 'victoria-nurse-v44';
+/* Victoria Nurse — Service Worker (v45) */
+const CACHE_NAME = 'victoria-nurse-v45';
 
 const ASSETS = [
   './',
 
-  // HTML
+  // HTML (both canonical and versioned)
   './index.html',
-  './index.html?v=2025-09-17-44',  // bumped from v43 -> v44
+  './index.html?v=2025-09-17-45',
   './app.html',
-  './app.html?v=2025-09-17-44',
+  './app.html?v=2025-09-17-45',
 
-  // PWA manifest & icons (v44)
-  './manifest.webmanifest?v=2025-09-17-44',
-  './icons/icon-192.png?v=2025-09-17-44',
-  './icons/icon-512.png?v=2025-09-17-44',
-  './icons/icon-180.png?v=2025-09-17-44',
-  './icons/favicon.png?v=2025-09-17-44',
+  // PWA manifest & icons (v45)
+  './manifest.webmanifest?v=2025-09-17-45',
+  './icons/icon-192.png?v=2025-09-17-45',
+  './icons/icon-512.png?v=2025-09-17-45',
+  './icons/icon-180.png?v=2025-09-17-45',
+  './icons/favicon.png?v=2025-09-17-45',
 
-  // Logo/hero image (still v35)
+  // Logo/hero image (transparent PNG you replaced earlier)
   './images/welcome-victoria-nurse-medical.png',
   './images/welcome-victoria-nurse-medical.png?v=2025-09-17-35'
 ];
