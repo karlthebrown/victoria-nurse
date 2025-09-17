@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" data-theme="system">
 <head>
   <meta charset="utf-8"/>
   <meta http-equiv="Cache-Control" content="no-store, max-age=0"/>
@@ -7,16 +7,16 @@
   <title>Victoria Nurse — We Care Together</title>
 
   <!-- Version -->
-  <script>window.__VN_VER__="2025-09-17-46";</script>
+  <script>window.__VN_VER__="2025-09-17-47";</script>
 
   <!-- PWA + Icons -->
-  <link rel="manifest" href="./manifest.webmanifest?v=2025-09-17-46"/>
+  <link rel="manifest" href="./manifest.webmanifest?v=2025-09-17-47"/>
   <meta name="theme-color" content="#0EA5E9"/>
   <link rel="icon" type="image/png" href="./icons/favicon.png?v=2025-09-17-46"/>
   <link rel="apple-touch-icon" sizes="180x180" href="./icons/icon-180.png?v=2025-09-17-46"/>
 
   <!-- Fonts + Tailwind -->
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&family=Playfair+Display:wght@700&display=swap" rel="stylesheet"/>
   <script src="https://cdn.tailwindcss.com"></script>
 
   <!-- PDF -->
@@ -24,31 +24,53 @@
   <script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
 
   <style>
-    :root{ --med-teal:#14B8A6; --med-sky:#0EA5E9; --med-indigo:#1E40AF; --label:#0891B2; }
-    body { background: linear-gradient(135deg, #0EA5E9 0%, #14B8A6 50%, #1E40AF 100%); }
+    :root{
+      --med-teal:#14B8A6; --med-sky:#0EA5E9; --med-indigo:#1E40AF; --label:#0891B2;
+      --bg-grad: linear-gradient(135deg, #0EA5E9 0%, #14B8A6 50%, #1E40AF 100%);
+      --panel-bg: #ffffffcc; --panel-ring:#e2e8f0; --text:#0f172a;
+      --chip-bg:#ecfeff; --chip-fg:#0e7490;
+    }
+    [data-theme="dark"]{
+      --bg-grad: linear-gradient(135deg, #0b203a 0%, #0a3a36 50%, #0b1c4f 100%);
+      --panel-bg:#0b1220cc; --panel-ring:#1f2a37; --text:#e5e7eb;
+      --chip-bg:#042f2e; --chip-fg:#67e8f9;
+    }
 
-    /* Smooth fade */
-    body { opacity:1; }
-    @media (prefers-reduced-motion: no-preference) { body { transition: opacity .28s ease; } body.leaving { opacity:0; } }
+    body {
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Arial;
+      background: var(--bg-grad);
+      color: var(--text);
+      opacity:1;
+    }
+    @media (prefers-reduced-motion: no-preference) { body{ transition: opacity .28s ease; } body.leaving { opacity:0; } }
 
     label{ color:var(--label); }
     .vn-field{ color:var(--label); padding:.95rem 1.1rem; border-radius:.9rem; border:1px solid #cbd5e1; background:#fff; line-height:1.6rem; }
+    [data-theme="dark"] .vn-field{ background:#0f172a; border-color:#243244; color:#cfe9ff; }
     .vn-field:focus{ outline:none; box-shadow:0 0 0 2px var(--label); border-color:var(--label); }
     .vn-field::placeholder{ color:#98a6b3; opacity:.85; }
     .vn-input{ height:3.5rem; } .vn-textarea{ min-height:3.5rem; }
+
     .vn-tagline{ font-family:"Playfair Display", ui-serif, Georgia, serif; color:#E6F4FF; }
 
-    .btn-grad{ background-image:linear-gradient(90deg, var(--med-teal), var(--med-sky), var(--med-indigo)); color:#fff; font-weight:600; padding:.95rem 1.2rem; border-radius:1.1rem; box-shadow:0 14px 35px rgba(0,0,0,.25); transition: transform .12s ease, opacity .12s ease; }
+    .btn-grad{ background-image:linear-gradient(90deg, var(--med-teal), var(--med-sky), var(--med-indigo));
+      color:#fff; font-weight:700; padding:.95rem 1.2rem; border-radius:1.1rem; box-shadow:0 14px 35px rgba(0,0,0,.25);
+      transition: transform .12s ease, opacity .12s ease; }
     .btn-grad:hover{ opacity:.97; transform: translateY(-1px); }
     .btn-grad:active{ transform: translateY(0) scale(.98); }
 
     /* Collapsible */
-    details{ background:#ffffffcc; backdrop-filter: blur(6px); border:1px solid #e2e8f0; border-radius:12px; }
-    summary{ list-style:none; cursor:pointer; padding:12px 16px; font-weight:700; color:#0f172a; display:flex; align-items:center; justify-content:space-between; }
+    details{ background:var(--panel-bg); backdrop-filter: blur(6px); border:1px solid var(--panel-ring); border-radius:12px; }
+    summary{ list-style:none; cursor:pointer; padding:12px 16px; font-weight:800; color:var(--text);
+      display:flex; align-items:center; justify-content:space-between; }
     summary::marker{ display:none; }
     .chev{ transition: transform .2s ease; }
     details[open] .chev{ transform: rotate(90deg); }
     .panel{ padding: 0 16px 16px; }
+
+    /* Chips */
+    .chips{ display:flex; flex-wrap:wrap; gap:8px; }
+    .chip{ background:var(--chip-bg); color:var(--chip-fg); font-weight:700; border-radius:999px; padding:.45rem .7rem; cursor:pointer; user-select:none; }
 
     /* Toast + offline */
     #toast{ position:fixed; left:50%; bottom:18px; transform:translateX(-50%) translateY(140%); background:#06293f; color:#e6faff; padding:.8rem 1rem; border-radius:.8rem; box-shadow:0 10px 28px rgba(0,0,0,.35); font-size:.95rem; z-index:60; transition:transform .28s ease, opacity .28s ease; opacity:0; }
@@ -73,7 +95,7 @@
   </style>
 </head>
 
-<body class="min-h-screen text-slate-900 antialiased">
+<body class="min-h-screen antialiased">
   <div id="offline">You’re offline. Sharing may not work until connection resumes.</div>
 
   <div class="min-h-screen p-4 flex items-center justify-center">
@@ -82,13 +104,31 @@
 
         <!-- Header -->
         <header class="p-6" style="background:linear-gradient(90deg, var(--med-teal), var(--med-sky), var(--med-indigo));">
-          <div class="flex items-center gap-4">
-            <a href="./index.html" aria-label="Home">
-              <img src="./icons/icon-192.png?v=2025-09-17-46" alt="Victoria Nurse" class="h-14 w-14 rounded-2xl shadow"/>
-            </a>
-            <div>
-              <h1 class="text-white text-2xl font-extrabold tracking-tight">Victoria Nurse</h1>
-              <p class="vn-tagline text-white/95 text-sm">We Care Together</p>
+          <div class="flex items-center justify-between gap-4">
+            <div class="flex items-center gap-4">
+              <a href="./index.html" aria-label="Home">
+                <img src="./icons/icon-192.png?v=2025-09-17-46" alt="Victoria Nurse" class="h-14 w-14 rounded-2xl shadow"/>
+              </a>
+              <div>
+                <h1 class="text-white text-2xl font-extrabold tracking-tight">Victoria Nurse</h1>
+                <p class="vn-tagline text-white/95 text-sm">We Care Together</p>
+              </div>
+            </div>
+
+            <!-- Right-side quick actions -->
+            <div class="flex items-center gap-2">
+              <button id="btnInstall" type="button" class="hidden btn-grad text-xs px-3 py-2">Install App</button>
+              <a href="./help.html?v=2025-09-17-47" class="text-white/95 text-sm font-semibold underline decoration-white/50">Help</a>
+
+              <!-- Theme toggle -->
+              <label class="text-white/90 text-xs font-semibold flex items-center gap-2 select-none">
+                <span>Theme</span>
+                <select id="themeSel" class="text-slate-900 rounded px-2 py-1 text-xs">
+                  <option value="system">System</option>
+                  <option value="light">Light</option>
+                  <option value="dark">Dark</option>
+                </select>
+              </label>
             </div>
           </div>
         </header>
@@ -161,9 +201,18 @@
               </div>
             </details>
 
-            <!-- Notes -->
+            <!-- Notes + Voice + Quick Chips -->
             <div>
-              <label for="notes" class="block text-sm font-semibold mb-1">Notes</label>
+              <div class="flex items-center justify-between">
+                <label for="notes" class="block text-sm font-semibold mb-1">Notes</label>
+                <button id="btnVoice" type="button" class="btn-grad text-xs px-3 py-2">🎙️ Dictate</button>
+              </div>
+              <div class="chips mb-2">
+                <span class="chip" data-note="Patient stable and comfortable.">Stable & comfortable</span>
+                <span class="chip" data-note="Monitor blood pressure closely.">Monitor BP</span>
+                <span class="chip" data-note="Hydration encouraged.">Hydration encouraged</span>
+                <span class="chip" data-note="Follow medication schedule as prescribed.">Follow meds schedule</span>
+              </div>
               <textarea id="notes" rows="8" placeholder="Observations, symptoms, instructions" class="vn-field vn-textarea w-full"></textarea>
             </div>
 
@@ -263,7 +312,7 @@
   <!-- SW register -->
   <script>
     if('serviceWorker' in navigator){
-      window.addEventListener('load',()=>navigator.serviceWorker.register(`./service-worker.js?v=2025-09-17-46`,{scope:'./'}).catch(()=>{}));
+      window.addEventListener('load',()=>navigator.serviceWorker.register(`./service-worker.js?v=2025-09-17-47`,{scope:'./'}).catch(()=>{}));
     }
   </script>
 
@@ -279,6 +328,20 @@
     window.addEventListener('online', ()=>{ syncOfflineBanner(); tryProcessQueue(); });
     window.addEventListener('offline', syncOfflineBanner);
     syncOfflineBanner();
+
+    /* THEME */
+    const themeSel = el('themeSel');
+    const THEME_KEY = 'vn_theme_pref';
+    function applyTheme(v){
+      document.documentElement.setAttribute('data-theme', v);
+      if (v==='system'){
+        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        document.documentElement.toggleAttribute('data-dark', prefersDark);
+      }
+    }
+    themeSel.value = localStorage.getItem(THEME_KEY) || 'system';
+    applyTheme(themeSel.value);
+    themeSel.addEventListener('change', ()=>{ localStorage.setItem(THEME_KEY, themeSel.value); applyTheme(themeSel.value); });
 
     function pad2(n){ return n.toString().padStart(2,'0'); }
     function fmtDateTime(d = new Date()){
@@ -344,6 +407,63 @@
       toast('Group deleted');
     });
 
+    /* Quick Note chips */
+    document.querySelectorAll('.chip').forEach(ch => {
+      ch.addEventListener('click', ()=> {
+        const t = el('notes');
+        const v = ch.getAttribute('data-note') || '';
+        t.value = (t.value ? t.value + (t.value.endsWith(' ') ? '' : ' ') : '') + v;
+        t.focus();
+      });
+    });
+
+    /* Voice Dictation */
+    (function setupVoice(){
+      const btn = el('btnVoice');
+      const ta = el('notes');
+      const synthOK = 'webkitSpeechRecognition' in window || 'SpeechRecognition' in window;
+      if (!synthOK){ btn.disabled = true; btn.textContent = '🎙️ Not supported'; return; }
+
+      const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+      const rec = new SR(); rec.lang = 'en-US'; rec.interimResults = true; rec.continuous = false;
+
+      let listening = false; let baseText = '';
+      btn.addEventListener('click', ()=>{
+        if (!listening){
+          baseText = ta.value;
+          rec.start(); listening = true; btn.textContent = '🛑 Stop';
+        } else {
+          rec.stop();
+        }
+      });
+      rec.onresult = (e)=>{
+        let final = ''; let interim = '';
+        for (let i=0;i<e.results.length;i++){
+          const r = e.results[i];
+          (r.isFinal ? final : interim) += r[0].transcript;
+        }
+        ta.value = (baseText + ' ' + final + ' ' + interim).trim();
+      };
+      rec.onerror = ()=>{ listening=false; btn.textContent='🎙️ Dictate'; toast('Voice error'); };
+      rec.onend = ()=>{ listening=false; btn.textContent='🎙️ Dictate'; };
+    })();
+
+    /* PWA Install (Android) */
+    let deferredPrompt = null;
+    const btnInstall = el('btnInstall');
+    window.addEventListener('beforeinstallprompt', (e)=>{
+      e.preventDefault();
+      deferredPrompt = e;
+      btnInstall?.classList.remove('hidden');
+    });
+    btnInstall?.addEventListener('click', async ()=>{
+      if (!deferredPrompt) return;
+      deferredPrompt.prompt();
+      await deferredPrompt.userChoice;
+      deferredPrompt = null;
+      btnInstall.classList.add('hidden');
+    });
+
     /* Build record */
     function buildRecord(){
       return {
@@ -405,7 +525,7 @@
     function navigateHome(){
       const reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
       if (!reduce) document.body.classList.add('leaving');
-      setTimeout(()=>{ window.location.href = './index.html?v=2025-09-17-46'; }, reduce ? 0 : 280);
+      setTimeout(()=>{ window.location.href = './index.html?v=2025-09-17-47'; }, reduce ? 0 : 280);
     }
 
     async function makePdf(rec){
@@ -416,7 +536,6 @@
 
       pdf.setFillColor(14,165,233); pdf.rect(20, 20, W-40, 6, 'F');
 
-      // Header logo: brand if provided; else default icon
       const logo = new Image();
       logo.src = brandLogoDataURL || './icons/icon-192.png?v=2025-09-17-46';
       await new Promise(r => { logo.onload = r; logo.onerror = r; });
@@ -567,10 +686,10 @@
     });
   </script>
 
-  <!-- Self-cleanup (v46) -->
+  <!-- Self-cleanup (v47) -->
   <script>
     (async () => {
-      const VER = "2025-09-17-46";
+      const VER = "2025-09-17-47";
       const KEY = `vn_self_cleanup_${VER}`;
       const mustReset = new URLSearchParams(location.search).has('reset');
       if (mustReset || !localStorage.getItem(KEY)) {
