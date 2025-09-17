@@ -7,13 +7,13 @@
   <title>Victoria Nurse — We Care Together</title>
 
   <!-- Version -->
-  <script>window.__VN_VER__="2025-09-17-45";</script>
+  <script>window.__VN_VER__="2025-09-17-46";</script>
 
   <!-- PWA + Icons -->
-  <link rel="manifest" href="./manifest.webmanifest?v=2025-09-17-44"/>
+  <link rel="manifest" href="./manifest.webmanifest?v=2025-09-17-46"/>
   <meta name="theme-color" content="#0EA5E9"/>
-  <link rel="icon" type="image/png" href="./icons/favicon.png?v=2025-09-17-44"/>
-  <link rel="apple-touch-icon" sizes="180x180" href="./icons/icon-180.png?v=2025-09-17-44"/>
+  <link rel="icon" type="image/png" href="./icons/favicon.png?v=2025-09-17-46"/>
+  <link rel="apple-touch-icon" sizes="180x180" href="./icons/icon-180.png?v=2025-09-17-46"/>
 
   <!-- Fonts + Tailwind -->
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&display=swap" rel="stylesheet"/>
@@ -84,7 +84,7 @@
         <header class="p-6" style="background:linear-gradient(90deg, var(--med-teal), var(--med-sky), var(--med-indigo));">
           <div class="flex items-center gap-4">
             <a href="./index.html" aria-label="Home">
-              <img src="./icons/icon-192.png?v=2025-09-17-44" alt="Victoria Nurse" class="h-14 w-14 rounded-2xl shadow"/>
+              <img src="./icons/icon-192.png?v=2025-09-17-46" alt="Victoria Nurse" class="h-14 w-14 rounded-2xl shadow"/>
             </a>
             <div>
               <h1 class="text-white text-2xl font-extrabold tracking-tight">Victoria Nurse</h1>
@@ -219,7 +219,7 @@
   <div id="pdfCanvas" class="hidden">
     <div class="pdf-page" id="pdfRoot">
       <div class="pdf-top">
-        <img class="pdf-logo" id="pdfLogo" src="./icons/icon-192.png?v=2025-09-17-44" alt="Logo"/>
+        <img class="pdf-logo" id="pdfLogo" src="./icons/icon-192.png?v=2025-09-17-46" alt="Logo"/>
         <div>
           <div class="pdf-title">Victoria Nurse</div>
           <div class="pdf-tag">We Care Together</div>
@@ -263,7 +263,7 @@
   <!-- SW register -->
   <script>
     if('serviceWorker' in navigator){
-      window.addEventListener('load',()=>navigator.serviceWorker.register(`./service-worker.js?v=2025-09-17-44`,{scope:'./'}).catch(()=>{}));
+      window.addEventListener('load',()=>navigator.serviceWorker.register(`./service-worker.js?v=2025-09-17-46`,{scope:'./'}).catch(()=>{}));
     }
   </script>
 
@@ -405,7 +405,7 @@
     function navigateHome(){
       const reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
       if (!reduce) document.body.classList.add('leaving');
-      setTimeout(()=>{ window.location.href = './index.html?v=2025-09-17-45'; }, reduce ? 0 : 280);
+      setTimeout(()=>{ window.location.href = './index.html?v=2025-09-17-46'; }, reduce ? 0 : 280);
     }
 
     async function makePdf(rec){
@@ -418,7 +418,7 @@
 
       // Header logo: brand if provided; else default icon
       const logo = new Image();
-      logo.src = brandLogoDataURL || './icons/icon-192.png?v=2025-09-17-44';
+      logo.src = brandLogoDataURL || './icons/icon-192.png?v=2025-09-17-46';
       await new Promise(r => { logo.onload = r; logo.onerror = r; });
       pdf.addImage(logo, 'PNG', 20, 32, 40, 40);
 
@@ -567,10 +567,10 @@
     });
   </script>
 
-  <!-- Self-cleanup -->
+  <!-- Self-cleanup (v46) -->
   <script>
     (async () => {
-      const VER = "2025-09-17-45";
+      const VER = "2025-09-17-46";
       const KEY = `vn_self_cleanup_${VER}`;
       const mustReset = new URLSearchParams(location.search).has('reset');
       if (mustReset || !localStorage.getItem(KEY)) {
