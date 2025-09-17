@@ -2,7 +2,7 @@
   "name": "Victoria Nurse",
   "short_name": "Victoria Nurse",
   "description": "Record patient readings in seconds, share in moments. 100% client-side. No DOB. Ephemeral by default with optional Local-Only mode.",
-  "start_url": "./app.html?v=2025-09-17-46",
+  "start_url": "./app.html?v=2025-09-17-47",
   "scope": "./",
   "display": "standalone",
   "orientation": "portrait",
