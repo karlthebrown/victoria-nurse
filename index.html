@@ -3,27 +3,29 @@
 <head>
   <meta charset="utf-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
-  <title>Victoria Nurse — Care Together</title>
+  <title>Victoria Nurse — We Care Together</title>
 
   <script src="https://cdn.tailwindcss.com"></script>
 
   <!-- Version + PWA -->
-  <script>window.__VN_VER__="2025-09-17-44";</script>
-  <link rel="manifest" href="./manifest.webmanifest?v=2025-09-17-44"/>
+  <script>window.__VN_VER__="2025-09-17-46";</script>
+  <link rel="manifest" href="./manifest.webmanifest?v=2025-09-17-46"/>
   <meta name="theme-color" content="#0EA5E9"/>
-  <link rel="icon" type="image/png" href="./icons/favicon.png?v=2025-09-17-44"/>
+  <link rel="icon" type="image/png" href="./icons/favicon.png?v=2025-09-17-46"/>
+  <link rel="apple-touch-icon" sizes="180x180" href="./icons/icon-180.png?v=2025-09-17-46"/>
 
   <link rel="preload" as="image" href="./images/welcome-victoria-nurse-medical.png?v=2025-09-17-35"/>
 
   <style>
     :root{
       --bg1:#0a1830; --bg2:#030b1a; --bg3:#030a17;
-      --accent:#268DCB;
+      /* CTA gradient (button):  #1dd6e6 -> #0ea5e9 -> #1e40af
+         Reversed for TEXT:       #1e40af -> #0ea5e9 -> #1dd6e6 */
       --ctaText:#79E7FF;
-      --ctaW: min(68vw, 360px);
+      --ctaW: min(56vw, 320px); /* slightly reduced width */
       --logoW: clamp(140px, 34vw, 240px);
       --gap: clamp(14px, 2.8vh, 22px);
-      --gapLg: clamp(18px, 4vh, 28px);
+      --gapLg: clamp(18px, 4vh, 26px);
     }
 
     html, body { height:100%; margin:0; }
@@ -31,8 +33,7 @@
       background:
         radial-gradient(1200px 700px at 50% 8%, rgba(12,45,84,.55), transparent 70%),
         linear-gradient(180deg, var(--bg1) 0%, var(--bg2) 35%, var(--bg3) 100%);
-      color:#fff;
-      font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      color:#fff; font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Arial;
       opacity:1;
     }
     @media (prefers-reduced-motion: no-preference){
@@ -52,26 +53,26 @@
       filter: drop-shadow(0 12px 28px rgba(0,0,0,.35));
       margin-top: clamp(18px, 6vh, 40px);
     }
+
+    /* Gradient TEXT (reversed CTA gradient) */
+    .gradtext{
+      background: linear-gradient(90deg, #1e40af 0%, #0ea5e9 50%, #1dd6e6 100%);
+      -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent; color:transparent;
+      text-shadow: 0 2px 6px rgba(0,0,0,.55);
+    }
     .title{
       margin:0; font-weight:900; letter-spacing:.2px;
       font-size: clamp(30px, 6.8vw, 52px); line-height:1.1;
-      color: var(--accent); text-shadow:0 2px 6px rgba(0,0,0,.55);
     }
     .tag{
-      margin:0; display:flex; flex-direction:column; gap:6px;
-      align-items:center; justify-content:center;
-      color:#E6F1FF; opacity:.95; font-weight:600; line-height:1.25;
+      margin:0; font-weight:800;
+      font-size: clamp(18px, 4.5vw, 26px); letter-spacing:.2px;
     }
-    .tag .line{ font-size: clamp(15px, 3.9vw, 20px); letter-spacing:.2px; }
-    .divider{
-      width: 60px; height: 2px; border-radius:2px;
-      background: linear-gradient(90deg, #1dd6e6 0%, #0ea5e9 50%, #1e40af 100%);
-      opacity:.85; margin: 6px 0;
-    }
+
     .cta{ width: var(--ctaW); margin-top: var(--gapLg); }
     .btn{
       display:block; width:100%; text-align:center; border:none; cursor:pointer;
-      border-radius:999px; padding:14px 32px; font-size:1.08rem; font-weight:800;
+      border-radius:999px; padding:12px 26px; font-size:1.02rem; font-weight:800;
       background: linear-gradient(90deg, #1dd6e6 0%, #0ea5e9 50%, #1e40af 100%);
       color: var(--ctaText);
       box-shadow: 0 14px 35px rgba(0,0,0,.28);
@@ -92,14 +93,10 @@
   <div class="page">
     <main class="hero">
       <img src="./images/welcome-victoria-nurse-medical.png?v=2025-09-17-35" alt="Victoria Nurse Logo" class="logo"/>
-      <h1 class="title">Welcome to Victoria Nurse</h1>
-      <p class="tag" aria-label="Tagline">
-        <span class="line">Record patient readings in seconds</span>
-        <span class="divider" aria-hidden="true"></span>
-        <span class="line">share in moments</span>
-      </p>
+      <h1 class="title gradtext">Victoria Nurse</h1>
+      <p class="tag gradtext">We Care Together</p>
       <div class="cta">
-        <a href="./app.html?v=2025-09-17-44" id="ctaStart" class="btn">Get Started</a>
+        <a href="./app.html?v=2025-09-17-46" id="ctaStart" class="btn">Get Started</a>
       </div>
     </main>
     <footer class="foot">Powered by: karlthebrown</footer>
@@ -121,13 +118,12 @@
     })();
   </script>
 
-  <!-- Self-cleanup script -->
+  <!-- Self-cleanup (v46) -->
   <script>
     (async () => {
-      const VER = "2025-09-17-44";
+      const VER = "2025-09-17-46";
       const KEY = `vn_self_cleanup_${VER}`;
       const mustReset = new URLSearchParams(location.search).has('reset');
-
       if (mustReset || !localStorage.getItem(KEY)) {
         try {
           if ('serviceWorker' in navigator) {
