@@ -4,10 +4,10 @@
   <meta charset="utf-8"/>
   <meta http-equiv="Cache-Control" content="no-store, max-age=0"/>
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
-  <title>Victoria Nurse — Care Together</title>
+  <title>Victoria Nurse — We Care Together</title>
 
   <!-- Version -->
-  <script>window.__VN_VER__="2025-09-17-44";</script>
+  <script>window.__VN_VER__="2025-09-17-45";</script>
 
   <!-- PWA + Icons -->
   <link rel="manifest" href="./manifest.webmanifest?v=2025-09-17-44"/>
@@ -37,9 +37,18 @@
     .vn-field::placeholder{ color:#98a6b3; opacity:.85; }
     .vn-input{ height:3.5rem; } .vn-textarea{ min-height:3.5rem; }
     .vn-tagline{ font-family:"Playfair Display", ui-serif, Georgia, serif; color:#E6F4FF; }
+
     .btn-grad{ background-image:linear-gradient(90deg, var(--med-teal), var(--med-sky), var(--med-indigo)); color:#fff; font-weight:600; padding:.95rem 1.2rem; border-radius:1.1rem; box-shadow:0 14px 35px rgba(0,0,0,.25); transition: transform .12s ease, opacity .12s ease; }
     .btn-grad:hover{ opacity:.97; transform: translateY(-1px); }
     .btn-grad:active{ transform: translateY(0) scale(.98); }
+
+    /* Collapsible */
+    details{ background:#ffffffcc; backdrop-filter: blur(6px); border:1px solid #e2e8f0; border-radius:12px; }
+    summary{ list-style:none; cursor:pointer; padding:12px 16px; font-weight:700; color:#0f172a; display:flex; align-items:center; justify-content:space-between; }
+    summary::marker{ display:none; }
+    .chev{ transition: transform .2s ease; }
+    details[open] .chev{ transform: rotate(90deg); }
+    .panel{ padding: 0 16px 16px; }
 
     /* Toast + offline */
     #toast{ position:fixed; left:50%; bottom:18px; transform:translateX(-50%) translateY(140%); background:#06293f; color:#e6faff; padding:.8rem 1rem; border-radius:.8rem; box-shadow:0 10px 28px rgba(0,0,0,.35); font-size:.95rem; z-index:60; transition:transform .28s ease, opacity .28s ease; opacity:0; }
@@ -79,7 +88,7 @@
             </a>
             <div>
               <h1 class="text-white text-2xl font-extrabold tracking-tight">Victoria Nurse</h1>
-              <p class="vn-tagline text-white/95 text-sm">Care Together</p>
+              <p class="vn-tagline text-white/95 text-sm">We Care Together</p>
             </div>
           </div>
         </header>
@@ -121,70 +130,36 @@
                 <input id="pain" type="number" min="0" max="10" inputmode="numeric" placeholder="e.g., 3" class="vn-field vn-input w-full"/></div>
             </div>
 
-            <!-- Meds -->
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-              <div>
-                <label class="block text-sm font-semibold mb-1">Medication – Morning</label>
-                <select id="medMorningStatus" class="vn-field vn-input w-full">
-                  <option value="taken">Taken</option><option value="skipped">Skipped</option><option value="delayed">Delayed</option>
-                </select>
-                <input id="medMorningNote" class="vn-field vn-input w-full mt-2" placeholder="Optional note"/>
-              </div>
-              <div>
-                <label class="block text-sm font-semibold mb-1">Medication – Afternoon</label>
-                <select id="medAfternoonStatus" class="vn-field vn-input w-full">
-                  <option value="taken">Taken</option><option value="skipped">Skipped</option><option value="delayed">Delayed</option>
-                </select>
-                <input id="medAfternoonNote" class="vn-field vn-input w-full mt-2" placeholder="Optional note"/>
-              </div>
-              <div>
-                <label class="block text-sm font-semibold mb-1">Medication – Evening</label>
-                <select id="medEveningStatus" class="vn-field vn-input w-full">
-                  <option value="taken">Taken</option><option value="skipped">Skipped</option><option value="delayed">Delayed</option>
-                </select>
-                <input id="medEveningNote" class="vn-field vn-input w-full mt-2" placeholder="Optional note"/>
-              </div>
-            </div>
-
-            <!-- Sharing Destinations -->
-            <div class="grid gap-3">
-              <h3 class="text-slate-700 font-bold">Sharing Destinations</h3>
-
-              <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
-                <input id="wa1" class="vn-field vn-input w-full" inputmode="tel" placeholder="WhatsApp number #1 (e.g., +233...)"/>
-                <input id="wa2" class="vn-field vn-input w-full" inputmode="tel" placeholder="WhatsApp number #2 (optional)"/>
-                <input id="wa3" class="vn-field vn-input w-full" inputmode="tel" placeholder="WhatsApp number #3 (optional)"/>
-              </div>
-
-              <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
-                <input id="groupName" class="vn-field vn-input w-full" placeholder="Family Group Name (optional)"/>
-                <div class="text-xs text-slate-500 self-center">Save once, reuse forever (on this device)</div>
-              </div>
-
-              <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
-                <input id="groupPhones" class="vn-field vn-input w-full" placeholder="Group WhatsApp numbers (comma-separated)"/>
-                <input id="groupEmails" class="vn-field vn-input w-full" placeholder="Group emails (comma-separated)"/>
-              </div>
-
-              <div class="flex gap-3">
-                <button id="btnSaveGroup" type="button" class="btn-grad">Save/Update Group</button>
-                <button id="btnLoadGroup" type="button" class="btn-grad">Load Group</button>
-                <button id="btnDeleteGroup" type="button" class="btn-grad">Delete Group</button>
-              </div>
-            </div>
-
-            <!-- Branding & Footer -->
-            <div class="grid gap-3">
-              <h3 class="text-slate-700 font-bold">Branding & Footer</h3>
-              <input id="footerNote" class="vn-field vn-input w-full" placeholder="Footer note (e.g., Nurse’s signature or clinic name)"/>
-              <div class="grid grid-cols-1 md:grid-cols-2 gap-3 items-center">
-                <div>
-                  <label class="block text-sm font-semibold mb-1">Custom Branding Logo (optional)</label>
-                  <input id="brandLogo" type="file" accept="image/*" class="w-full text-sm"/>
+            <!-- Collapsible: Sharing Destinations -->
+            <details id="shareSection">
+              <summary>
+                <span>Sharing Destinations</span>
+                <span class="chev">›</span>
+              </summary>
+              <div class="panel grid gap-3">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+                  <input id="wa1" class="vn-field vn-input w-full" inputmode="tel" placeholder="WhatsApp number #1 (e.g., +233...)"/>
+                  <input id="wa2" class="vn-field vn-input w-full" inputmode="tel" placeholder="WhatsApp number #2 (optional)"/>
+                  <input id="wa3" class="vn-field vn-input w-full" inputmode="tel" placeholder="WhatsApp number #3 (optional)"/>
                 </div>
-                <div class="text-xs text-slate-500">If provided, this logo appears in the PDF header instead of the default icon.</div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                  <input id="groupName" class="vn-field vn-input w-full" placeholder="Family Group Name (optional)"/>
+                  <div class="text-xs text-slate-500 self-center">Saved on this device for <strong>7 days</strong>.</div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                  <input id="groupPhones" class="vn-field vn-input w-full" placeholder="Group WhatsApp numbers (comma-separated)"/>
+                  <input id="groupEmails" class="vn-field vn-input w-full" placeholder="Group emails (comma-separated)"/>
+                </div>
+
+                <div class="flex gap-3">
+                  <button id="btnSaveGroup" type="button" class="btn-grad">Save/Update Group</button>
+                  <button id="btnLoadGroup" type="button" class="btn-grad">Load Group</button>
+                  <button id="btnDeleteGroup" type="button" class="btn-grad">Delete Group</button>
+                </div>
               </div>
-            </div>
+            </details>
 
             <!-- Notes -->
             <div>
@@ -197,11 +172,30 @@
               <div class="flex items-center justify-between">
                 <label for="nurseName" class="block text-sm font-semibold mb-1">Prepared by (Nurse’s Name)</label>
                 <label class="text-xs flex items-center gap-1 select-none">
-                  <input id="rememberNurse" type="checkbox" class="accent-sky-500"> Remember on this device (30 days)
+                  <input id="rememberNurse" type="checkbox" class="accent-sky-500"> Remember on this device (7 days)
                 </label>
               </div>
               <input id="nurseName" type="text" placeholder="Enter nurse's full name" class="vn-field vn-input w-full"/>
             </div>
+
+            <!-- Collapsible: Settings (Branding & Footer) -->
+            <details id="settingsSection">
+              <summary>
+                <span>Settings</span>
+                <span class="chev">›</span>
+              </summary>
+              <div class="panel grid gap-3">
+                <h3 class="text-slate-700 font-bold">Branding & Footer</h3>
+                <input id="footerNote" class="vn-field vn-input w-full" placeholder="Footer note (e.g., Nurse’s signature or clinic name)"/>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-3 items-center">
+                  <div>
+                    <label class="block text-sm font-semibold mb-1">Custom Branding Logo (optional)</label>
+                    <input id="brandLogo" type="file" accept="image/*" class="w-full text-sm"/>
+                  </div>
+                  <div class="text-xs text-slate-500">If provided, this logo appears in the PDF header instead of the default icon.</div>
+                </div>
+              </div>
+            </details>
 
             <!-- Actions -->
             <div class="flex flex-col sm:flex-row gap-3">
@@ -228,7 +222,7 @@
         <img class="pdf-logo" id="pdfLogo" src="./icons/icon-192.png?v=2025-09-17-44" alt="Logo"/>
         <div>
           <div class="pdf-title">Victoria Nurse</div>
-          <div class="pdf-tag">Care Together</div>
+          <div class="pdf-tag">We Care Together</div>
         </div>
       </div>
       <hr class="pdf-hr"/>
@@ -274,26 +268,6 @@
   </script>
 
   <script>
-    /* One-time cache migration (v44) */
-    (async () => {
-      const KEY = 'vn_migrate_v44_app';
-      if (!localStorage.getItem(KEY)) {
-        try {
-          if ('serviceWorker' in navigator) {
-            const regs = await navigator.serviceWorker.getRegistrations();
-            await Promise.all(regs.map(r => r.unregister().catch(()=>{})));
-          }
-          if (window.caches?.keys) {
-            const names = await caches.keys();
-            await Promise.all(names.map(n => caches.delete(n).catch(()=>{})));
-          }
-          localStorage.setItem(KEY,'1');
-          location.reload();
-        } catch(_) {}
-      }
-    })();
-
-    /* Helpers */
     document.getElementById('year').textContent = new Date().getFullYear();
     const el=id=>document.getElementById(id);
     const getVal=id=>(el(id)?.value||'').trim();
@@ -311,14 +285,14 @@
       return `${d.getFullYear()}-${pad2(d.getMonth()+1)}-${pad2(d.getDate())} ${pad2(d.getHours())}:${pad2(d.getMinutes())}`;
     }
 
-    /* 30-day TTL local store */
-    const TTL_MS = 30 * 24 * 60 * 60 * 1000;
+    /* 7-day TTL local store */
+    const TTL_MS = 7 * 24 * 60 * 60 * 1000;
     function setWithTTL(key, value){ localStorage.setItem(key, JSON.stringify({v:value, t:Date.now()})); }
     function getWithTTL(key){
       try{ const o = JSON.parse(localStorage.getItem(key)||'null'); if(!o) return null; if(Date.now()-o.t>TTL_MS){ localStorage.removeItem(key); return null; } return o.v; }catch{ return null; }
     }
 
-    /* Nurse + recent patients (30 days) */
+    /* Nurse + recent patients (7 days) */
     (function initLocalMemory(){
       const nurse = getWithTTL('vn_nurse_name');
       if (nurse) { el('nurseName').value = nurse; el('rememberNurse').checked = true; }
@@ -334,7 +308,6 @@
         if (el('rememberNurse').checked) setWithTTL('vn_nurse_name', el('nurseName').value.trim());
       });
 
-      // Preload saved group if name present
       const lastGroup = getWithTTL('vn_last_group_name');
       if (lastGroup) el('groupName').value = lastGroup;
     })();
@@ -347,7 +320,7 @@
       setWithTTL(key, next);
     }
 
-    /* Family group store */
+    /* Family group store (7-day TTL) */
     function keyGroup(n){ return `vn_group_${n.trim().toLowerCase()}`; }
     el('btnSaveGroup').addEventListener('click', ()=>{
       const name = getVal('groupName'); if(!name){ toast('Enter group name'); return; }
@@ -420,8 +393,9 @@
 
     /* Optional branding logo -> data URL */
     let brandLogoDataURL = null;
-    el('brandLogo').addEventListener('change', ()=>{
-      const file = el('brandLogo').files?.[0]; if(!file){ brandLogoDataURL=null; return; }
+    const brandInput = document.getElementById('brandLogo');
+    brandInput?.addEventListener('change', ()=>{
+      const file = brandInput.files?.[0]; if(!file){ brandLogoDataURL=null; return; }
       const reader = new FileReader();
       reader.onload = e => { brandLogoDataURL = e.target.result; toast('Brand logo loaded ✅'); };
       reader.onerror = ()=>{ brandLogoDataURL=null; toast('Could not load logo'); };
@@ -431,7 +405,7 @@
     function navigateHome(){
       const reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
       if (!reduce) document.body.classList.add('leaving');
-      setTimeout(()=>{ window.location.href = './index.html?v=2025-09-17-44'; }, reduce ? 0 : 280);
+      setTimeout(()=>{ window.location.href = './index.html?v=2025-09-17-45'; }, reduce ? 0 : 280);
     }
 
     async function makePdf(rec){
@@ -451,7 +425,7 @@
       pdf.setFont('helvetica','bold'); pdf.setFontSize(20);
       pdf.setTextColor(14,165,233); pdf.text('Victoria Nurse', 70, 52);
       pdf.setFont('times','italic'); pdf.setFontSize(12);
-      pdf.setTextColor(20,83,136); pdf.text('Care Together', 70, 70);
+      pdf.setTextColor(20,83,136); pdf.text('We Care Together', 70, 70);
 
       y = 96;
       pdf.setDrawColor(230); pdf.line(20, y, W-20, y); y += 18;
@@ -511,7 +485,6 @@
       const key='vn_share_queue';
       const arr = getWithTTL(key) || [];
       if (!arr.length) return;
-      // simple prompt
       if (!confirm(`You have ${arr.length} pending share(s). Send now?`)) return;
       arr.forEach(it=>{
         if (it.type==='whatsapp'){ openWhatsApps(it.numbers, it.text); }
@@ -522,21 +495,17 @@
     }
     window.addEventListener('load', tryProcessQueue);
 
-    /* WhatsApp utilities */
+    /* WhatsApp & Email helpers */
     function normalizePhone(p){ return (p||'').replace(/[^\d+]/g,'').trim(); }
     function parsePhones(str){ return (str||'').split(/[,;\s]+/).map(normalizePhone).filter(Boolean); }
     function unique(arr){ return [...new Set(arr)]; }
-
     function openWhatsApps(numbers, text){
-      // WhatsApp supports one recipient per window. Open sequentially (may still trigger popup limits).
       numbers.forEach((num, idx)=>{
         const url = num ? `https://wa.me/${encodeURIComponent(num)}?text=${encodeURIComponent(text)}` :
                           `https://wa.me/?text=${encodeURIComponent(text)}`;
         setTimeout(()=> window.open(url, '_blank'), idx*250);
       });
     }
-
-    /* Email utility */
     function parseEmails(str){ return (str||'').split(/[,;\s]+/).map(s=>s.trim()).filter(Boolean); }
     function openEmail(emails, subject, body){
       const to = emails.join(',');
@@ -566,18 +535,14 @@
     document.getElementById('btnWhatsApp').addEventListener('click', ()=>{
       const rec = buildRecord(); rememberPatient(rec.patient);
       const text = shareText(rec);
-      // collect numbers: direct fields + group phones
       const nums = unique([
         normalizePhone(getVal('wa1')),
         normalizePhone(getVal('wa2')),
         normalizePhone(getVal('wa3')),
         ...parsePhones(getVal('groupPhones'))
       ]).filter(Boolean);
-
-      if (!nums.length){ nums.push(''); } // fallback: open generic composer
-
+      if (!nums.length){ nums.push(''); }
       if (!navigator.onLine){ enqueueShare({type:'whatsapp', numbers:nums, text}); return; }
-
       openWhatsApps(nums, text);
       toast('Shared to WhatsApp ✅');
       setTimeout(()=>{ clearAll(); navigateHome(); }, 900);
@@ -585,7 +550,6 @@
 
     document.getElementById('btnEmail').addEventListener('click', async ()=>{
       const rec = buildRecord(); rememberPatient(rec.patient);
-      // always generate PDF to download locally
       const blob = await makePdf(rec);
       const a = document.createElement('a');
       a.href = URL.createObjectURL(blob);
@@ -596,47 +560,38 @@
       const subject = `Patient Vitals — ${rec.patient||'Unnamed'} — ${rec.session}`;
       const body = shareText(rec);
       const emails = unique([...parseEmails(getVal('groupEmails'))]);
-
       if (!navigator.onLine){ enqueueShare({type:'email', emails, subject, body}); return; }
-
       openEmail(emails, subject, body);
       toast('Email draft opened ✉️');
       setTimeout(()=>{ clearAll(); navigateHome(); }, 1000);
     });
   </script>
-  <!-- Self-cleanup script -->
-<script>
-  (async () => {
-    const VER = "2025-09-17-44";
-    const KEY = `vn_self_cleanup_${VER}`;
-    const mustReset = new URLSearchParams(location.search).has('reset');
 
-    if (mustReset || !localStorage.getItem(KEY)) {
-      try {
-        // 1) Unregister ALL service workers
-        if ('serviceWorker' in navigator) {
-          const regs = await navigator.serviceWorker.getRegistrations();
-          await Promise.all(regs.map(r => r.unregister().catch(()=>{})));
-        }
-
-        // 2) Clear ALL caches
-        if (window.caches?.keys) {
-          const names = await caches.keys();
-          await Promise.all(names.map(n => caches.delete(n).catch(()=>{})));
-        }
-
-        // 3) Mark cleanup done for this version
-        localStorage.setItem(KEY, '1');
-
-        // 4) Reload once to pick up fresh SW & assets (avoid loops)
-        if (!sessionStorage.getItem(KEY)) {
-          sessionStorage.setItem(KEY, '1');
-          location.replace(location.pathname + location.search + location.hash);
-          return;
-        }
-      } catch(_) {}
-    }
-  })();
-</script>
+  <!-- Self-cleanup -->
+  <script>
+    (async () => {
+      const VER = "2025-09-17-45";
+      const KEY = `vn_self_cleanup_${VER}`;
+      const mustReset = new URLSearchParams(location.search).has('reset');
+      if (mustReset || !localStorage.getItem(KEY)) {
+        try {
+          if ('serviceWorker' in navigator) {
+            const regs = await navigator.serviceWorker.getRegistrations();
+            await Promise.all(regs.map(r => r.unregister().catch(()=>{})));
+          }
+          if (window.caches?.keys) {
+            const names = await caches.keys();
+            await Promise.all(names.map(n => caches.delete(n).catch(()=>{})));
+          }
+          localStorage.setItem(KEY, '1');
+          if (!sessionStorage.getItem(KEY)) {
+            sessionStorage.setItem(KEY, '1');
+            location.replace(location.pathname + location.search + location.hash);
+            return;
+          }
+        } catch(_) {}
+      }
+    })();
+  </script>
 </body>
 </html>
