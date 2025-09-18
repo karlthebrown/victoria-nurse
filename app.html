@@ -6,49 +6,77 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
   <title>Victoria Nurse — We Care Together</title>
 
+  <!-- Version -->
   <script>window.__VN_VER__="2025-09-17-49";</script>
+
+  <!-- PWA + Icons -->
   <link rel="manifest" href="./manifest.webmanifest?v=2025-09-17-49"/>
   <meta name="theme-color" content="#0EA5E9"/>
   <link rel="icon" type="image/png" href="./icons/favicon.png?v=2025-09-17-49"/>
   <link rel="apple-touch-icon" sizes="180x180" href="./icons/icon-180.png?v=2025-09-17-49"/>
 
+  <!-- Tailwind + PDF libs -->
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
 
   <style>
-    :root{ --med-teal:#14B8A6; --med-sky:#0EA5E9; --med-indigo:#1E40AF; }
+    :root{ --med-teal:#14B8A6; --med-sky:#0EA5E9; --med-indigo:#1E40AF; --label:#0891B2; }
+
+    /* Help-page colors */
     body { background:#f9fafb; }
+    .text-body { color:#1f2937; } /* slate-800-ish */
+
+    /* Gradient text used for title + tagline */
     .gradient-text {
-      background:linear-gradient(90deg, var(--med-indigo), var(--med-sky), var(--med-teal));
-      -webkit-background-clip:text; -webkit-text-fill-color:transparent;
+      background: linear-gradient(90deg, #14B8A6, #0EA5E9, #1E40AF);
+      -webkit-background-clip:text;
+      -webkit-text-fill-color:transparent;
     }
-    .vn-field{ padding:.9rem 1rem; border-radius:.8rem; border:1px solid #cbd5e1; background:#fff; line-height:1.5rem; }
-    .vn-field:focus{ outline:none; box-shadow:0 0 0 2px var(--med-sky); }
-    .btn-grad{ background-image:linear-gradient(90deg, var(--med-teal), var(--med-sky), var(--med-indigo)); color:#fff; font-weight:600; padding:.9rem 1.2rem; border-radius:1rem; box-shadow:0 6px 18px rgba(0,0,0,.2); transition:all .15s; }
+
+    /* Inputs */
+    .vn-field{ padding:.95rem 1.1rem; border-radius:.9rem; border:1px solid #cbd5e1; background:#fff; line-height:1.6rem; }
+    .vn-field:focus{ outline:none; box-shadow:0 0 0 2px var(--label); border-color:var(--label); }
+    .vn-input{ height:3.25rem; } .vn-textarea{ min-height:3.5rem; }
+
+    /* Buttons — slimmer width */
+    .btn-grad{
+      background-image:linear-gradient(90deg, var(--med-teal), var(--med-sky), var(--med-indigo));
+      color:#fff; font-weight:700; padding:.75rem 1.1rem; border-radius:999px;
+      box-shadow:0 10px 24px rgba(0,0,0,.22);
+      transition: transform .12s ease, opacity .12s ease;
+      width:100%;
+    }
+    @media (min-width:640px){ /* ≥ sm */
+      .btn-grad{ width:auto; min-width:180px; }
+    }
     .btn-grad:hover{ opacity:.97; transform:translateY(-1px); }
-    .btn-grad:active{ transform:translateY(0) scale(.98); }
+    .btn-grad:active{ transform:translateY(0) scale(.985); }
+
+    /* Settings dropdown */
     .dropdown { position:relative; display:inline-block; }
     .dropdown-menu {
-      display:none; position:absolute; right:0; margin-top:.5rem;
-      background:white; border-radius:.6rem; box-shadow:0 4px 12px rgba(0,0,0,.1);
-      overflow:hidden; z-index:50;
+      position:absolute; right:0; top:100%; margin-top:.5rem;
+      background:white; color:#0f172a; width:240px;
+      border-radius:.75rem; box-shadow:0 10px 28px rgba(0,0,0,.15);
+      border:1px solid rgba(2,6,23,.06);
+      display:none; overflow:hidden; z-index:50;
     }
     .dropdown.open .dropdown-menu{ display:block; }
-    .dropdown-menu a { display:block; padding:.6rem 1rem; color:#334155; text-decoration:none; font-size:.9rem; }
-    .dropdown-menu a:hover { background:#f1f5f9; }
+    .dropdown-item{ display:block; width:100%; text-align:left; padding:.6rem .9rem; font-size:.9rem; }
+    .dropdown-item:hover{ background:#f1f5f9; }
   </style>
 </head>
 
-<body class="min-h-screen text-slate-900 antialiased">
+<body class="min-h-screen text-slate-800 antialiased">
   <div class="min-h-screen p-4 flex items-center justify-center">
     <main class="w-full max-w-3xl">
-      <div class="bg-white/90 backdrop-blur-xl shadow-2xl rounded-3xl overflow-hidden ring-1 ring-white/40">
+      <div class="bg-white/95 backdrop-blur-xl shadow-2xl rounded-3xl overflow-hidden ring-1 ring-slate-100">
 
         <!-- Header -->
         <header class="p-6 flex items-center justify-between" style="background:linear-gradient(90deg, var(--med-teal), var(--med-sky), var(--med-indigo));">
           <div class="flex items-center gap-4">
-            <a href="./index.html" aria-label="Home">
+            <a href="./index.html?v=2025-09-17-49" aria-label="Home">
               <img src="./icons/icon-192.png?v=2025-09-17-49" alt="Victoria Nurse" class="h-14 w-14 rounded-2xl shadow"/>
             </a>
             <div>
@@ -56,86 +84,127 @@
               <p class="gradient-text text-sm">We Care Together</p>
             </div>
           </div>
+
           <!-- Settings dropdown -->
-          <div class="dropdown" id="settingsMenu">
-            <button class="text-white text-xl">⚙</button>
-            <div class="dropdown-menu">
-              <a href="#">Branding & Footer</a>
-              <a href="#">Theme</a>
-              <a href="./help.html">Help</a>
+          <div class="dropdown" id="settingsWrap">
+            <button id="settingsBtn" class="text-white text-xl px-2 py-1 rounded-lg hover:bg-white/20 focus:outline-none focus:ring-2 focus:ring-white/50" aria-haspopup="true" aria-expanded="false" title="Settings">⚙</button>
+            <div class="dropdown-menu" id="settingsMenu" role="menu" aria-label="Settings">
+              <button id="menuBranding" class="dropdown-item" role="menuitem">Branding &amp; Footer</button>
+              <button id="menuTheme" class="dropdown-item" role="menuitem">Theme</button>
+              <a id="menuHelp" href="./help.html?v=2025-09-17-49" class="dropdown-item" role="menuitem">Help</a>
             </div>
           </div>
         </header>
 
         <!-- Form -->
-        <section class="p-6 grid gap-6" role="form" aria-label="Patient Vitals Form">
+        <section class="p-6 grid gap-6 text-body" role="form" aria-label="Patient Vitals Form">
           <form id="formVitals" class="grid gap-6" autocomplete="off" novalidate>
             <div>
-              <label class="block text-sm font-semibold mb-1">Patient Name</label>
-              <input id="patientName" type="text" placeholder="Enter full name" class="vn-field w-full"/>
+              <label for="patientName" class="block text-sm font-semibold mb-1">Patient Name</label>
+              <input id="patientName" type="text" placeholder="Enter full name" class="vn-field vn-input w-full"/>
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div><label class="block text-sm font-semibold mb-1">Temperature (°C)</label>
-                <input id="temperature" type="number" step="0.1" class="vn-field w-full"/></div>
-              <div><label class="block text-sm font-semibold mb-1">Pulse (bpm)</label>
-                <input id="pulse" type="number" class="vn-field w-full"/></div>
-              <div><label class="block text-sm font-semibold mb-1">Respiratory Rate</label>
-                <input id="respiratoryRate" type="number" class="vn-field w-full"/></div>
-              <div><label class="block text-sm font-semibold mb-1">Blood Pressure (mmHg)</label>
+              <div><label for="temperature" class="block text-sm font-semibold mb-1">Temperature (°C)</label>
+                <input id="temperature" type="number" step="0.1" inputmode="decimal" class="vn-field vn-input w-full"/></div>
+              <div><label for="pulse" class="block text-sm font-semibold mb-1">Pulse (bpm)</label>
+                <input id="pulse" type="number" inputmode="numeric" class="vn-field vn-input w-full"/></div>
+              <div><label for="respiratoryRate" class="block text-sm font-semibold mb-1">Respiratory Rate (breaths/min)</label>
+                <input id="respiratoryRate" type="number" inputmode="numeric" class="vn-field vn-input w-full"/></div>
+
+              <div>
+                <label class="block text-sm font-semibold mb-1">Blood Pressure (mmHg)</label>
                 <div class="grid grid-cols-2 gap-2">
-                  <input id="sbp" type="number" placeholder="SBP" class="vn-field w-full"/>
-                  <input id="dbp" type="number" placeholder="DBP" class="vn-field w-full"/>
+                  <input id="sbp" type="number" inputmode="numeric" placeholder="SBP" class="vn-field vn-input w-full"/>
+                  <input id="dbp" type="number" inputmode="numeric" placeholder="DBP" class="vn-field vn-input w-full"/>
                 </div>
               </div>
-              <div><label class="block text-sm font-semibold mb-1">Oxygen Saturation (%)</label>
-                <input id="oxygenSaturation" type="number" class="vn-field w-full"/></div>
-              <div><label class="block text-sm font-semibold mb-1">Blood Sugar (mg/dL)</label>
-                <input id="bloodSugar" type="number" class="vn-field w-full"/></div>
-              <div><label class="block text-sm font-semibold mb-1">Weight (kg)</label>
-                <input id="weight" type="number" class="vn-field w-full"/></div>
-              <div class="md:col-span-2"><label class="block text-sm font-semibold mb-1">Pain (0–10)</label>
-                <input id="pain" type="number" min="0" max="10" class="vn-field w-full"/></div>
+
+              <div><label for="oxygenSaturation" class="block text-sm font-semibold mb-1">Oxygen Saturation (SpO₂ %)</label>
+                <input id="oxygenSaturation" type="number" inputmode="numeric" class="vn-field vn-input w-full"/></div>
+              <div><label for="bloodSugar" class="block text-sm font-semibold mb-1">Blood Sugar Level (mg/dL)</label>
+                <input id="bloodSugar" type="number" step="0.1" inputmode="decimal" class="vn-field vn-input w-full"/></div>
+
+              <div><label for="weight" class="block text-sm font-semibold mb-1">Weight (kg)</label>
+                <input id="weight" type="number" step="0.1" inputmode="decimal" class="vn-field vn-input w-full"/></div>
+
+              <div class="md:col-span-2"><label for="pain" class="block text-sm font-semibold mb-1">Pain Assessment (0–10)</label>
+                <input id="pain" type="number" min="0" max="10" inputmode="numeric" class="vn-field vn-input w-full"/></div>
             </div>
 
-            <!-- Meds -->
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-              <div><label class="block text-sm font-semibold mb-1">Morning Meds</label>
-                <input id="medMorning" class="vn-field w-full"/></div>
-              <div><label class="block text-sm font-semibold mb-1">Afternoon Meds</label>
-                <input id="medAfternoon" class="vn-field w-full"/></div>
-              <div><label class="block text-sm font-semibold mb-1">Evening Meds</label>
-                <input id="medEvening" class="vn-field w-full"/></div>
-            </div>
+            <!-- Sharing Destinations (collapsed) -->
+            <details id="shareSection" class="bg-white border border-slate-200 rounded-xl">
+              <summary class="cursor-pointer px-4 py-3 font-semibold text-slate-700 flex items-center justify-between">
+                <span>Sharing Destinations</span>
+                <span class="text-slate-400">›</span>
+              </summary>
+              <div class="px-4 pb-4 grid gap-3">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+                  <input id="wa1" class="vn-field vn-input w-full" inputmode="tel" placeholder="WhatsApp number #1 (+233...)"/>
+                  <input id="wa2" class="vn-field vn-input w-full" inputmode="tel" placeholder="WhatsApp number #2 (optional)"/>
+                  <input id="wa3" class="vn-field vn-input w-full" inputmode="tel" placeholder="WhatsApp number #3 (optional)"/>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                  <input id="groupPhones" class="vn-field vn-input w-full" placeholder="Group WhatsApp numbers (comma-separated)"/>
+                  <input id="groupEmails" class="vn-field vn-input w-full" placeholder="Group emails (comma-separated)"/>
+                </div>
+              </div>
+            </details>
 
+            <!-- Notes + Dictation -->
             <div>
-              <label class="block text-sm font-semibold mb-1">Notes</label>
-              <textarea id="notes" rows="6" class="vn-field w-full"></textarea>
+              <label for="notes" class="block text-sm font-semibold mb-1">Notes</label>
+              <textarea id="notes" rows="7" placeholder="Observations, symptoms, instructions" class="vn-field vn-textarea w-full"></textarea>
+              <div class="mt-2 flex justify-end">
+                <button id="btnDictate" type="button" class="btn-grad sm:w-auto">🎙️ Dictate</button>
+              </div>
             </div>
 
+            <!-- Nurse + Branding -->
             <div>
-              <label class="block text-sm font-semibold mb-1">Prepared by (Nurse)</label>
-              <input id="nurseName" type="text" class="vn-field w-full"/>
-              <label class="inline-flex items-center mt-2 text-sm">
-                <input type="checkbox" id="rememberMe" class="mr-2"> Remember Me (7 days)
-              </label>
+              <div class="flex items-center justify-between">
+                <label for="nurseName" class="block text-sm font-semibold mb-1">Prepared by (Nurse’s Name)</label>
+                <label class="text-xs flex items-center gap-1 select-none">
+                  <input id="rememberMe" type="checkbox" class="accent-sky-500"> Remember on this device (7 days)
+                </label>
+              </div>
+              <input id="nurseName" type="text" placeholder="Enter nurse's full name" class="vn-field vn-input w-full"/>
             </div>
 
-            <!-- Buttons -->
-            <div class="flex flex-col sm:flex-row gap-3">
-              <button id="btnPreview" type="button" class="btn-grad flex-1">Preview & PDF</button>
-              <button id="btnWhatsApp" type="button" class="btn-grad flex-1">Share WhatsApp</button>
-              <button id="btnEmail" type="button" class="btn-grad flex-1">Share Email</button>
-            </div>
+            <details id="settingsSection" class="bg-white border border-slate-200 rounded-xl">
+              <summary class="cursor-pointer px-4 py-3 font-semibold text-slate-700 flex items-center justify-between">
+                <span>Branding & Footer</span>
+                <span class="text-slate-400">›</span>
+              </summary>
+              <div class="px-4 pb-4 grid gap-3">
+                <input id="footerNote" class="vn-field vn-input w-full" placeholder="Footer note (e.g., Nurse’s signature or clinic name)"/>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-3 items-center">
+                  <div>
+                    <label class="block text-sm font-semibold mb-1">Custom Branding Logo (optional)</label>
+                    <input id="brandLogo" type="file" accept="image/*" class="w-full text-sm"/>
+                  </div>
+                  <div class="text-xs text-slate-500">If provided, this logo appears in the PDF header instead of the default icon.</div>
+                </div>
+                <div>
+                  <label class="block text-sm font-semibold mb-1" for="themeSel">Theme</label>
+                  <select id="themeSel" class="vn-field w-full">
+                    <option value="system">System</option>
+                    <option value="light">Light</option>
+                    <option value="dark">Dark</option>
+                  </select>
+                </div>
+              </div>
+            </details>
 
-            <!-- Dictate -->
-            <div class="mt-3">
-              <button id="btnDictate" type="button" class="btn-grad w-full">🎤 Dictate</button>
+            <!-- Actions (slimmer buttons; centered) -->
+            <div class="flex flex-col sm:flex-row flex-wrap gap-3 justify-center">
+              <button id="btnPreview" type="button" class="btn-grad">Preview & PDF</button>
+              <button id="btnWhatsApp" type="button" class="btn-grad">Share WhatsApp</button>
+              <button id="btnEmail" type="button" class="btn-grad">Share Email</button>
             </div>
           </form>
         </section>
 
-        <!-- Footer -->
         <footer class="px-6 py-4 bg-white/70 text-sm flex items-center justify-between">
           <span class="font-medium" style="color:#0EA5E9">&copy; <span id="year"></span> Victoria Nurse</span>
           <span class="italic" style="color:#0EA5E9">Powered by: karlthebrown</span>
@@ -144,47 +213,188 @@
     </main>
   </div>
 
+  <!-- SW register -->
   <script>
-    document.getElementById('year').textContent = new Date().getFullYear();
-    const el=id=>document.getElementById(id);
+    if('serviceWorker' in navigator){
+      window.addEventListener('load',()=>navigator.serviceWorker.register(`./service-worker.js?v=2025-09-17-49`,{scope:'./'}).catch(()=>{}));
+    }
+  </script>
 
-    // Settings dropdown
-    const dd=document.getElementById('settingsMenu');
-    dd.querySelector('button').addEventListener('click',()=>dd.classList.toggle('open'));
+  <script>
+    // Helpers
+    const $ = (id)=>document.getElementById(id);
+    const yearEl = $('year'); if (yearEl) yearEl.textContent = new Date().getFullYear();
 
-    // Remember Me — save nurse/patient for 7 days
-    const EXP=7*24*60*60*1000;
+    // Settings dropdown behavior
+    const wrap = $('settingsWrap'), btn = $('settingsBtn'), menu = $('settingsMenu');
+    btn.addEventListener('click', (e)=>{ e.stopPropagation(); wrap.classList.toggle('open'); btn.setAttribute('aria-expanded', wrap.classList.contains('open')); });
+    document.addEventListener('click', (e)=>{ if(!wrap.contains(e.target)) { wrap.classList.remove('open'); btn.setAttribute('aria-expanded','false'); } });
+
+    // Activate menu items
+    $('menuBranding').addEventListener('click', ()=>{
+      wrap.classList.remove('open'); btn.setAttribute('aria-expanded','false');
+      const det = $('settingsSection'); if (!det.open) det.open = true;
+      det.scrollIntoView({behavior:'smooth', block:'start'});
+    });
+    $('menuTheme').addEventListener('click', ()=>{
+      wrap.classList.remove('open'); btn.setAttribute('aria-expanded','false');
+      const det = $('settingsSection'); if (!det.open) det.open = true;
+      const sel = $('themeSel'); sel.focus({preventScroll:true});
+      det.scrollIntoView({behavior:'smooth', block:'center'});
+    });
+
+    // Remember Me (7 days)
+    const EXP = 7*24*60*60*1000;
     function saveLocal(){
-      if(!el('rememberMe').checked) return;
-      const data={nurse:el('nurseName').value, patient:el('patientName').value, ts:Date.now()};
-      localStorage.setItem('vn_mem',JSON.stringify(data));
+      if(!$('rememberMe').checked) return;
+      const data={ nurse:$('nurseName').value, patient:$('patientName').value, ts:Date.now() };
+      localStorage.setItem('vn_mem', JSON.stringify(data));
     }
-    function loadLocal(){
-      const d=JSON.parse(localStorage.getItem('vn_mem')||'{}');
+    (function loadLocal(){
+      const d = JSON.parse(localStorage.getItem('vn_mem')||'{}');
       if(d.ts && Date.now()-d.ts<EXP){
-        if(d.nurse) el('nurseName').value=d.nurse;
-        if(d.patient) el('patientName').value=d.patient;
-        el('rememberMe').checked=true;
+        if(d.nurse) $('nurseName').value = d.nurse;
+        if(d.patient) $('patientName').value = d.patient;
+        $('rememberMe').checked = true;
+      } else {
+        localStorage.removeItem('vn_mem');
       }
-    }
-    loadLocal();
-
-    function isOnline(){ return navigator.onLine; }
-    function notify(msg){ alert(msg); }
-
-    // Dummy PDF builder
-    async function makePdf(rec){ const {jsPDF}=window.jspdf; const pdf=new jsPDF(); pdf.text("Victoria Nurse Report",20,20); return pdf.output('blob'); }
-
-    function buildRecord(){ return { nurse:el('nurseName').value, patient:el('patientName').value, notes:el('notes').value }; }
-
-    // Sharing
-    el('btnPreview').addEventListener('click',async()=>{ saveLocal(); const pdf=await makePdf(buildRecord()); const url=URL.createObjectURL(pdf); const a=document.createElement('a'); a.href=url; a.download="report.pdf"; a.click(); setTimeout(()=>URL.revokeObjectURL(url),2000); });
-    el('btnWhatsApp').addEventListener('click',()=>{ saveLocal(); if(!isOnline()) return notify("You’re offline — try again later"); window.open(`https://wa.me/?text=${encodeURIComponent("Vitals shared")}`,'_blank'); });
-    el('btnEmail').addEventListener('click',()=>{ saveLocal(); if(!isOnline()) return notify("You’re offline — try again later"); window.location.href=`mailto:?subject=Patient Vitals&body=${encodeURIComponent("See attached")}`; });
+    })();
 
     // Dictation
-    el('btnDictate').addEventListener('click',()=>{ if(!('webkitSpeechRecognition'in window)){return notify("Speech not supported");} const r=new webkitSpeechRecognition(); r.continuous=false; r.lang='en-US'; r.start(); r.onresult=e=>{el('notes').value+=(el('notes').value?" ":"")+e.results[0][0].transcript;}; });
+    (function(){
+      const btn = $('btnDictate'); const ta = $('notes');
+      const has = 'webkitSpeechRecognition' in window || 'SpeechRecognition' in window;
+      if(!has){ btn.disabled=true; btn.textContent='🎙️ Dictation not supported'; return; }
+      const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+      const rec = new SR(); rec.lang='en-US'; rec.continuous=false; rec.interimResults=true;
+      let base='';
+      btn.addEventListener('click', ()=>{
+        base = ta.value; rec.start(); btn.textContent='🛑 Stop';
+      });
+      rec.onresult = (e)=>{
+        let final='', interim='';
+        for(let i=0;i<e.results.length;i++){ const r=e.results[i]; (r.isFinal?final:interim)+=r[0].transcript; }
+        ta.value = (base+' '+final+' '+interim).trim();
+      };
+      rec.onerror = ()=>{ btn.textContent='🎙️ Dictate'; alert('Dictation error'); };
+      rec.onend = ()=>{ btn.textContent='🎙️ Dictate'; };
+    })();
 
+    // Build record (minimal for demo)
+    function buildRecord(){
+      return {
+        patient: $('patientName').value.trim(),
+        temp: $('temperature').value.trim(),
+        pulse: $('pulse').value.trim(),
+        rr: $('respiratoryRate').value.trim(),
+        sbp: $('sbp').value.trim(),
+        dbp: $('dbp').value.trim(),
+        spo2: $('oxygenSaturation').value.trim(),
+        sugar: $('bloodSugar').value.trim(),
+        weight: $('weight').value.trim(),
+        pain: $('pain').value.trim(),
+        notes: $('notes').value.trim(),
+        nurse: $('nurseName').value.trim(),
+        footer: $('footerNote')?.value.trim()
+      };
+    }
+
+    // PDF (simple header/footer; branding slot preserved)
+    async function makePdf(rec){
+      const { jsPDF } = window.jspdf;
+      const pdf = new jsPDF('p','pt','a4');
+      const W = pdf.internal.pageSize.getWidth();
+
+      pdf.setFillColor(14,165,233); pdf.rect(20, 20, W-40, 6, 'F');
+      pdf.setFont('helvetica','bold'); pdf.setFontSize(20); pdf.setTextColor(14,165,233);
+      pdf.text('Victoria Nurse', 28, 52);
+      pdf.setFont('times','italic'); pdf.setFontSize(12); pdf.setTextColor(20,83,136);
+      pdf.text('We Care Together', 28, 70);
+
+      pdf.setFont('helvetica','normal'); pdf.setFontSize(12); pdf.setTextColor(31,41,55);
+      let y=100;
+      function line(t){ pdf.text(t, 28, y); y+=18; }
+      line(`Patient: ${rec.patient||'-'}`);
+      line(`Temp: ${rec.temp||'-'} °C, Pulse: ${rec.pulse||'-'} bpm, RR: ${rec.rr||'-'} /min`);
+      line(`BP: ${rec.sbp||'-'}/${rec.dbp||'-'} mmHg, SpO₂: ${rec.spo2||'-'} %, Sugar: ${rec.sugar||'-'} mg/dL, Weight: ${rec.weight||'-'} kg`);
+      line(`Pain: ${rec.pain||'-'}/10`);
+      y+=6; pdf.text('Notes:', 28, y); y+=18;
+      const lines = pdf.splitTextToSize(rec.notes||'-', W-56);
+      pdf.text(lines, 28, y); y += lines.length*14 + 12;
+
+      pdf.setFontSize(10); pdf.setTextColor(107,114,128);
+      const left = `Prepared by: ${rec.nurse||'-'}`;
+      const right = rec.footer ? rec.footer : 'Powered by: KarltheBrown';
+      pdf.text(left, 28, y);
+      pdf.text(right, W - (pdf.getTextWidth(right)+28), y);
+
+      return pdf.output('blob');
+    }
+
+    // Sharing helpers
+    function normalizePhone(p){ return (p||'').replace(/[^\d+]/g,'').trim(); }
+    function parsePhones(str){ return (str||'').split(/[,;\s]+/).map(normalizePhone).filter(Boolean); }
+    function unique(a){ return [...new Set(a)]; }
+    function openWhatsApps(numbers, text){
+      numbers.forEach((num, idx)=>{
+        const url = num ? `https://wa.me/${encodeURIComponent(num)}?text=${encodeURIComponent(text)}` :
+                          `https://wa.me/?text=${encodeURIComponent(text)}`;
+        setTimeout(()=> window.open(url, '_blank'), idx*220);
+      });
+    }
+    function shareText(rec){
+      return [
+        `Victoria Nurse — Patient Vitals`,
+        `Patient: ${rec.patient||'-'}`,
+        `Temp: ${rec.temp||'-'} °C, Pulse: ${rec.pulse||'-'} bpm, RR: ${rec.rr||'-'} /min`,
+        `BP: ${rec.sbp||'-'}/${rec.dbp||'-'} mmHg, SpO₂: ${rec.spo2||'-'} %, Sugar: ${rec.sugar||'-'} mg/dL, Weight: ${rec.weight||'-'} kg`,
+        `Pain: ${rec.pain||'-'}/10`,
+        `Notes: ${rec.notes||'-'}`,
+        `Prepared by: ${rec.nurse||'-'}`,
+        rec.footer ? `Footer: ${rec.footer}` : ''
+      ].filter(Boolean).join('\n');
+    }
+
+    // Buttons
+    $('btnPreview').addEventListener('click', async ()=>{
+      const rec = buildRecord(); if ($('rememberMe').checked) saveLocal();
+      const blob = await makePdf(rec);
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a'); a.href = url; a.download = `Victoria_Nurse_${(rec.patient||'patient').replace(/[^\w\-]+/g,'_')}_${new Date().toISOString().slice(0,10)}.pdf`;
+      a.click();
+      setTimeout(()=>URL.revokeObjectURL(url), 2500);
+    });
+
+    $('btnWhatsApp').addEventListener('click', ()=>{
+      if (!navigator.onLine){ alert("You’re offline—try again later."); return; }
+      const rec = buildRecord(); if ($('rememberMe').checked) saveLocal();
+      const text = shareText(rec);
+      const nums = unique([
+        normalizePhone($('wa1').value), normalizePhone($('wa2').value), normalizePhone($('wa3').value),
+        ...parsePhones($('groupPhones').value)
+      ]).filter(Boolean);
+      openWhatsApps(nums.length?nums:[''], text);
+      setTimeout(()=>{ window.location.href='./index.html?v=2025-09-17-49'; }, 800);
+    });
+
+    $('btnEmail').addEventListener('click', async ()=>{
+      if (!navigator.onLine){ alert("You’re offline—try again later."); return; }
+      const rec = buildRecord(); if ($('rememberMe').checked) saveLocal();
+      const blob = await makePdf(rec);
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = `Victoria_Nurse_${(rec.patient||'patient').replace(/[^\w\-]+/g,'_')}_${new Date().toISOString().slice(0,10)}.pdf`;
+      a.click();
+      setTimeout(()=>URL.revokeObjectURL(a.href), 2500);
+
+      const subject = `Patient Vitals — ${rec.patient||'Unnamed'}`;
+      const body = shareText(rec);
+      const emails = $('groupEmails').value.split(/[,;\s]+/).map(s=>s.trim()).filter(Boolean);
+      window.location.href = `mailto:${encodeURIComponent(emails.join(','))}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+
+      setTimeout(()=>{ window.location.href='./index.html?v=2025-09-17-49'; }, 900);
+    });
   </script>
 </body>
 </html>
