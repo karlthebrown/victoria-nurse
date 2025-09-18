@@ -22,59 +22,40 @@
 
   <style>
     :root{ --med-teal:#14B8A6; --med-sky:#0EA5E9; --med-indigo:#1E40AF; --label:#0891B2; }
-
     /* Help-page colors */
-    body { background:#f9fafb; }
-    .text-body { color:#1f2937; } /* slate-800-ish */
-
-    /* Gradient text used for title + tagline */
-    .gradient-text {
-      background: linear-gradient(90deg, #14B8A6, #0EA5E9, #1E40AF);
-      -webkit-background-clip:text;
-      -webkit-text-fill-color:transparent;
-    }
-
+    body { background:#f9fafb; color:#1f2937; }
+    /* Title/tagline gradient */
+    .gradient-text{ background:linear-gradient(90deg,#14B8A6,#0EA5E9,#1E40AF); -webkit-background-clip:text; -webkit-text-fill-color:transparent; }
     /* Inputs */
     .vn-field{ padding:.95rem 1.1rem; border-radius:.9rem; border:1px solid #cbd5e1; background:#fff; line-height:1.6rem; }
     .vn-field:focus{ outline:none; box-shadow:0 0 0 2px var(--label); border-color:var(--label); }
     .vn-input{ height:3.25rem; } .vn-textarea{ min-height:3.5rem; }
-
-    /* Buttons — slimmer width */
-    .btn-grad{
-      background-image:linear-gradient(90deg, var(--med-teal), var(--med-sky), var(--med-indigo));
-      color:#fff; font-weight:700; padding:.75rem 1.1rem; border-radius:999px;
-      box-shadow:0 10px 24px rgba(0,0,0,.22);
-      transition: transform .12s ease, opacity .12s ease;
-      width:100%;
-    }
-    @media (min-width:640px){ /* ≥ sm */
-      .btn-grad{ width:auto; min-width:180px; }
-    }
+    /* Buttons (slimmer on ≥sm) */
+    .btn-grad{ background-image:linear-gradient(90deg,var(--med-teal),var(--med-sky),var(--med-indigo)); color:#fff; font-weight:700; padding:.75rem 1.1rem; border-radius:999px; box-shadow:0 10px 24px rgba(0,0,0,.22); transition:transform .12s,opacity .12s; width:100%; }
+    @media (min-width:640px){ .btn-grad{ width:auto; min-width:170px; } }
     .btn-grad:hover{ opacity:.97; transform:translateY(-1px); }
     .btn-grad:active{ transform:translateY(0) scale(.985); }
-
-    /* Settings dropdown */
+    /* Dropdown */
     .dropdown { position:relative; display:inline-block; }
-    .dropdown-menu {
-      position:absolute; right:0; top:100%; margin-top:.5rem;
-      background:white; color:#0f172a; width:240px;
-      border-radius:.75rem; box-shadow:0 10px 28px rgba(0,0,0,.15);
-      border:1px solid rgba(2,6,23,.06);
-      display:none; overflow:hidden; z-index:50;
-    }
+    .dropdown-menu{ position:absolute; right:0; top:100%; margin-top:.5rem; background:white; color:#0f172a; width:240px; border-radius:.75rem; box-shadow:0 10px 28px rgba(0,0,0,.15); border:1px solid rgba(2,6,23,.06); display:none; overflow:hidden; z-index:50; }
     .dropdown.open .dropdown-menu{ display:block; }
     .dropdown-item{ display:block; width:100%; text-align:left; padding:.6rem .9rem; font-size:.9rem; }
     .dropdown-item:hover{ background:#f1f5f9; }
+    /* Modal */
+    .modal{ position:fixed; inset:0; display:none; align-items:center; justify-content:center; z-index:60; }
+    .modal.on{ display:flex; }
+    .modal-back{ position:absolute; inset:0; background:rgba(0,0,0,.45); }
+    .modal-panel{ position:relative; background:white; color:#0f172a; width:min(92vw, 560px); border-radius:1rem; box-shadow:0 20px 50px rgba(0,0,0,.35); overflow:hidden; }
   </style>
 </head>
 
-<body class="min-h-screen text-slate-800 antialiased">
+<body class="min-h-screen antialiased">
   <div class="min-h-screen p-4 flex items-center justify-center">
     <main class="w-full max-w-3xl">
       <div class="bg-white/95 backdrop-blur-xl shadow-2xl rounded-3xl overflow-hidden ring-1 ring-slate-100">
 
         <!-- Header -->
-        <header class="p-6 flex items-center justify-between" style="background:linear-gradient(90deg, var(--med-teal), var(--med-sky), var(--med-indigo));">
+        <header class="p-6 flex items-center justify-between" style="background:linear-gradient(90deg,#14B8A6,#0EA5E9,#1E40AF);">
           <div class="flex items-center gap-4">
             <a href="./index.html?v=2025-09-17-49" aria-label="Home">
               <img src="./icons/icon-192.png?v=2025-09-17-49" alt="Victoria Nurse" class="h-14 w-14 rounded-2xl shadow"/>
@@ -97,7 +78,7 @@
         </header>
 
         <!-- Form -->
-        <section class="p-6 grid gap-6 text-body" role="form" aria-label="Patient Vitals Form">
+        <section class="p-6 grid gap-6" role="form" aria-label="Patient Vitals Form">
           <form id="formVitals" class="grid gap-6" autocomplete="off" novalidate>
             <div>
               <label for="patientName" class="block text-sm font-semibold mb-1">Patient Name</label>
@@ -160,7 +141,7 @@
               </div>
             </div>
 
-            <!-- Nurse + Branding -->
+            <!-- Nurse -->
             <div>
               <div class="flex items-center justify-between">
                 <label for="nurseName" class="block text-sm font-semibold mb-1">Prepared by (Nurse’s Name)</label>
@@ -171,32 +152,7 @@
               <input id="nurseName" type="text" placeholder="Enter nurse's full name" class="vn-field vn-input w-full"/>
             </div>
 
-            <details id="settingsSection" class="bg-white border border-slate-200 rounded-xl">
-              <summary class="cursor-pointer px-4 py-3 font-semibold text-slate-700 flex items-center justify-between">
-                <span>Branding & Footer</span>
-                <span class="text-slate-400">›</span>
-              </summary>
-              <div class="px-4 pb-4 grid gap-3">
-                <input id="footerNote" class="vn-field vn-input w-full" placeholder="Footer note (e.g., Nurse’s signature or clinic name)"/>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-3 items-center">
-                  <div>
-                    <label class="block text-sm font-semibold mb-1">Custom Branding Logo (optional)</label>
-                    <input id="brandLogo" type="file" accept="image/*" class="w-full text-sm"/>
-                  </div>
-                  <div class="text-xs text-slate-500">If provided, this logo appears in the PDF header instead of the default icon.</div>
-                </div>
-                <div>
-                  <label class="block text-sm font-semibold mb-1" for="themeSel">Theme</label>
-                  <select id="themeSel" class="vn-field w-full">
-                    <option value="system">System</option>
-                    <option value="light">Light</option>
-                    <option value="dark">Dark</option>
-                  </select>
-                </div>
-              </div>
-            </details>
-
-            <!-- Actions (slimmer buttons; centered) -->
+            <!-- Actions -->
             <div class="flex flex-col sm:flex-row flex-wrap gap-3 justify-center">
               <button id="btnPreview" type="button" class="btn-grad">Preview & PDF</button>
               <button id="btnWhatsApp" type="button" class="btn-grad">Share WhatsApp</button>
@@ -213,6 +169,45 @@
     </main>
   </div>
 
+  <!-- SETTINGS MODAL -->
+  <div id="settingsModal" class="modal" aria-hidden="true" role="dialog" aria-modal="true">
+    <div class="modal-back" id="settingsBackdrop"></div>
+    <div class="modal-panel">
+      <header class="px-5 py-4 border-b border-slate-200 flex items-center justify-between">
+        <h2 class="font-bold text-slate-800">Settings</h2>
+        <button id="settingsClose" class="text-slate-500 hover:text-slate-800 text-xl" aria-label="Close">✕</button>
+      </header>
+      <div class="p-5 grid gap-5">
+        <!-- Branding & Footer -->
+        <section>
+          <h3 class="font-semibold text-slate-700 mb-2">Branding &amp; Footer</h3>
+          <div class="grid gap-3">
+            <input id="footerNote" class="vn-field vn-input w-full" placeholder="Footer note (e.g., Nurse’s signature or clinic name)"/>
+            <div>
+              <label class="block text-sm font-semibold mb-1">Custom Branding Logo (optional)</label>
+              <input id="brandLogo" type="file" accept="image/*" class="w-full text-sm"/>
+              <p class="text-xs text-slate-500 mt-1">If provided, this logo appears in the PDF header instead of the default icon.</p>
+            </div>
+          </div>
+        </section>
+
+        <!-- Theme -->
+        <section>
+          <h3 class="font-semibold text-slate-700 mb-2">Theme</h3>
+          <select id="themeSel" class="vn-field w-full">
+            <option value="system">System</option>
+            <option value="light">Light</option>
+            <option value="dark">Dark</option>
+          </select>
+        </section>
+      </div>
+      <footer class="px-5 py-4 border-t border-slate-200 flex justify-end gap-3">
+        <button id="settingsSave" class="btn-grad sm:w-auto">Save</button>
+        <button id="settingsCancel" class="btn-grad sm:w-auto" style="background-image:none;background:#94a3b8;">Cancel</button>
+      </footer>
+    </div>
+  </div>
+
   <!-- SW register -->
   <script>
     if('serviceWorker' in navigator){
@@ -221,29 +216,26 @@
   </script>
 
   <script>
-    // Helpers
     const $ = (id)=>document.getElementById(id);
-    const yearEl = $('year'); if (yearEl) yearEl.textContent = new Date().getFullYear();
+    $('year').textContent = new Date().getFullYear();
 
-    // Settings dropdown behavior
-    const wrap = $('settingsWrap'), btn = $('settingsBtn'), menu = $('settingsMenu');
+    /* Dropdown (now reliable) */
+    const wrap=$('settingsWrap'), btn=$('settingsBtn'), menu=$('settingsMenu');
     btn.addEventListener('click', (e)=>{ e.stopPropagation(); wrap.classList.toggle('open'); btn.setAttribute('aria-expanded', wrap.classList.contains('open')); });
     document.addEventListener('click', (e)=>{ if(!wrap.contains(e.target)) { wrap.classList.remove('open'); btn.setAttribute('aria-expanded','false'); } });
 
-    // Activate menu items
-    $('menuBranding').addEventListener('click', ()=>{
-      wrap.classList.remove('open'); btn.setAttribute('aria-expanded','false');
-      const det = $('settingsSection'); if (!det.open) det.open = true;
-      det.scrollIntoView({behavior:'smooth', block:'start'});
-    });
-    $('menuTheme').addEventListener('click', ()=>{
-      wrap.classList.remove('open'); btn.setAttribute('aria-expanded','false');
-      const det = $('settingsSection'); if (!det.open) det.open = true;
-      const sel = $('themeSel'); sel.focus({preventScroll:true});
-      det.scrollIntoView({behavior:'smooth', block:'center'});
-    });
+    /* Modal helpers */
+    const modal=$('settingsModal'), back=$('settingsBackdrop'), mClose=$('settingsClose'), mCancel=$('settingsCancel'), mSave=$('settingsSave');
+    function openModal(){ modal.classList.add('on'); modal.setAttribute('aria-hidden','false'); }
+    function closeModal(){ modal.classList.remove('on'); modal.setAttribute('aria-hidden','true'); }
+    back.addEventListener('click', closeModal); mClose.addEventListener('click', closeModal); mCancel.addEventListener('click', closeModal);
+    document.addEventListener('keydown', (e)=>{ if(e.key==='Escape') closeModal(); });
 
-    // Remember Me (7 days)
+    /* Activate dropdown items */
+    $('menuBranding').addEventListener('click', ()=>{ wrap.classList.remove('open'); openModal(); });
+    $('menuTheme').addEventListener('click', ()=>{ wrap.classList.remove('open'); openModal(); $('themeSel').focus({preventScroll:true}); });
+
+    /* Remember Me (7 days) */
     const EXP = 7*24*60*60*1000;
     function saveLocal(){
       if(!$('rememberMe').checked) return;
@@ -261,7 +253,7 @@
       }
     })();
 
-    // Dictation
+    /* Dictation */
     (function(){
       const btn = $('btnDictate'); const ta = $('notes');
       const has = 'webkitSpeechRecognition' in window || 'SpeechRecognition' in window;
@@ -281,7 +273,7 @@
       rec.onend = ()=>{ btn.textContent='🎙️ Dictate'; };
     })();
 
-    // Build record (minimal for demo)
+    /* Build record */
     function buildRecord(){
       return {
         patient: $('patientName').value.trim(),
@@ -296,53 +288,40 @@
         pain: $('pain').value.trim(),
         notes: $('notes').value.trim(),
         nurse: $('nurseName').value.trim(),
-        footer: $('footerNote')?.value.trim()
+        footer: $('footerNote').value.trim()
       };
     }
 
-    // PDF (simple header/footer; branding slot preserved)
+    /* PDF (simple) */
     async function makePdf(rec){
       const { jsPDF } = window.jspdf;
       const pdf = new jsPDF('p','pt','a4');
       const W = pdf.internal.pageSize.getWidth();
-
       pdf.setFillColor(14,165,233); pdf.rect(20, 20, W-40, 6, 'F');
-      pdf.setFont('helvetica','bold'); pdf.setFontSize(20); pdf.setTextColor(14,165,233);
-      pdf.text('Victoria Nurse', 28, 52);
-      pdf.setFont('times','italic'); pdf.setFontSize(12); pdf.setTextColor(20,83,136);
-      pdf.text('We Care Together', 28, 70);
+      pdf.setFont('helvetica','bold'); pdf.setFontSize(20); pdf.setTextColor(14,165,233); pdf.text('Victoria Nurse', 28, 52);
+      pdf.setFont('times','italic'); pdf.setFontSize(12); pdf.setTextColor(20,83,136); pdf.text('We Care Together', 28, 70);
 
       pdf.setFont('helvetica','normal'); pdf.setFontSize(12); pdf.setTextColor(31,41,55);
-      let y=100;
-      function line(t){ pdf.text(t, 28, y); y+=18; }
+      let y=100, line=(t)=>{ pdf.text(t,28,y); y+=18; };
       line(`Patient: ${rec.patient||'-'}`);
       line(`Temp: ${rec.temp||'-'} °C, Pulse: ${rec.pulse||'-'} bpm, RR: ${rec.rr||'-'} /min`);
       line(`BP: ${rec.sbp||'-'}/${rec.dbp||'-'} mmHg, SpO₂: ${rec.spo2||'-'} %, Sugar: ${rec.sugar||'-'} mg/dL, Weight: ${rec.weight||'-'} kg`);
       line(`Pain: ${rec.pain||'-'}/10`);
       y+=6; pdf.text('Notes:', 28, y); y+=18;
-      const lines = pdf.splitTextToSize(rec.notes||'-', W-56);
-      pdf.text(lines, 28, y); y += lines.length*14 + 12;
+      const lines = pdf.splitTextToSize(rec.notes||'-', W-56); pdf.text(lines, 28, y); y += lines.length*14 + 12;
 
       pdf.setFontSize(10); pdf.setTextColor(107,114,128);
       const left = `Prepared by: ${rec.nurse||'-'}`;
       const right = rec.footer ? rec.footer : 'Powered by: KarltheBrown';
-      pdf.text(left, 28, y);
-      pdf.text(right, W - (pdf.getTextWidth(right)+28), y);
-
+      pdf.text(left, 28, y); pdf.text(right, W - (pdf.getTextWidth(right)+28), y);
       return pdf.output('blob');
     }
 
-    // Sharing helpers
-    function normalizePhone(p){ return (p||'').replace(/[^\d+]/g,'').trim(); }
-    function parsePhones(str){ return (str||'').split(/[,;\s]+/).map(normalizePhone).filter(Boolean); }
-    function unique(a){ return [...new Set(a)]; }
-    function openWhatsApps(numbers, text){
-      numbers.forEach((num, idx)=>{
-        const url = num ? `https://wa.me/${encodeURIComponent(num)}?text=${encodeURIComponent(text)}` :
-                          `https://wa.me/?text=${encodeURIComponent(text)}`;
-        setTimeout(()=> window.open(url, '_blank'), idx*220);
-      });
-    }
+    /* Sharing helpers */
+    const normPhone = p => (p||'').replace(/[^\d+]/g,'').trim();
+    const parsePhones = s => (s||'').split(/[,;\s]+/).map(normPhone).filter(Boolean);
+    const unique = a => [...new Set(a)];
+
     function shareText(rec){
       return [
         `Victoria Nurse — Patient Vitals`,
@@ -356,9 +335,10 @@
       ].filter(Boolean).join('\n');
     }
 
-    // Buttons
+    /* Buttons */
     $('btnPreview').addEventListener('click', async ()=>{
-      const rec = buildRecord(); if ($('rememberMe').checked) saveLocal();
+      if($('rememberMe').checked) saveLocal();
+      const rec = buildRecord();
       const blob = await makePdf(rec);
       const url = URL.createObjectURL(blob);
       const a = document.createElement('a'); a.href = url; a.download = `Victoria_Nurse_${(rec.patient||'patient').replace(/[^\w\-]+/g,'_')}_${new Date().toISOString().slice(0,10)}.pdf`;
@@ -367,33 +347,42 @@
     });
 
     $('btnWhatsApp').addEventListener('click', ()=>{
-      if (!navigator.onLine){ alert("You’re offline—try again later."); return; }
-      const rec = buildRecord(); if ($('rememberMe').checked) saveLocal();
-      const text = shareText(rec);
-      const nums = unique([
-        normalizePhone($('wa1').value), normalizePhone($('wa2').value), normalizePhone($('wa3').value),
-        ...parsePhones($('groupPhones').value)
-      ]).filter(Boolean);
-      openWhatsApps(nums.length?nums:[''], text);
-      setTimeout(()=>{ window.location.href='./index.html?v=2025-09-17-49'; }, 800);
+      if(!navigator.onLine){ alert("You’re offline—try again later."); return; }
+      if($('rememberMe').checked) saveLocal();
+      const rec = buildRecord(); const text = shareText(rec);
+      const nums = unique([ normPhone($('wa1').value), normPhone($('wa2').value), normPhone($('wa3').value), ...parsePhones($('groupPhones').value) ]).filter(Boolean);
+      (nums.length?nums:['']).forEach((num, i)=>{
+        const url = num ? `https://wa.me/${encodeURIComponent(num)}?text=${encodeURIComponent(text)}` : `https://wa.me/?text=${encodeURIComponent(text)}`;
+        setTimeout(()=>window.open(url,'_blank'), i*220);
+      });
+      setTimeout(()=>{ window.location.href='./index.html?v=2025-09-17-49'; }, 900);
     });
 
     $('btnEmail').addEventListener('click', async ()=>{
-      if (!navigator.onLine){ alert("You’re offline—try again later."); return; }
-      const rec = buildRecord(); if ($('rememberMe').checked) saveLocal();
+      if(!navigator.onLine){ alert("You’re offline—try again later."); return; }
+      if($('rememberMe').checked) saveLocal();
+      const rec = buildRecord();
       const blob = await makePdf(rec);
-      const a = document.createElement('a');
-      a.href = URL.createObjectURL(blob);
-      a.download = `Victoria_Nurse_${(rec.patient||'patient').replace(/[^\w\-]+/g,'_')}_${new Date().toISOString().slice(0,10)}.pdf`;
-      a.click();
+      const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = `Victoria_Nurse_${(rec.patient||'patient').replace(/[^\w\-]+/g,'_')}_${new Date().toISOString().slice(0,10)}.pdf`; a.click();
       setTimeout(()=>URL.revokeObjectURL(a.href), 2500);
-
       const subject = `Patient Vitals — ${rec.patient||'Unnamed'}`;
       const body = shareText(rec);
-      const emails = $('groupEmails').value.split(/[,;\s]+/).map(s=>s.trim()).filter(Boolean);
+      const emails = ($('groupEmails').value||'').split(/[,;\s]+/).map(s=>s.trim()).filter(Boolean);
       window.location.href = `mailto:${encodeURIComponent(emails.join(','))}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+      setTimeout(()=>{ window.location.href='./index.html?v=2025-09-17-49'; }, 1000);
+    });
 
-      setTimeout(()=>{ window.location.href='./index.html?v=2025-09-17-49'; }, 900);
+    function saveLocal(){
+      const data={ nurse:$('nurseName').value, patient:$('patientName').value, ts:Date.now() };
+      localStorage.setItem('vn_mem', JSON.stringify(data));
+    }
+
+    /* Modal Save (persist simple theme pref for demo) */
+    mSave.addEventListener('click', ()=>{
+      const theme = $('themeSel').value;
+      localStorage.setItem('vn_theme', theme);
+      closeModal();
+      alert('Settings saved');
     });
   </script>
 </body>
