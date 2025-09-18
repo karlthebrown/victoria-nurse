@@ -1,134 +1,68 @@
 <!doctype html>
-<html lang="en" data-theme="system">
+<html lang="en">
 <head>
   <meta charset="utf-8"/>
   <meta http-equiv="Cache-Control" content="no-store, max-age=0"/>
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
   <title>Victoria Nurse — We Care Together</title>
 
-  <!-- Version -->
-  <script>window.__VN_VER__="2025-09-17-47";</script>
-
-  <!-- PWA + Icons -->
-  <link rel="manifest" href="./manifest.webmanifest?v=2025-09-17-47"/>
+  <script>window.__VN_VER__="2025-09-17-49";</script>
+  <link rel="manifest" href="./manifest.webmanifest?v=2025-09-17-49"/>
   <meta name="theme-color" content="#0EA5E9"/>
-  <link rel="icon" type="image/png" href="./icons/favicon.png?v=2025-09-17-46"/>
-  <link rel="apple-touch-icon" sizes="180x180" href="./icons/icon-180.png?v=2025-09-17-46"/>
+  <link rel="icon" type="image/png" href="./icons/favicon.png?v=2025-09-17-49"/>
+  <link rel="apple-touch-icon" sizes="180x180" href="./icons/icon-180.png?v=2025-09-17-49"/>
 
-  <!-- Fonts + Tailwind -->
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&family=Playfair+Display:wght@700&display=swap" rel="stylesheet"/>
   <script src="https://cdn.tailwindcss.com"></script>
-
-  <!-- PDF -->
   <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
 
   <style>
-    :root{
-      --med-teal:#14B8A6; --med-sky:#0EA5E9; --med-indigo:#1E40AF; --label:#0891B2;
-      --bg-grad: linear-gradient(135deg, #0EA5E9 0%, #14B8A6 50%, #1E40AF 100%);
-      --panel-bg: #ffffffcc; --panel-ring:#e2e8f0; --text:#0f172a;
-      --chip-bg:#ecfeff; --chip-fg:#0e7490;
+    :root{ --med-teal:#14B8A6; --med-sky:#0EA5E9; --med-indigo:#1E40AF; }
+    body { background:#f9fafb; }
+    .gradient-text {
+      background:linear-gradient(90deg, var(--med-indigo), var(--med-sky), var(--med-teal));
+      -webkit-background-clip:text; -webkit-text-fill-color:transparent;
     }
-    [data-theme="dark"]{
-      --bg-grad: linear-gradient(135deg, #0b203a 0%, #0a3a36 50%, #0b1c4f 100%);
-      --panel-bg:#0b1220cc; --panel-ring:#1f2a37; --text:#e5e7eb;
-      --chip-bg:#042f2e; --chip-fg:#67e8f9;
+    .vn-field{ padding:.9rem 1rem; border-radius:.8rem; border:1px solid #cbd5e1; background:#fff; line-height:1.5rem; }
+    .vn-field:focus{ outline:none; box-shadow:0 0 0 2px var(--med-sky); }
+    .btn-grad{ background-image:linear-gradient(90deg, var(--med-teal), var(--med-sky), var(--med-indigo)); color:#fff; font-weight:600; padding:.9rem 1.2rem; border-radius:1rem; box-shadow:0 6px 18px rgba(0,0,0,.2); transition:all .15s; }
+    .btn-grad:hover{ opacity:.97; transform:translateY(-1px); }
+    .btn-grad:active{ transform:translateY(0) scale(.98); }
+    .dropdown { position:relative; display:inline-block; }
+    .dropdown-menu {
+      display:none; position:absolute; right:0; margin-top:.5rem;
+      background:white; border-radius:.6rem; box-shadow:0 4px 12px rgba(0,0,0,.1);
+      overflow:hidden; z-index:50;
     }
-
-    body {
-      font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Arial;
-      background: var(--bg-grad);
-      color: var(--text);
-      opacity:1;
-    }
-    @media (prefers-reduced-motion: no-preference) { body{ transition: opacity .28s ease; } body.leaving { opacity:0; } }
-
-    label{ color:var(--label); }
-    .vn-field{ color:var(--label); padding:.95rem 1.1rem; border-radius:.9rem; border:1px solid #cbd5e1; background:#fff; line-height:1.6rem; }
-    [data-theme="dark"] .vn-field{ background:#0f172a; border-color:#243244; color:#cfe9ff; }
-    .vn-field:focus{ outline:none; box-shadow:0 0 0 2px var(--label); border-color:var(--label); }
-    .vn-field::placeholder{ color:#98a6b3; opacity:.85; }
-    .vn-input{ height:3.5rem; } .vn-textarea{ min-height:3.5rem; }
-
-    .vn-tagline{ font-family:"Playfair Display", ui-serif, Georgia, serif; color:#E6F4FF; }
-
-    .btn-grad{ background-image:linear-gradient(90deg, var(--med-teal), var(--med-sky), var(--med-indigo));
-      color:#fff; font-weight:700; padding:.95rem 1.2rem; border-radius:1.1rem; box-shadow:0 14px 35px rgba(0,0,0,.25);
-      transition: transform .12s ease, opacity .12s ease; }
-    .btn-grad:hover{ opacity:.97; transform: translateY(-1px); }
-    .btn-grad:active{ transform: translateY(0) scale(.98); }
-
-    /* Collapsible */
-    details{ background:var(--panel-bg); backdrop-filter: blur(6px); border:1px solid var(--panel-ring); border-radius:12px; }
-    summary{ list-style:none; cursor:pointer; padding:12px 16px; font-weight:800; color:var(--text);
-      display:flex; align-items:center; justify-content:space-between; }
-    summary::marker{ display:none; }
-    .chev{ transition: transform .2s ease; }
-    details[open] .chev{ transform: rotate(90deg); }
-    .panel{ padding: 0 16px 16px; }
-
-    /* Chips */
-    .chips{ display:flex; flex-wrap:wrap; gap:8px; }
-    .chip{ background:var(--chip-bg); color:var(--chip-fg); font-weight:700; border-radius:999px; padding:.45rem .7rem; cursor:pointer; user-select:none; }
-
-    /* Toast + offline */
-    #toast{ position:fixed; left:50%; bottom:18px; transform:translateX(-50%) translateY(140%); background:#06293f; color:#e6faff; padding:.8rem 1rem; border-radius:.8rem; box-shadow:0 10px 28px rgba(0,0,0,.35); font-size:.95rem; z-index:60; transition:transform .28s ease, opacity .28s ease; opacity:0; }
-    #toast.on{ transform:translateX(-50%) translateY(0); opacity:1; }
-    #offline{ position:fixed; top:10px; left:50%; transform:translateX(-50%); background:#991b1b; color:#fff; padding:.4rem .7rem; border-radius:.5rem; font-size:.85rem; z-index:60; display:none; }
-
-    /* PDF */
-    .pdf-page{ width:794px; background:#fff; color:#111827; padding:28px; font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto; }
-    .pdf-top{ display:flex; align-items:center; gap:14px; }
-    .pdf-logo{ width:56px; height:56px; border-radius:14px; object-fit:cover; }
-    .pdf-title{ font-weight:900; font-size:26px; background: linear-gradient(90deg, var(--med-teal), var(--med-sky), var(--med-indigo)); -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent; color:transparent; }
-    .pdf-tag{ font-family:"Playfair Display", ui-serif, Georgia, serif; font-size:14px; background: linear-gradient(90deg, var(--med-sky), var(--med-indigo)); -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent; color:transparent; }
-    .pdf-hr{ border:none; border-top:1px solid #e5e7eb; margin:14px 0 18px; }
-    .pdf-section-title{ font-weight:800; color:#111827; margin:12px 0 8px; }
-    .pdf-info{ display:grid; grid-template-columns:1fr 1fr; gap:10px; }
-    .pdf-card{ background:#f8fafc; border:1px solid #e5e7eb; border-radius:10px; padding:12px; }
-    .pdf-label{ font-size:11px; font-weight:700; color:#64748b; text-transform:uppercase; letter-spacing:.5px; margin-bottom:6px; }
-    .pdf-value{ font-size:18px; font-weight:800; color:#0f172a; }
-    .pdf-vitals{ display:grid; grid-template-columns:1fr 1fr; gap:10px; }
-    .pdf-notes{ background:#F0FDFA; border:1px solid #A7F3D0; color:#1f2937; border-radius:10px; padding:12px; line-height:1.55; }
-    .pdf-foot{ margin-top:12px; font-size:12px; color:#6b7280; text-align:right; }
+    .dropdown.open .dropdown-menu{ display:block; }
+    .dropdown-menu a { display:block; padding:.6rem 1rem; color:#334155; text-decoration:none; font-size:.9rem; }
+    .dropdown-menu a:hover { background:#f1f5f9; }
   </style>
 </head>
 
-<body class="min-h-screen antialiased">
-  <div id="offline">You’re offline. Sharing may not work until connection resumes.</div>
-
+<body class="min-h-screen text-slate-900 antialiased">
   <div class="min-h-screen p-4 flex items-center justify-center">
     <main class="w-full max-w-3xl">
-      <div class="bg-white/85 backdrop-blur-xl shadow-2xl rounded-3xl overflow-hidden ring-1 ring-white/40">
+      <div class="bg-white/90 backdrop-blur-xl shadow-2xl rounded-3xl overflow-hidden ring-1 ring-white/40">
 
         <!-- Header -->
-        <header class="p-6" style="background:linear-gradient(90deg, var(--med-teal), var(--med-sky), var(--med-indigo));">
-          <div class="flex items-center justify-between gap-4">
-            <div class="flex items-center gap-4">
-              <a href="./index.html" aria-label="Home">
-                <img src="./icons/icon-192.png?v=2025-09-17-46" alt="Victoria Nurse" class="h-14 w-14 rounded-2xl shadow"/>
-              </a>
-              <div>
-                <h1 class="text-white text-2xl font-extrabold tracking-tight">Victoria Nurse</h1>
-                <p class="vn-tagline text-white/95 text-sm">We Care Together</p>
-              </div>
+        <header class="p-6 flex items-center justify-between" style="background:linear-gradient(90deg, var(--med-teal), var(--med-sky), var(--med-indigo));">
+          <div class="flex items-center gap-4">
+            <a href="./index.html" aria-label="Home">
+              <img src="./icons/icon-192.png?v=2025-09-17-49" alt="Victoria Nurse" class="h-14 w-14 rounded-2xl shadow"/>
+            </a>
+            <div>
+              <h1 class="gradient-text text-2xl font-extrabold tracking-tight">Victoria Nurse</h1>
+              <p class="gradient-text text-sm">We Care Together</p>
             </div>
-
-            <!-- Right-side quick actions -->
-            <div class="flex items-center gap-2">
-              <button id="btnInstall" type="button" class="hidden btn-grad text-xs px-3 py-2">Install App</button>
-              <a href="./help.html?v=2025-09-17-47" class="text-white/95 text-sm font-semibold underline decoration-white/50">Help</a>
-
-              <!-- Theme toggle -->
-              <label class="text-white/90 text-xs font-semibold flex items-center gap-2 select-none">
-                <span>Theme</span>
-                <select id="themeSel" class="text-slate-900 rounded px-2 py-1 text-xs">
-                  <option value="system">System</option>
-                  <option value="light">Light</option>
-                  <option value="dark">Dark</option>
-                </select>
-              </label>
+          </div>
+          <!-- Settings dropdown -->
+          <div class="dropdown" id="settingsMenu">
+            <button class="text-white text-xl">⚙</button>
+            <div class="dropdown-menu">
+              <a href="#">Branding & Footer</a>
+              <a href="#">Theme</a>
+              <a href="./help.html">Help</a>
             </div>
           </div>
         </header>
@@ -137,125 +71,71 @@
         <section class="p-6 grid gap-6" role="form" aria-label="Patient Vitals Form">
           <form id="formVitals" class="grid gap-6" autocomplete="off" novalidate>
             <div>
-              <label for="patientName" class="block text-sm font-semibold mb-1">Patient Name</label>
-              <input list="recentPatients" id="patientName" type="text" placeholder="Enter full name" class="vn-field vn-input w-full"/>
-              <datalist id="recentPatients"></datalist>
+              <label class="block text-sm font-semibold mb-1">Patient Name</label>
+              <input id="patientName" type="text" placeholder="Enter full name" class="vn-field w-full"/>
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div><label for="temperature" class="block text-sm font-semibold mb-1">Temperature (°C)</label>
-                <input id="temperature" type="number" step="0.1" inputmode="decimal" placeholder="e.g., 36.8" class="vn-field vn-input w-full"/></div>
-              <div><label for="pulse" class="block text-sm font-semibold mb-1">Pulse (bpm)</label>
-                <input id="pulse" type="number" inputmode="numeric" placeholder="e.g., 80" class="vn-field vn-input w-full"/></div>
-              <div><label for="respiratoryRate" class="block text-sm font-semibold mb-1">Respiratory Rate (breaths/min)</label>
-                <input id="respiratoryRate" type="number" inputmode="numeric" placeholder="e.g., 16" class="vn-field vn-input w-full"/></div>
-
-              <div>
-                <label class="block text-sm font-semibold mb-1">Blood Pressure (mmHg)</label>
+              <div><label class="block text-sm font-semibold mb-1">Temperature (°C)</label>
+                <input id="temperature" type="number" step="0.1" class="vn-field w-full"/></div>
+              <div><label class="block text-sm font-semibold mb-1">Pulse (bpm)</label>
+                <input id="pulse" type="number" class="vn-field w-full"/></div>
+              <div><label class="block text-sm font-semibold mb-1">Respiratory Rate</label>
+                <input id="respiratoryRate" type="number" class="vn-field w-full"/></div>
+              <div><label class="block text-sm font-semibold mb-1">Blood Pressure (mmHg)</label>
                 <div class="grid grid-cols-2 gap-2">
-                  <input id="sbp" type="number" inputmode="numeric" placeholder="SBP" class="vn-field vn-input w-full"/>
-                  <input id="dbp" type="number" inputmode="numeric" placeholder="DBP" class="vn-field vn-input w-full"/>
+                  <input id="sbp" type="number" placeholder="SBP" class="vn-field w-full"/>
+                  <input id="dbp" type="number" placeholder="DBP" class="vn-field w-full"/>
                 </div>
               </div>
-
-              <div><label for="oxygenSaturation" class="block text-sm font-semibold mb-1">Oxygen Saturation (SpO₂ %)</label>
-                <input id="oxygenSaturation" type="number" inputmode="numeric" placeholder="e.g., 98" class="vn-field vn-input w-full"/></div>
-              <div><label for="bloodSugar" class="block text-sm font-semibold mb-1">Blood Sugar Level (mg/dL)</label>
-                <input id="bloodSugar" type="number" step="0.1" inputmode="decimal" placeholder="e.g., 95" class="vn-field vn-input w-full"/></div>
-
-              <div><label for="weight" class="block text-sm font-semibold mb-1">Weight (kg)</label>
-                <input id="weight" type="number" step="0.1" inputmode="decimal" placeholder="e.g., 72.4" class="vn-field vn-input w-full"/></div>
-
-              <div class="md:col-span-2"><label for="pain" class="block text-sm font-semibold mb-1">Pain Assessment (0–10)</label>
-                <input id="pain" type="number" min="0" max="10" inputmode="numeric" placeholder="e.g., 3" class="vn-field vn-input w-full"/></div>
+              <div><label class="block text-sm font-semibold mb-1">Oxygen Saturation (%)</label>
+                <input id="oxygenSaturation" type="number" class="vn-field w-full"/></div>
+              <div><label class="block text-sm font-semibold mb-1">Blood Sugar (mg/dL)</label>
+                <input id="bloodSugar" type="number" class="vn-field w-full"/></div>
+              <div><label class="block text-sm font-semibold mb-1">Weight (kg)</label>
+                <input id="weight" type="number" class="vn-field w-full"/></div>
+              <div class="md:col-span-2"><label class="block text-sm font-semibold mb-1">Pain (0–10)</label>
+                <input id="pain" type="number" min="0" max="10" class="vn-field w-full"/></div>
             </div>
 
-            <!-- Collapsible: Sharing Destinations -->
-            <details id="shareSection">
-              <summary>
-                <span>Sharing Destinations</span>
-                <span class="chev">›</span>
-              </summary>
-              <div class="panel grid gap-3">
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
-                  <input id="wa1" class="vn-field vn-input w-full" inputmode="tel" placeholder="WhatsApp number #1 (e.g., +233...)"/>
-                  <input id="wa2" class="vn-field vn-input w-full" inputmode="tel" placeholder="WhatsApp number #2 (optional)"/>
-                  <input id="wa3" class="vn-field vn-input w-full" inputmode="tel" placeholder="WhatsApp number #3 (optional)"/>
-                </div>
+            <!-- Meds -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div><label class="block text-sm font-semibold mb-1">Morning Meds</label>
+                <input id="medMorning" class="vn-field w-full"/></div>
+              <div><label class="block text-sm font-semibold mb-1">Afternoon Meds</label>
+                <input id="medAfternoon" class="vn-field w-full"/></div>
+              <div><label class="block text-sm font-semibold mb-1">Evening Meds</label>
+                <input id="medEvening" class="vn-field w-full"/></div>
+            </div>
 
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
-                  <input id="groupName" class="vn-field vn-input w-full" placeholder="Family Group Name (optional)"/>
-                  <div class="text-xs text-slate-500 self-center">Saved on this device for <strong>7 days</strong>.</div>
-                </div>
-
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
-                  <input id="groupPhones" class="vn-field vn-input w-full" placeholder="Group WhatsApp numbers (comma-separated)"/>
-                  <input id="groupEmails" class="vn-field vn-input w-full" placeholder="Group emails (comma-separated)"/>
-                </div>
-
-                <div class="flex gap-3">
-                  <button id="btnSaveGroup" type="button" class="btn-grad">Save/Update Group</button>
-                  <button id="btnLoadGroup" type="button" class="btn-grad">Load Group</button>
-                  <button id="btnDeleteGroup" type="button" class="btn-grad">Delete Group</button>
-                </div>
-              </div>
-            </details>
-
-            <!-- Notes + Voice + Quick Chips -->
             <div>
-              <div class="flex items-center justify-between">
-                <label for="notes" class="block text-sm font-semibold mb-1">Notes</label>
-                <button id="btnVoice" type="button" class="btn-grad text-xs px-3 py-2">🎙️ Dictate</button>
-              </div>
-              <div class="chips mb-2">
-                <span class="chip" data-note="Patient stable and comfortable.">Stable & comfortable</span>
-                <span class="chip" data-note="Monitor blood pressure closely.">Monitor BP</span>
-                <span class="chip" data-note="Hydration encouraged.">Hydration encouraged</span>
-                <span class="chip" data-note="Follow medication schedule as prescribed.">Follow meds schedule</span>
-              </div>
-              <textarea id="notes" rows="8" placeholder="Observations, symptoms, instructions" class="vn-field vn-textarea w-full"></textarea>
+              <label class="block text-sm font-semibold mb-1">Notes</label>
+              <textarea id="notes" rows="6" class="vn-field w-full"></textarea>
             </div>
 
-            <!-- Nurse -->
             <div>
-              <div class="flex items-center justify-between">
-                <label for="nurseName" class="block text-sm font-semibold mb-1">Prepared by (Nurse’s Name)</label>
-                <label class="text-xs flex items-center gap-1 select-none">
-                  <input id="rememberNurse" type="checkbox" class="accent-sky-500"> Remember on this device (7 days)
-                </label>
-              </div>
-              <input id="nurseName" type="text" placeholder="Enter nurse's full name" class="vn-field vn-input w-full"/>
+              <label class="block text-sm font-semibold mb-1">Prepared by (Nurse)</label>
+              <input id="nurseName" type="text" class="vn-field w-full"/>
+              <label class="inline-flex items-center mt-2 text-sm">
+                <input type="checkbox" id="rememberMe" class="mr-2"> Remember Me (7 days)
+              </label>
             </div>
 
-            <!-- Collapsible: Settings (Branding & Footer) -->
-            <details id="settingsSection">
-              <summary>
-                <span>Settings</span>
-                <span class="chev">›</span>
-              </summary>
-              <div class="panel grid gap-3">
-                <h3 class="text-slate-700 font-bold">Branding & Footer</h3>
-                <input id="footerNote" class="vn-field vn-input w-full" placeholder="Footer note (e.g., Nurse’s signature or clinic name)"/>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-3 items-center">
-                  <div>
-                    <label class="block text-sm font-semibold mb-1">Custom Branding Logo (optional)</label>
-                    <input id="brandLogo" type="file" accept="image/*" class="w-full text-sm"/>
-                  </div>
-                  <div class="text-xs text-slate-500">If provided, this logo appears in the PDF header instead of the default icon.</div>
-                </div>
-              </div>
-            </details>
-
-            <!-- Actions -->
+            <!-- Buttons -->
             <div class="flex flex-col sm:flex-row gap-3">
-              <button id="btnPreview" type="button" class="btn-grad flex-1">Preview & Generate PDF</button>
-              <button id="btnCopy" type="button" class="btn-grad flex-1">Copy Summary</button>
-              <button id="btnWhatsApp" type="button" class="btn-grad flex-1">Share via WhatsApp</button>
-              <button id="btnEmail" type="button" class="btn-grad flex-1">Share via Email (PDF)</button>
+              <button id="btnPreview" type="button" class="btn-grad flex-1">Preview & PDF</button>
+              <button id="btnWhatsApp" type="button" class="btn-grad flex-1">Share WhatsApp</button>
+              <button id="btnEmail" type="button" class="btn-grad flex-1">Share Email</button>
+            </div>
+
+            <!-- Dictate -->
+            <div class="mt-3">
+              <button id="btnDictate" type="button" class="btn-grad w-full">🎤 Dictate</button>
             </div>
           </form>
         </section>
 
+        <!-- Footer -->
         <footer class="px-6 py-4 bg-white/70 text-sm flex items-center justify-between">
           <span class="font-medium" style="color:#0EA5E9">&copy; <span id="year"></span> Victoria Nurse</span>
           <span class="italic" style="color:#0EA5E9">Powered by: karlthebrown</span>
@@ -264,453 +144,47 @@
     </main>
   </div>
 
-  <!-- PDF Template -->
-  <div id="pdfCanvas" class="hidden">
-    <div class="pdf-page" id="pdfRoot">
-      <div class="pdf-top">
-        <img class="pdf-logo" id="pdfLogo" src="./icons/icon-192.png?v=2025-09-17-46" alt="Logo"/>
-        <div>
-          <div class="pdf-title">Victoria Nurse</div>
-          <div class="pdf-tag">We Care Together</div>
-        </div>
-      </div>
-      <hr class="pdf-hr"/>
-
-      <div class="pdf-info">
-        <div class="pdf-card"><div class="pdf-label">Patient</div><div class="pdf-value" id="pdfPatientVal">--</div></div>
-        <div class="pdf-card"><div class="pdf-label">Prepared by</div><div class="pdf-value" id="pdfNurseVal">--</div></div>
-      </div>
-
-      <div class="pdf-section-title">Vitals</div>
-      <div class="pdf-vitals">
-        <div class="pdf-card"><div class="pdf-label">Blood Pressure</div><div class="pdf-value" id="pdfBPVal">-- mmHg</div></div>
-        <div class="pdf-card"><div class="pdf-label">Heart Rate</div><div class="pdf-value" id="pdfPulseVal">-- bpm</div></div>
-        <div class="pdf-card"><div class="pdf-label">Temperature</div><div class="pdf-value" id="pdfTempVal">-- °C</div></div>
-        <div class="pdf-card"><div class="pdf-label">SpO₂</div><div class="pdf-value" id="pdfO2Val">-- %</div></div>
-        <div class="pdf-card"><div class="pdf-label">Respiratory Rate</div><div class="pdf-value" id="pdfRRVal">-- /min</div></div>
-        <div class="pdf-card"><div class="pdf-label">Weight</div><div class="pdf-value" id="pdfWeightVal">-- kg</div></div>
-        <div class="pdf-card" style="grid-column:1/-1;"><div class="pdf-label">Pain Assessment</div><div class="pdf-value" id="pdfPainVal">-- /10</div></div>
-      </div>
-
-      <div class="pdf-section-title">Medications</div>
-      <div class="pdf-info">
-        <div class="pdf-card"><div class="pdf-label">Morning</div><div class="pdf-value" id="pdfMedAM">--</div></div>
-        <div class="pdf-card"><div class="pdf-label">Afternoon</div><div class="pdf-value" id="pdfMedPM">--</div></div>
-        <div class="pdf-card" style="grid-column:1/-1;"><div class="pdf-label">Evening</div><div class="pdf-value" id="pdfMedEV">--</div></div>
-      </div>
-
-      <div class="pdf-section-title">Notes</div>
-      <div class="pdf-notes" id="pdfNotes">--</div>
-
-      <div class="pdf-foot" id="pdfFooter"><em>Powered by: karlthebrown</em></div>
-    </div>
-  </div>
-
-  <!-- Toast -->
-  <div id="toast" role="status" aria-live="polite"></div>
-
-  <!-- SW register -->
-  <script>
-    if('serviceWorker' in navigator){
-      window.addEventListener('load',()=>navigator.serviceWorker.register(`./service-worker.js?v=2025-09-17-47`,{scope:'./'}).catch(()=>{}));
-    }
-  </script>
-
   <script>
     document.getElementById('year').textContent = new Date().getFullYear();
     const el=id=>document.getElementById(id);
-    const getVal=id=>(el(id)?.value||'').trim();
-    const toastEl = el('toast');
 
-    function toast(msg, ms=1600){ toastEl.textContent = msg; toastEl.classList.add('on'); setTimeout(()=>toastEl.classList.remove('on'), ms); }
-    const offlineEl = el('offline');
-    function syncOfflineBanner(){ offlineEl.style.display = navigator.onLine ? 'none' : 'block'; }
-    window.addEventListener('online', ()=>{ syncOfflineBanner(); tryProcessQueue(); });
-    window.addEventListener('offline', syncOfflineBanner);
-    syncOfflineBanner();
+    // Settings dropdown
+    const dd=document.getElementById('settingsMenu');
+    dd.querySelector('button').addEventListener('click',()=>dd.classList.toggle('open'));
 
-    /* THEME */
-    const themeSel = el('themeSel');
-    const THEME_KEY = 'vn_theme_pref';
-    function applyTheme(v){
-      document.documentElement.setAttribute('data-theme', v);
-      if (v==='system'){
-        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-        document.documentElement.toggleAttribute('data-dark', prefersDark);
+    // Remember Me — save nurse/patient for 7 days
+    const EXP=7*24*60*60*1000;
+    function saveLocal(){
+      if(!el('rememberMe').checked) return;
+      const data={nurse:el('nurseName').value, patient:el('patientName').value, ts:Date.now()};
+      localStorage.setItem('vn_mem',JSON.stringify(data));
+    }
+    function loadLocal(){
+      const d=JSON.parse(localStorage.getItem('vn_mem')||'{}');
+      if(d.ts && Date.now()-d.ts<EXP){
+        if(d.nurse) el('nurseName').value=d.nurse;
+        if(d.patient) el('patientName').value=d.patient;
+        el('rememberMe').checked=true;
       }
     }
-    themeSel.value = localStorage.getItem(THEME_KEY) || 'system';
-    applyTheme(themeSel.value);
-    themeSel.addEventListener('change', ()=>{ localStorage.setItem(THEME_KEY, themeSel.value); applyTheme(themeSel.value); });
+    loadLocal();
 
-    function pad2(n){ return n.toString().padStart(2,'0'); }
-    function fmtDateTime(d = new Date()){
-      return `${d.getFullYear()}-${pad2(d.getMonth()+1)}-${pad2(d.getDate())} ${pad2(d.getHours())}:${pad2(d.getMinutes())}`;
-    }
+    function isOnline(){ return navigator.onLine; }
+    function notify(msg){ alert(msg); }
 
-    /* 7-day TTL local store */
-    const TTL_MS = 7 * 24 * 60 * 60 * 1000;
-    function setWithTTL(key, value){ localStorage.setItem(key, JSON.stringify({v:value, t:Date.now()})); }
-    function getWithTTL(key){
-      try{ const o = JSON.parse(localStorage.getItem(key)||'null'); if(!o) return null; if(Date.now()-o.t>TTL_MS){ localStorage.removeItem(key); return null; } return o.v; }catch{ return null; }
-    }
+    // Dummy PDF builder
+    async function makePdf(rec){ const {jsPDF}=window.jspdf; const pdf=new jsPDF(); pdf.text("Victoria Nurse Report",20,20); return pdf.output('blob'); }
 
-    /* Nurse + recent patients (7 days) */
-    (function initLocalMemory(){
-      const nurse = getWithTTL('vn_nurse_name');
-      if (nurse) { el('nurseName').value = nurse; el('rememberNurse').checked = true; }
-      const pts = (getWithTTL('vn_recent_patients')||[]).filter(Boolean);
-      const dl = el('recentPatients'); dl.innerHTML='';
-      pts.slice(0,5).forEach(name=>{ const opt = document.createElement('option'); opt.value = name; dl.appendChild(opt); });
+    function buildRecord(){ return { nurse:el('nurseName').value, patient:el('patientName').value, notes:el('notes').value }; }
 
-      el('rememberNurse').addEventListener('change', (e)=>{
-        if (!e.target.checked) localStorage.removeItem('vn_nurse_name');
-        else setWithTTL('vn_nurse_name', el('nurseName').value.trim());
-      });
-      el('nurseName').addEventListener('input', ()=>{
-        if (el('rememberNurse').checked) setWithTTL('vn_nurse_name', el('nurseName').value.trim());
-      });
+    // Sharing
+    el('btnPreview').addEventListener('click',async()=>{ saveLocal(); const pdf=await makePdf(buildRecord()); const url=URL.createObjectURL(pdf); const a=document.createElement('a'); a.href=url; a.download="report.pdf"; a.click(); setTimeout(()=>URL.revokeObjectURL(url),2000); });
+    el('btnWhatsApp').addEventListener('click',()=>{ saveLocal(); if(!isOnline()) return notify("You’re offline — try again later"); window.open(`https://wa.me/?text=${encodeURIComponent("Vitals shared")}`,'_blank'); });
+    el('btnEmail').addEventListener('click',()=>{ saveLocal(); if(!isOnline()) return notify("You’re offline — try again later"); window.location.href=`mailto:?subject=Patient Vitals&body=${encodeURIComponent("See attached")}`; });
 
-      const lastGroup = getWithTTL('vn_last_group_name');
-      if (lastGroup) el('groupName').value = lastGroup;
-    })();
+    // Dictation
+    el('btnDictate').addEventListener('click',()=>{ if(!('webkitSpeechRecognition'in window)){return notify("Speech not supported");} const r=new webkitSpeechRecognition(); r.continuous=false; r.lang='en-US'; r.start(); r.onresult=e=>{el('notes').value+=(el('notes').value?" ":"")+e.results[0][0].transcript;}; });
 
-    function rememberPatient(name){
-      name = (name||'').trim(); if (!name) return;
-      const key='vn_recent_patients';
-      const arr = getWithTTL(key) || [];
-      const next = [name, ...arr.filter(n=>n.toLowerCase()!==name.toLowerCase())].slice(0,5);
-      setWithTTL(key, next);
-    }
-
-    /* Family group store (7-day TTL) */
-    function keyGroup(n){ return `vn_group_${n.trim().toLowerCase()}`; }
-    el('btnSaveGroup').addEventListener('click', ()=>{
-      const name = getVal('groupName'); if(!name){ toast('Enter group name'); return; }
-      const phones = getVal('groupPhones'); const emails = getVal('groupEmails');
-      setWithTTL(keyGroup(name), {phones, emails});
-      setWithTTL('vn_last_group_name', name);
-      toast('Group saved ✅');
-    });
-    el('btnLoadGroup').addEventListener('click', ()=>{
-      const name = getVal('groupName'); if(!name){ toast('Enter group name'); return; }
-      const g = getWithTTL(keyGroup(name));
-      if(!g){ toast('No saved group'); return; }
-      el('groupPhones').value = g.phones || '';
-      el('groupEmails').value = g.emails || '';
-      setWithTTL('vn_last_group_name', name);
-      toast('Group loaded ✅');
-    });
-    el('btnDeleteGroup').addEventListener('click', ()=>{
-      const name = getVal('groupName'); if(!name){ toast('Enter group name'); return; }
-      localStorage.removeItem(keyGroup(name));
-      toast('Group deleted');
-    });
-
-    /* Quick Note chips */
-    document.querySelectorAll('.chip').forEach(ch => {
-      ch.addEventListener('click', ()=> {
-        const t = el('notes');
-        const v = ch.getAttribute('data-note') || '';
-        t.value = (t.value ? t.value + (t.value.endsWith(' ') ? '' : ' ') : '') + v;
-        t.focus();
-      });
-    });
-
-    /* Voice Dictation */
-    (function setupVoice(){
-      const btn = el('btnVoice');
-      const ta = el('notes');
-      const synthOK = 'webkitSpeechRecognition' in window || 'SpeechRecognition' in window;
-      if (!synthOK){ btn.disabled = true; btn.textContent = '🎙️ Not supported'; return; }
-
-      const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
-      const rec = new SR(); rec.lang = 'en-US'; rec.interimResults = true; rec.continuous = false;
-
-      let listening = false; let baseText = '';
-      btn.addEventListener('click', ()=>{
-        if (!listening){
-          baseText = ta.value;
-          rec.start(); listening = true; btn.textContent = '🛑 Stop';
-        } else {
-          rec.stop();
-        }
-      });
-      rec.onresult = (e)=>{
-        let final = ''; let interim = '';
-        for (let i=0;i<e.results.length;i++){
-          const r = e.results[i];
-          (r.isFinal ? final : interim) += r[0].transcript;
-        }
-        ta.value = (baseText + ' ' + final + ' ' + interim).trim();
-      };
-      rec.onerror = ()=>{ listening=false; btn.textContent='🎙️ Dictate'; toast('Voice error'); };
-      rec.onend = ()=>{ listening=false; btn.textContent='🎙️ Dictate'; };
-    })();
-
-    /* PWA Install (Android) */
-    let deferredPrompt = null;
-    const btnInstall = el('btnInstall');
-    window.addEventListener('beforeinstallprompt', (e)=>{
-      e.preventDefault();
-      deferredPrompt = e;
-      btnInstall?.classList.remove('hidden');
-    });
-    btnInstall?.addEventListener('click', async ()=>{
-      if (!deferredPrompt) return;
-      deferredPrompt.prompt();
-      await deferredPrompt.userChoice;
-      deferredPrompt = null;
-      btnInstall.classList.add('hidden');
-    });
-
-    /* Build record */
-    function buildRecord(){
-      return {
-        timestamp: Date.now(),
-        session: (new Date().getHours() < 12 ? 'AM' : 'PM'),
-        patient: getVal('patientName'),
-        bp: { sbp: getVal('sbp'), dbp: getVal('dbp') },
-        hr: getVal('pulse'),
-        temp: getVal('temperature'),
-        spo2: getVal('oxygenSaturation'),
-        rr: getVal('respiratoryRate'),
-        weight: getVal('weight'),
-        sugar: getVal('bloodSugar'),
-        meds: {
-          morning:  { status: getVal('medMorningStatus') || 'taken',   note: getVal('medMorningNote') },
-          afternoon:{ status: getVal('medAfternoonStatus') || 'taken', note: getVal('medAfternoonNote') },
-          evening:  { status: getVal('medEveningStatus') || 'taken',   note: getVal('medEveningNote') }
-        },
-        pain: getVal('pain'),
-        notes: getVal('notes'),
-        preparedBy: getVal('nurseName'),
-        footerNote: getVal('footerNote')
-      };
-    }
-
-    function shareText(rec){
-      const medsLine = [
-        `Morning – ${rec.meds.morning.status}${rec.meds.morning.note?` (${rec.meds.morning.note})`:''}`,
-        `Afternoon – ${rec.meds.afternoon.status}${rec.meds.afternoon.note?` (${rec.meds.afternoon.note})`:''}`,
-        `Evening – ${rec.meds.evening.status}${rec.meds.evening.note?` (${rec.meds.evening.note})`:''}`
-      ].join(' | ');
-
-      return [
-        `Victoria Nurse – Patient Vitals (${rec.session})`,
-        `Date: ${fmtDateTime(new Date(rec.timestamp))}`,
-        `Patient: ${rec.patient || '-'}`,
-        `BP: ${rec.bp.sbp}/${rec.bp.dbp} mmHg | HR: ${rec.hr} bpm | Temp: ${rec.temp} °C`,
-        `SpO₂: ${rec.spo2}% | RR: ${rec.rr}/min | Weight: ${rec.weight} kg`,
-        `Meds: ${medsLine}`,
-        `Pain: ${rec.pain || '-'}/10`,
-        `Notes: ${rec.notes || '-'}`,
-        `Prepared by: ${rec.preparedBy || '-'}`,
-        rec.footerNote ? `Footer: ${rec.footerNote}` : '',
-        `Powered by: KarltheBrown`
-      ].filter(Boolean).join('\n');
-    }
-
-    /* Optional branding logo -> data URL */
-    let brandLogoDataURL = null;
-    const brandInput = document.getElementById('brandLogo');
-    brandInput?.addEventListener('change', ()=>{
-      const file = brandInput.files?.[0]; if(!file){ brandLogoDataURL=null; return; }
-      const reader = new FileReader();
-      reader.onload = e => { brandLogoDataURL = e.target.result; toast('Brand logo loaded ✅'); };
-      reader.onerror = ()=>{ brandLogoDataURL=null; toast('Could not load logo'); };
-      reader.readAsDataURL(file);
-    });
-
-    function navigateHome(){
-      const reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-      if (!reduce) document.body.classList.add('leaving');
-      setTimeout(()=>{ window.location.href = './index.html?v=2025-09-17-47'; }, reduce ? 0 : 280);
-    }
-
-    async function makePdf(rec){
-      const { jsPDF } = window.jspdf;
-      const pdf = new jsPDF('p','pt','a4');
-      const W = pdf.internal.pageSize.getWidth();
-      let y = 40;
-
-      pdf.setFillColor(14,165,233); pdf.rect(20, 20, W-40, 6, 'F');
-
-      const logo = new Image();
-      logo.src = brandLogoDataURL || './icons/icon-192.png?v=2025-09-17-46';
-      await new Promise(r => { logo.onload = r; logo.onerror = r; });
-      pdf.addImage(logo, 'PNG', 20, 32, 40, 40);
-
-      pdf.setFont('helvetica','bold'); pdf.setFontSize(20);
-      pdf.setTextColor(14,165,233); pdf.text('Victoria Nurse', 70, 52);
-      pdf.setFont('times','italic'); pdf.setFontSize(12);
-      pdf.setTextColor(20,83,136); pdf.text('We Care Together', 70, 70);
-
-      y = 96;
-      pdf.setDrawColor(230); pdf.line(20, y, W-20, y); y += 18;
-
-      const left = 28, colW = (W - 56) / 2 - 10, right = left + colW + 20;
-      const leftRows = [
-        ['Blood Pressure',`${rec.bp.sbp}/${rec.bp.dbp} mmHg`],
-        ['Heart Rate',`${rec.hr} bpm`],
-        ['Temperature',`${rec.temp} °C`],
-        ['SpO₂',`${rec.spo2} %`],
-        ['Respiratory Rate',`${rec.rr} /min`],
-        ['Weight',`${rec.weight} kg`]
-      ];
-      leftRows.forEach(([k,v],i) => {
-        const yy = y + i*26;
-        pdf.setTextColor(100,116,139); pdf.setFontSize(10); pdf.text(k, left, yy);
-        pdf.setTextColor(15,23,42); pdf.setFontSize(14); pdf.text(v, left, yy+14);
-      });
-
-      pdf.setTextColor(20,23,42); pdf.setFontSize(12); pdf.setFont('helvetica','bold');
-      pdf.text('Medications', right, y);
-      pdf.setFont('helvetica','normal'); pdf.setFontSize(12);
-      const meds = [
-        `Morning – ${rec.meds.morning.status}${rec.meds.morning.note?` (${rec.meds.morning.note})`:''}`,
-        `Afternoon – ${rec.meds.afternoon.status}${rec.meds.afternoon.note?` (${rec.meds.afternoon.note})`:''}`,
-        `Evening – ${rec.meds.evening.status}${rec.meds.evening.note?` (${rec.meds.evening.note})`:''}`
-      ];
-      let ry = y + 16; meds.forEach(line => { pdf.text(line, right, ry); ry += 18; });
-
-      y = Math.max(y + leftRows.length*26 + 8, ry + 10);
-      pdf.setDrawColor(230); pdf.line(20, y, W-20, y); y += 18;
-      pdf.setFont('helvetica','bold'); pdf.setFontSize(12); pdf.setTextColor(20,23,42);
-      pdf.text('Notes', 28, y); y += 14;
-      pdf.setFont('helvetica','normal'); pdf.setFontSize(12); pdf.setTextColor(31,41,55);
-      const lines = pdf.splitTextToSize(rec.notes || '-', W-56);
-      pdf.text(lines, 28, y); y += lines.length * 14 + 10;
-
-      pdf.setFontSize(10); pdf.setTextColor(107,114,128);
-      const footerLeft = `Prepared by: ${rec.preparedBy || '-'} • ${fmtDateTime(new Date(rec.timestamp))}`;
-      const footerRight = rec.footerNote ? rec.footerNote : 'Powered by: KarltheBrown';
-      pdf.text(footerLeft, 28, y+10);
-      pdf.text(footerRight, W - (pdf.getTextWidth(footerRight) + 28), y+10);
-
-      return pdf.output('blob');
-    }
-
-    /* Queue & Retry (offline) */
-    function enqueueShare(item){
-      const key='vn_share_queue';
-      const arr = getWithTTL(key) || [];
-      arr.push({...item, ts: Date.now()});
-      setWithTTL(key, arr);
-      toast('You’re offline — will retry later');
-    }
-    function tryProcessQueue(){
-      if (!navigator.onLine) return;
-      const key='vn_share_queue';
-      const arr = getWithTTL(key) || [];
-      if (!arr.length) return;
-      if (!confirm(`You have ${arr.length} pending share(s). Send now?`)) return;
-      arr.forEach(it=>{
-        if (it.type==='whatsapp'){ openWhatsApps(it.numbers, it.text); }
-        if (it.type==='email'){ openEmail(it.emails, it.subject, it.body); }
-      });
-      setWithTTL(key, []); // clear
-      toast('Pending shares opened ✅');
-    }
-    window.addEventListener('load', tryProcessQueue);
-
-    /* WhatsApp & Email helpers */
-    function normalizePhone(p){ return (p||'').replace(/[^\d+]/g,'').trim(); }
-    function parsePhones(str){ return (str||'').split(/[,;\s]+/).map(normalizePhone).filter(Boolean); }
-    function unique(arr){ return [...new Set(arr)]; }
-    function openWhatsApps(numbers, text){
-      numbers.forEach((num, idx)=>{
-        const url = num ? `https://wa.me/${encodeURIComponent(num)}?text=${encodeURIComponent(text)}` :
-                          `https://wa.me/?text=${encodeURIComponent(text)}`;
-        setTimeout(()=> window.open(url, '_blank'), idx*250);
-      });
-    }
-    function parseEmails(str){ return (str||'').split(/[,;\s]+/).map(s=>s.trim()).filter(Boolean); }
-    function openEmail(emails, subject, body){
-      const to = emails.join(',');
-      window.location.href = `mailto:${encodeURIComponent(to)}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-    }
-
-    /* Actions */
-    function clearAll(){ document.getElementById('formVitals')?.reset(); }
-
-    document.getElementById('btnPreview').addEventListener('click', async ()=>{
-      const rec = buildRecord(); rememberPatient(rec.patient);
-      const blob = await makePdf(rec);
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url; a.download = `Victoria_Nurse_${(rec.patient||'patient').replace(/[^\w\-]+/g,'_')}_${new Date().toISOString().slice(0,10)}.pdf`;
-      a.click();
-      setTimeout(()=>URL.revokeObjectURL(url), 3000);
-      toast('PDF ready ✨');
-    });
-
-    document.getElementById('btnCopy').addEventListener('click', async ()=>{
-      const rec = buildRecord(); rememberPatient(rec.patient);
-      try{ await navigator.clipboard.writeText(shareText(rec)); toast('Summary copied ✅'); }
-      catch{ toast('Could not copy — select & copy manually'); }
-    });
-
-    document.getElementById('btnWhatsApp').addEventListener('click', ()=>{
-      const rec = buildRecord(); rememberPatient(rec.patient);
-      const text = shareText(rec);
-      const nums = unique([
-        normalizePhone(getVal('wa1')),
-        normalizePhone(getVal('wa2')),
-        normalizePhone(getVal('wa3')),
-        ...parsePhones(getVal('groupPhones'))
-      ]).filter(Boolean);
-      if (!nums.length){ nums.push(''); }
-      if (!navigator.onLine){ enqueueShare({type:'whatsapp', numbers:nums, text}); return; }
-      openWhatsApps(nums, text);
-      toast('Shared to WhatsApp ✅');
-      setTimeout(()=>{ clearAll(); navigateHome(); }, 900);
-    });
-
-    document.getElementById('btnEmail').addEventListener('click', async ()=>{
-      const rec = buildRecord(); rememberPatient(rec.patient);
-      const blob = await makePdf(rec);
-      const a = document.createElement('a');
-      a.href = URL.createObjectURL(blob);
-      a.download = `Victoria_Nurse_${(rec.patient||'patient').replace(/[^\w\-]+/g,'_')}_${new Date().toISOString().slice(0,10)}.pdf`;
-      a.click();
-      setTimeout(()=>URL.revokeObjectURL(a.href), 3000);
-
-      const subject = `Patient Vitals — ${rec.patient||'Unnamed'} — ${rec.session}`;
-      const body = shareText(rec);
-      const emails = unique([...parseEmails(getVal('groupEmails'))]);
-      if (!navigator.onLine){ enqueueShare({type:'email', emails, subject, body}); return; }
-      openEmail(emails, subject, body);
-      toast('Email draft opened ✉️');
-      setTimeout(()=>{ clearAll(); navigateHome(); }, 1000);
-    });
-  </script>
-
-  <!-- Self-cleanup (v47) -->
-  <script>
-    (async () => {
-      const VER = "2025-09-17-47";
-      const KEY = `vn_self_cleanup_${VER}`;
-      const mustReset = new URLSearchParams(location.search).has('reset');
-      if (mustReset || !localStorage.getItem(KEY)) {
-        try {
-          if ('serviceWorker' in navigator) {
-            const regs = await navigator.serviceWorker.getRegistrations();
-            await Promise.all(regs.map(r => r.unregister().catch(()=>{})));
-          }
-          if (window.caches?.keys) {
-            const names = await caches.keys();
-            await Promise.all(names.map(n => caches.delete(n).catch(()=>{})));
-          }
-          localStorage.setItem(KEY, '1');
-          if (!sessionStorage.getItem(KEY)) {
-            sessionStorage.setItem(KEY, '1');
-            location.replace(location.pathname + location.search + location.hash);
-            return;
-          }
-        } catch(_) {}
-      }
-    })();
   </script>
 </body>
 </html>
