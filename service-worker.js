@@ -3,9 +3,10 @@ const CACHE_NAME = 'victoria-nurse-v49';
 
 const ASSETS = [
   './',
-  './index.html?v=2025-09-17-49',
+  './index.html',
+  './app.html',
   './app.html?v=2025-09-17-49',
-  './help.html?v=2025-09-17-49',
+  './help.html',
   './manifest.webmanifest?v=2025-09-17-49',
   './icons/icon-192.png?v=2025-09-17-49',
   './icons/icon-512.png?v=2025-09-17-49',
@@ -39,12 +40,12 @@ self.addEventListener('fetch', (event) => {
       try { return await fetch(req); }
       catch {
         if (url.pathname.endsWith('/app.html')) {
-          const app = await caches.match('./app.html?v=2025-09-17-49'); if (app) return app;
+          const appV = await caches.match('./app.html?v=2025-09-17-49');
+          if (appV) return appV;
+          const app = await caches.match('./app.html');
+          if (app) return app;
         }
-        if (url.pathname.endsWith('/help.html')) {
-          const help = await caches.match('./help.html?v=2025-09-17-49'); if (help) return help;
-        }
-        const landing = await caches.match('./index.html?v=2025-09-17-49');
+        const landing = await caches.match('./index.html');
         return landing || new Response('Offline', {status:503});
       }
     })());
@@ -57,9 +58,7 @@ self.addEventListener('fetch', (event) => {
       if (cached) return cached;
       try {
         const res = await fetch(req);
-        const pathWithQ = url.pathname + (url.search || '');
-        const normalized = pathWithQ.startsWith('.') ? pathWithQ : '.' + pathWithQ;
-        if (ASSETS.includes(normalized)) {
+        if (ASSETS.includes(url.pathname + (url.search||''))) {
           const cache = await caches.open(CACHE_NAME);
           cache.put(req, res.clone());
         }
