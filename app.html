@@ -7,13 +7,13 @@
   <title>Victoria Nurse — We Care Together</title>
 
   <!-- Version -->
-  <script>window.__VN_VER__="2025-09-17-51.2";</script>
+  <script>window.__VN_VER__="2025-09-17-52";</script>
 
   <!-- PWA + Icons -->
-  <link rel="manifest" href="./manifest.webmanifest?v=2025-09-17-51.2"/>
+  <link rel="manifest" href="./manifest.webmanifest?v=2025-09-17-52"/>
   <meta name="theme-color" content="#0EA5E9"/>
-  <link rel="icon" type="image/png" href="./icons/favicon.png?v=2025-09-17-51.2"/>
-  <link rel="apple-touch-icon" sizes="180x180" href="./icons/icon-180.png?v=2025-09-17-51.2"/>
+  <link rel="icon" type="image/png" href="./icons/favicon.png?v=2025-09-17-52"/>
+  <link rel="apple-touch-icon" sizes="180x180" href="./icons/icon-180.png?v=2025-09-17-52"/>
 
   <!-- Tailwind + PDF -->
   <script src="https://cdn.tailwindcss.com"></script>
@@ -25,10 +25,11 @@
     /* Help-page colors */
     body { background:#f9fafb; color:#1f2937; }
 
-    /* Title/tagline gradient */
+    /* Title/tagline gradient (always visible text) */
     .gradient-text{
       background:linear-gradient(90deg,#14B8A6,#0EA5E9,#1E40AF);
-      -webkit-background-clip:text; -webkit-text-fill-color:transparent;
+      -webkit-background-clip:text;
+      -webkit-text-fill-color:transparent;
     }
 
     /* Inputs */
@@ -47,7 +48,11 @@
     .btn-grad:hover{ opacity:.97; transform:translateY(-1px); }
     .btn-grad:active{ transform:translateY(0) scale(.985); }
 
-    /* Settings dropdown (patched: higher z-index, reliable clicks) */
+    /* Container fixes: avoid clipping long forms or dropdowns */
+    .card-shell { overflow:visible; }              /* was overflow-hidden before */
+    .card-body { overflow:visible; }               /* ensure content can grow */
+
+    /* Settings dropdown (z-index & reliable clicks) */
     .dropdown { position:relative; display:inline-block; z-index:80; }
     .dropdown-menu{
       position:absolute; right:0; top:100%; margin-top:.5rem;
@@ -61,7 +66,7 @@
     .dropdown-item:hover{ background:#f1f5f9; }
 
     /* Modal */
-    .modal{ position:fixed; inset:0; display:none; align-items:center; justify-content:center; z-index:60; }
+    .modal{ position:fixed; inset:0; display:none; align-items:center; justify-content:center; z-index:100; }
     .modal.on{ display:flex; }
     .modal-back{ position:absolute; inset:0; background:rgba(0,0,0,.45); }
     .modal-panel{ position:relative; background:white; color:#0f172a; width:min(92vw, 560px); border-radius:1rem; box-shadow:0 20px 50px rgba(0,0,0,.35); overflow:hidden; }
@@ -69,19 +74,19 @@
 </head>
 
 <body class="min-h-screen antialiased">
-  <div class="min-h-screen p-4 flex items-center justify-center">
+  <div class="min-h-screen p-4 flex items-start justify-center">
     <main class="w-full max-w-3xl">
-      <div class="bg-white/95 backdrop-blur-xl shadow-2xl rounded-3xl overflow-hidden ring-1 ring-slate-100">
+      <div class="bg-white/95 backdrop-blur-xl shadow-2xl rounded-3xl ring-1 ring-slate-100 card-shell">
 
         <!-- Header -->
         <header class="p-6 flex items-center justify-between bg-gradient-to-r from-teal-500 via-sky-500 to-indigo-800">
           <div class="flex items-center gap-4">
-            <a href="./index.html?v=2025-09-17-51.2" aria-label="Home">
-              <img src="./icons/icon-192.png?v=2025-09-17-51.2" alt="Victoria Nurse" class="h-14 w-14 rounded-2xl shadow"/>
+            <a href="./index.html?v=2025-09-17-52" aria-label="Home">
+              <img src="./icons/icon-192.png?v=2025-09-17-52" alt="Victoria Nurse" class="h-14 w-14 rounded-2xl shadow"/>
             </a>
             <div>
-              <h1 class="gradient-text text-2xl font-extrabold tracking-tight">Victoria Nurse</h1>
-              <p class="gradient-text text-sm">We Care Together</p>
+              <h1 class="gradient-text text-2xl font-extrabold tracking-tight" style="-webkit-text-fill-color:transparent;">Victoria Nurse</h1>
+              <p class="gradient-text text-sm" style="-webkit-text-fill-color:transparent;">We Care Together</p>
             </div>
           </div>
 
@@ -91,13 +96,13 @@
             <div class="dropdown-menu" id="settingsMenu" role="menu" aria-label="Settings">
               <button id="menuBranding" class="dropdown-item" role="menuitem">Branding &amp; Footer</button>
               <button id="menuTheme" class="dropdown-item" role="menuitem">Theme</button>
-              <a id="menuHelp" href="./help.html?v=2025-09-17-51.2" class="dropdown-item" role="menuitem">Help</a>
+              <a id="menuHelp" href="./help.html?v=2025-09-17-52" class="dropdown-item" role="menuitem">Help</a>
             </div>
           </div>
         </header>
 
-        <!-- Form -->
-        <section class="p-6 grid gap-6" role="form" aria-label="Patient Vitals Form">
+        <!-- Body -->
+        <section class="p-6 grid gap-6 card-body" role="form" aria-label="Patient Vitals Form">
           <form id="formVitals" class="grid gap-6" autocomplete="off" novalidate>
             <!-- Patient -->
             <div>
@@ -162,7 +167,7 @@
               </div>
             </div>
 
-            <!-- Sharing Destinations (collapsed) -->
+            <!-- Sharing Destinations -->
             <details id="shareSection" class="bg-white border border-slate-200 rounded-xl">
               <summary class="cursor-pointer px-4 py-3 font-semibold text-slate-700 flex items-center justify-between">
                 <span>Sharing Destinations</span>
@@ -210,6 +215,7 @@
           </form>
         </section>
 
+        <!-- Footer -->
         <footer class="px-6 py-4 bg-white/70 text-sm flex items-center justify-between">
           <span class="font-medium" style="color:#0EA5E9">&copy; <span id="year"></span> Victoria Nurse</span>
           <span class="italic" style="color:#0EA5E9">Powered by: karlthebrown</span>
@@ -255,7 +261,7 @@
   <!-- SW register -->
   <script>
     if('serviceWorker' in navigator){
-      window.addEventListener('load',()=>navigator.serviceWorker.register(`./service-worker.js?v=2025-09-17-51.2`,{scope:'./'}).catch(()=>{}));
+      window.addEventListener('load',()=>navigator.serviceWorker.register(`./service-worker.js?v=2025-09-17-52`,{scope:'./'}).catch(()=>{}));
     }
   </script>
 
@@ -263,7 +269,7 @@
     const $ = (id)=>document.getElementById(id);
     $('year').textContent = new Date().getFullYear();
 
-    /* Settings dropdown (robust patch) */
+    /* Settings dropdown (robust) */
     const wrap = $('settingsWrap');
     const btn  = $('settingsBtn');
     const menu = $('settingsMenu');
@@ -420,7 +426,7 @@
                         : `https://wa.me/?text=${encodeURIComponent(text)}`;
         setTimeout(()=>window.open(url,'_blank'), i*220);
       });
-      setTimeout(()=>{ window.location.href='./index.html?v=2025-09-17-51.2'; }, 900);
+      setTimeout(()=>{ window.location.href='./index.html?v=2025-09-17-52'; }, 900);
     });
 
     $('btnEmail').addEventListener('click', async ()=>{
@@ -431,12 +437,12 @@
       const body = shareText(rec);
       const emails = ($('groupEmails').value||'').split(/[,;\s]+/).map(s=>s.trim()).filter(Boolean);
       window.location.href = `mailto:${encodeURIComponent(emails.join(','))}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-      setTimeout(()=>{ window.location.href='./index.html?v=2025-09-17-51.2'; }, 1000);
+      setTimeout(()=>{ window.location.href='./index.html?v=2025-09-17-52'; }, 1000);
     });
 
     /* One-time self-cleanup to bust old SW/caches on app page */
     (async () => {
-      const VER = "2025-09-17-51.2";
+      const VER = "2025-09-17-52";
       const KEY = `vn_self_cleanup_${VER}_app`;
       const mustReset = new URLSearchParams(location.search).has('reset');
       if (mustReset || !localStorage.getItem(KEY)) {
