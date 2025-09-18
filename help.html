@@ -2,56 +2,65 @@
 <html lang="en">
 <head>
   <meta charset="utf-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
   <title>Victoria Nurse — Help</title>
-  <link rel="icon" type="image/png" href="./icons/favicon.png?v=2025-09-17-46"/>
+
+  <!-- Tailwind -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Version -->
+  <script>window.__VN_VER__="2025-09-17-49";</script>
+  <link rel="manifest" href="./manifest.webmanifest?v=2025-09-17-49"/>
+  <meta name="theme-color" content="#0EA5E9"/>
+  <link rel="icon" type="image/png" href="./icons/favicon.png?v=2025-09-17-49"/>
+
   <style>
-    body{ font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Arial; background:#0b1729; color:#e6f4ff; margin:0; }
-    .wrap{ max-width:900px; margin:0 auto; padding:22px; }
-    h1{ margin:0 0 14px; font-size:28px; }
-    h2{ margin:22px 0 8px; font-size:20px; }
-    p, li{ line-height:1.6; }
-    code{ background:#0f2137; padding:.1rem .35rem; border-radius:.35rem; }
-    a{ color:#7dd3fc; }
-    .card{ background:#0e2036; border:1px solid #163552; border-radius:12px; padding:14px 16px; margin:10px 0; }
+    body { background:#081a2d; color:#eaf2ff; font-family:ui-sans-serif,system-ui; }
+    a { color:#38BDF8; text-decoration:underline; }
+    h1 { color:#38BDF8; font-weight:800; font-size:1.8rem; margin-bottom:1rem; }
+    h2 { color:#0EA5E9; font-weight:700; margin-top:1.5rem; margin-bottom:.5rem; }
+    p, li { line-height:1.55; margin-top:.5rem; }
+    .card { background:#0f2238; border-radius:1rem; padding:1.5rem; box-shadow:0 10px 28px rgba(0,0,0,.25); }
+    .footer { margin-top:2rem; font-size:.8rem; opacity:.8; text-align:center; font-style:italic; }
   </style>
 </head>
-<body>
-  <div class="wrap">
-    <h1>Help & Tips</h1>
-    <div class="card">
-      <p><strong>Offline use:</strong> You can generate PDFs offline. Sharing (WhatsApp/Email) will queue if offline and retry when you reconnect.</p>
-    </div>
+<body class="min-h-screen flex items-center justify-center p-6">
+  <main class="max-w-2xl w-full card">
+    <h1>Victoria Nurse — Help</h1>
 
-    <h2>Quick Steps</h2>
-    <ol>
-      <li>Fill vitals and notes.</li>
-      <li>Tap <strong>Preview &amp; Generate PDF</strong> to save a copy.</li>
-      <li>Use <strong>Copy Summary</strong> for quick paste.</li>
-      <li>Share via <strong>WhatsApp</strong> or <strong>Email</strong>. If offline, it will retry later.</li>
-    </ol>
+    <p>Welcome! This app is designed for home and clinic nurses to record vital signs quickly and share them with families in seconds.</p>
 
-    <h2>Time Savers</h2>
-    <ul>
-      <li><strong>Remember on this device (7 days):</strong> Keeps the nurse’s name for a week.</li>
-      <li><strong>Recent Patients:</strong> Start typing to see suggestions from recent entries.</li>
-      <li><strong>Quick Notes Chips:</strong> Tap a chip to insert common phrases.</li>
-      <li><strong>Voice Dictation:</strong> Tap 🎙️ to dictate notes (if your browser supports it).</li>
-      <li><strong>Family Group:</strong> Save multiple WhatsApp numbers/emails and reuse with one tap.</li>
+    <h2>How to Use</h2>
+    <ul class="list-disc list-inside">
+      <li>On the landing page, tap <strong>Get Started</strong>.</li>
+      <li>Fill in the patient’s vitals: temperature, pulse, respiratory rate, BP, oxygen saturation, etc.</li>
+      <li>Enter any <em>Notes</em> (symptoms, observations, instructions).</li>
+      <li>When finished, you can:
+        <ul class="list-disc list-inside ml-4">
+          <li><strong>Preview & Generate PDF</strong> → saves a structured report you can download.</li>
+          <li><strong>Share via WhatsApp</strong> → sends details to family/contacts.</li>
+          <li><strong>Share via Email</strong> → attaches a PDF for records.</li>
+        </ul>
+      </li>
     </ul>
 
-    <h2>Install on Your Phone</h2>
-    <p><strong>Android (Chrome):</strong> Open the app, look for the <em>Install</em> prompt or tap the ⋮ menu &rarr; <strong>Add to Home screen</strong>.</p>
-    <p><strong>iPhone/iPad (Safari):</strong> Tap the Share button &rarr; <strong>Add to Home Screen</strong>.</p>
+    <h2>Features</h2>
+    <ul class="list-disc list-inside">
+      <li>Works fully offline — data is processed on-device.</li>
+      <li>No patient DOB stored — privacy-first design.</li>
+      <li>Optional local memory for nurse name and recent patients.</li>
+      <li>Multiple WhatsApp/email targets supported.</li>
+      <li>Speech-to-text dictation for faster notes (browser-dependent).</li>
+    </ul>
 
     <h2>Troubleshooting</h2>
-    <ul>
-      <li><strong>Icons not updating?</strong> Open <code>?reset=1</code> once to clear old caches.</li>
-      <li><strong>WhatsApp didn’t open?</strong> Check your connection or try again from the queue prompt.</li>
-      <li><strong>Voice dictation not working?</strong> Your browser may not support Web Speech API.</li>
+    <ul class="list-disc list-inside">
+      <li>If you don’t see updates, refresh at <code>/index.html?reset=1</code> to clear old caches.</li>
+      <li>On iOS Safari, install to Home Screen for the best fullscreen app experience.</li>
+      <li>Make sure microphone permissions are enabled if dictation isn’t working.</li>
     </ul>
 
-    <p class="card">Powered by: <em>karlthebrown</em></p>
-  </div>
+    <p class="footer">Powered by: karlthebrown</p>
+  </main>
 </body>
 </html>
