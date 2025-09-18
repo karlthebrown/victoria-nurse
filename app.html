@@ -7,13 +7,13 @@
   <title>Victoria Nurse — We Care Together</title>
 
   <!-- Version -->
-  <script>window.__VN_VER__="2025-09-17-52";</script>
+  <script>window.__VN_VER__="2025-09-17-53";</script>
 
   <!-- PWA + Icons -->
-  <link rel="manifest" href="./manifest.webmanifest?v=2025-09-17-52"/>
+  <link rel="manifest" href="./manifest.webmanifest?v=2025-09-17-53"/>
   <meta name="theme-color" content="#0EA5E9"/>
-  <link rel="icon" type="image/png" href="./icons/favicon.png?v=2025-09-17-52"/>
-  <link rel="apple-touch-icon" sizes="180x180" href="./icons/icon-180.png?v=2025-09-17-52"/>
+  <link rel="icon" type="image/png" href="./icons/favicon.png?v=2025-09-17-53"/>
+  <link rel="apple-touch-icon" sizes="180x180" href="./icons/icon-180.png?v=2025-09-17-53"/>
 
   <!-- Tailwind + PDF -->
   <script src="https://cdn.tailwindcss.com"></script>
@@ -25,11 +25,10 @@
     /* Help-page colors */
     body { background:#f9fafb; color:#1f2937; }
 
-    /* Title/tagline gradient (always visible text) */
+    /* Title/tagline gradient */
     .gradient-text{
       background:linear-gradient(90deg,#14B8A6,#0EA5E9,#1E40AF);
-      -webkit-background-clip:text;
-      -webkit-text-fill-color:transparent;
+      -webkit-background-clip:text; -webkit-text-fill-color:transparent;
     }
 
     /* Inputs */
@@ -48,15 +47,15 @@
     .btn-grad:hover{ opacity:.97; transform:translateY(-1px); }
     .btn-grad:active{ transform:translateY(0) scale(.985); }
 
-    /* Container fixes: avoid clipping long forms or dropdowns */
-    .card-shell { overflow:visible; }              /* was overflow-hidden before */
-    .card-body { overflow:visible; }               /* ensure content can grow */
+    /* Container: avoid clipping long forms or dropdowns */
+    .card-shell { overflow:visible; }
+    .card-body  { overflow:visible; }
 
     /* Settings dropdown (z-index & reliable clicks) */
     .dropdown { position:relative; display:inline-block; z-index:80; }
     .dropdown-menu{
       position:absolute; right:0; top:100%; margin-top:.5rem;
-      background:white; color:#0f172a; width:240px;
+      background:#fff; color:#0f172a; width:240px;
       border-radius:.75rem; box-shadow:0 10px 28px rgba(0,0,0,.15);
       border:1px solid rgba(2,6,23,.06);
       display:none; overflow:hidden; z-index:90; pointer-events:auto;
@@ -81,22 +80,24 @@
         <!-- Header -->
         <header class="p-6 flex items-center justify-between bg-gradient-to-r from-teal-500 via-sky-500 to-indigo-800">
           <div class="flex items-center gap-4">
-            <a href="./index.html?v=2025-09-17-52" aria-label="Home">
-              <img src="./icons/icon-192.png?v=2025-09-17-52" alt="Victoria Nurse" class="h-14 w-14 rounded-2xl shadow"/>
+            <a href="./index.html?v=2025-09-17-53" aria-label="Home">
+              <img src="./icons/icon-192.png?v=2025-09-17-53" alt="Victoria Nurse" class="h-14 w-14 rounded-2xl shadow"/>
             </a>
             <div>
-              <h1 class="gradient-text text-2xl font-extrabold tracking-tight" style="-webkit-text-fill-color:transparent;">Victoria Nurse</h1>
-              <p class="gradient-text text-sm" style="-webkit-text-fill-color:transparent;">We Care Together</p>
+              <h1 class="gradient-text text-2xl font-extrabold tracking-tight">Victoria Nurse</h1>
+              <p class="gradient-text text-sm">We Care Together</p>
             </div>
           </div>
 
           <!-- Settings dropdown -->
           <div class="dropdown" id="settingsWrap">
-            <button type="button" id="settingsBtn" class="text-white text-xl px-2 py-1 rounded-lg hover:bg-white/20 focus:outline-none focus:ring-2 focus:ring-white/50" aria-haspopup="true" aria-expanded="false" title="Settings">⚙</button>
+            <button type="button" id="settingsBtn"
+              class="text-white text-xl px-2 py-1 rounded-lg hover:bg-white/20 focus:outline-none focus:ring-2 focus:ring-white/50"
+              aria-haspopup="true" aria-expanded="false" title="Settings">⚙</button>
             <div class="dropdown-menu" id="settingsMenu" role="menu" aria-label="Settings">
               <button id="menuBranding" class="dropdown-item" role="menuitem">Branding &amp; Footer</button>
               <button id="menuTheme" class="dropdown-item" role="menuitem">Theme</button>
-              <a id="menuHelp" href="./help.html?v=2025-09-17-52" class="dropdown-item" role="menuitem">Help</a>
+              <a id="menuHelp" href="./help.html?v=2025-09-17-53" class="dropdown-item" role="menuitem">Show Guide Page</a>
             </div>
           </div>
         </header>
@@ -261,188 +262,189 @@
   <!-- SW register -->
   <script>
     if('serviceWorker' in navigator){
-      window.addEventListener('load',()=>navigator.serviceWorker.register(`./service-worker.js?v=2025-09-17-52`,{scope:'./'}).catch(()=>{}));
+      window.addEventListener('load',()=>navigator.serviceWorker.register(`./service-worker.js?v=${window.__VN_VER__}`,{scope:'./'}).catch(()=>{}));
     }
   </script>
 
+  <!-- App logic -->
   <script>
-    const $ = (id)=>document.getElementById(id);
-    $('year').textContent = new Date().getFullYear();
+  (function(){
+    function onReady(fn){ if (document.readyState!=='loading') fn(); else document.addEventListener('DOMContentLoaded', fn); }
+    onReady(function(){
+      const $ = (id)=>document.getElementById(id);
+      const safe = (el, fn)=>{ if(el) fn(el); };
+      $('year') && ( $('year').textContent = new Date().getFullYear() );
 
-    /* Settings dropdown (robust) */
-    const wrap = $('settingsWrap');
-    const btn  = $('settingsBtn');
-    const menu = $('settingsMenu');
+      /* Settings dropdown */
+      const wrap = $('settingsWrap'), btn = $('settingsBtn'), menu = $('settingsMenu');
+      function openDD(){ wrap?.classList.add('open'); btn?.setAttribute('aria-expanded','true'); }
+      function closeDD(){ wrap?.classList.remove('open'); btn?.setAttribute('aria-expanded','false'); }
+      safe(btn, b=>{
+        b.addEventListener('click', (e)=>{ e.preventDefault(); e.stopPropagation(); wrap?.classList.contains('open') ? closeDD() : openDD(); });
+      });
+      safe(menu, m=> m.addEventListener('click', (e)=> e.stopPropagation()));
+      document.addEventListener('click', ()=> closeDD());
+      document.addEventListener('keydown', (e)=>{ if(e.key==='Escape') closeDD(); });
 
-    function openDD(){ wrap.classList.add('open'); btn.setAttribute('aria-expanded','true'); }
-    function closeDD(){ wrap.classList.remove('open'); btn.setAttribute('aria-expanded','false'); }
+      /* Settings modal */
+      const modal=$('settingsModal'), back=$('settingsBackdrop'), mClose=$('settingsClose'), mCancel=$('settingsCancel'), mSave=$('settingsSave'), themeSel=$('themeSel');
+      function openModal(){ modal?.classList.add('on'); modal?.setAttribute('aria-hidden','false'); }
+      function closeModal(){ modal?.classList.remove('on'); modal?.setAttribute('aria-hidden','true'); }
+      $('menuBranding')?.addEventListener('click', ()=>{ closeDD(); openModal(); });
+      $('menuTheme')?.addEventListener('click', ()=>{ closeDD(); openModal(); themeSel?.focus({preventScroll:true}); });
+      back?.addEventListener('click', closeModal);
+      mClose?.addEventListener('click', closeModal);
+      mCancel?.addEventListener('click', closeModal);
+      mSave?.addEventListener('click', ()=>{ localStorage.setItem('vn_theme', themeSel?.value || 'system'); closeModal(); alert('Settings saved'); });
 
-    btn.addEventListener('click', (e)=>{
-      e.preventDefault(); e.stopPropagation();
-      wrap.classList.contains('open') ? closeDD() : openDD();
-    });
-    menu.addEventListener('click', (e)=>{ e.stopPropagation(); });
-    document.addEventListener('click', ()=> closeDD());
-    document.addEventListener('keydown', (e)=>{ if(e.key === 'Escape') closeDD(); });
-
-    // Menu actions → open modal
-    $('menuBranding')?.addEventListener('click', ()=>{ closeDD(); openModal(); });
-    $('menuTheme')?.addEventListener('click', ()=>{ closeDD(); openModal(); $('themeSel')?.focus({preventScroll:true}); });
-
-    /* Settings modal */
-    const modal=$('settingsModal'), back=$('settingsBackdrop'), mClose=$('settingsClose'), mCancel=$('settingsCancel'), mSave=$('settingsSave');
-    function openModal(){ modal.classList.add('on'); modal.setAttribute('aria-hidden','false'); }
-    function closeModal(){ modal.classList.remove('on'); modal.setAttribute('aria-hidden','true'); }
-    back.addEventListener('click', closeModal); mClose.addEventListener('click', closeModal); mCancel.addEventListener('click', closeModal);
-    mSave.addEventListener('click', ()=>{ localStorage.setItem('vn_theme', $('themeSel').value); closeModal(); alert('Settings saved'); });
-
-    /* Remember Me (7 days) */
-    const EXP = 7*24*60*60*1000;
-    function saveLocalIfChecked(){
-      if(!$('rememberMe').checked) return;
-      const data={ nurse:$('nurseName').value, patient:$('patientName').value, ts:Date.now() };
-      localStorage.setItem('vn_mem', JSON.stringify(data));
-    }
-    (function loadLocal(){
-      const d = JSON.parse(localStorage.getItem('vn_mem')||'{}');
-      if(d.ts && Date.now()-d.ts<EXP){
-        if(d.nurse) $('nurseName').value = d.nurse;
-        if(d.patient) $('patientName').value = d.patient;
-        $('rememberMe').checked = true;
-      } else {
-        localStorage.removeItem('vn_mem');
+      /* Remember Me (7 days) */
+      const EXP = 7*24*60*60*1000;
+      function saveLocalIfChecked(){
+        if(!$('rememberMe')?.checked) return;
+        const data={ nurse:$('nurseName')?.value||'', patient:$('patientName')?.value||'', ts:Date.now() };
+        localStorage.setItem('vn_mem', JSON.stringify(data));
       }
-    })();
+      (function loadLocal(){
+        try{
+          const d = JSON.parse(localStorage.getItem('vn_mem')||'{}');
+          if(d.ts && Date.now()-d.ts<EXP){
+            if(d.nurse && $('nurseName')) $('nurseName').value=d.nurse;
+            if(d.patient && $('patientName')) $('patientName').value=d.patient;
+            $('rememberMe') && ($('rememberMe').checked=true);
+          } else { localStorage.removeItem('vn_mem'); }
+        }catch(_){}
+      })();
 
-    /* Dictation */
-    (function(){
-      const dBtn = $('btnDictate'); const ta = $('notes');
-      const has = 'webkitSpeechRecognition' in window || 'SpeechRecognition' in window;
-      if(!has){ dBtn.disabled=true; dBtn.textContent='🎙️ Dictation not supported'; return; }
-      const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
-      const rec = new SR(); rec.lang='en-US'; rec.continuous=false; rec.interimResults=true;
-      let base='';
-      dBtn.addEventListener('click', ()=>{
-        base = ta.value; rec.start(); dBtn.textContent='🛑 Stop';
-      });
-      rec.onresult = (e)=>{
-        let final='', interim='';
-        for(let i=0;i<e.results.length;i++){ const r=e.results[i]; (r.isFinal?final:interim)+=r[0].transcript; }
-        ta.value = (base+' '+final+' '+interim).trim();
-      };
-      rec.onerror = ()=>{ dBtn.textContent='🎙️ Dictate'; alert('Dictation error'); };
-      rec.onend = ()=>{ dBtn.textContent='🎙️ Dictate'; };
-    })();
+      /* Dictation */
+      (function(){
+        const dBtn = $('btnDictate'), ta = $('notes');
+        if(!dBtn) return;
+        const has = 'webkitSpeechRecognition' in window || 'SpeechRecognition' in window;
+        if(!has){ dBtn.disabled=true; dBtn.textContent='🎙️ Dictation not supported'; return; }
+        const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+        const rec = new SR(); rec.lang='en-US'; rec.continuous=false; rec.interimResults=true;
+        let base='';
+        dBtn.addEventListener('click', ()=>{ base = ta?.value||''; rec.start(); dBtn.textContent='🛑 Stop'; });
+        rec.onresult = (e)=>{
+          let final='', interim='';
+          for(let i=0;i<e.results.length;i++){ const r=e.results[i]; (r.isFinal?final:interim)+=r[0].transcript; }
+          if(ta) ta.value = (base+' '+final+' '+interim).trim();
+        };
+        rec.onerror = ()=>{ dBtn.textContent='🎙️ Dictate'; alert('Dictation error'); };
+        rec.onend   = ()=>{ dBtn.textContent='🎙️ Dictate'; };
+      })();
 
-    /* Build record */
-    function buildRecord(){
-      return {
-        patient: $('patientName').value.trim(),
-        temp: $('temperature').value.trim(),
-        pulse: $('pulse').value.trim(),
-        rr: $('respiratoryRate').value.trim(),
-        sbp: $('sbp').value.trim(),
-        dbp: $('dbp').value.trim(),
-        spo2: $('oxygenSaturation').value.trim(),
-        sugar: $('bloodSugar').value.trim(),
-        weight: $('weight').value.trim(),
-        pain: $('pain').value.trim(),
-        meds: {
-          morning: $('medMorning').value.trim(),
-          afternoon: $('medAfternoon').value.trim(),
-          evening: $('medEvening').value.trim()
-        },
-        notes: $('notes').value.trim(),
-        nurse: $('nurseName').value.trim(),
-        footer: ($('footerNote')?.value||'').trim()
-      };
-    }
+      /* Build record */
+      function buildRecord(){
+        const g=id=>($(''+id)?.value||'').trim();
+        return {
+          patient:g('patientName'), temp:g('temperature'), pulse:g('pulse'), rr:g('respiratoryRate'),
+          sbp:g('sbp'), dbp:g('dbp'), spo2:g('oxygenSaturation'), sugar:g('bloodSugar'),
+          weight:g('weight'), pain:g('pain'),
+          meds:{ morning:g('medMorning'), afternoon:g('medAfternoon'), evening:g('medEvening') },
+          notes:g('notes'), nurse:g('nurseName'), footer:g('footerNote')
+        };
+      }
+      function shareText(r){
+        return [
+          `Victoria Nurse — Patient Vitals`,
+          `Patient: ${r.patient||'-'}`,
+          `BP: ${r.sbp||'-'}/${r.dbp||'-'} mmHg | HR: ${r.pulse||'-'} bpm | Temp: ${r.temp||'-'} °C`,
+          `SpO₂: ${r.spo2||'-'}% | RR: ${r.rr||'-'}/min | Weight: ${r.weight||'-'} kg | Sugar: ${r.sugar||'-'} mg/dL`,
+          `Meds: AM ${r.meds.morning||'-'}` + ` | PM ${r.meds.afternoon||'-'}` + ` | EV ${r.meds.evening||'-'}`,
+          `Pain: ${r.pain||'-'}/10`,
+          `Notes: ${r.notes||'-'}`,
+          `Prepared by: ${r.nurse||'-'}`,
+          r.footer ? `Footer: ${r.footer}` : ''
+        ].filter(Boolean).join('\n');
+      }
 
-    function shareText(r){
-      return [
-        `Victoria Nurse — Patient Vitals`,
-        `Patient: ${r.patient||'-'}`,
-        `BP: ${r.sbp||'-'}/${r.dbp||'-'} mmHg | HR: ${r.pulse||'-'} bpm | Temp: ${r.temp||'-'} °C`,
-        `SpO₂: ${r.spo2||'-'}% | RR: ${r.rr||'-'}/min | Weight: ${r.weight||'-'} kg | Sugar: ${r.sugar||'-'} mg/dL`,
-        `Meds: AM ${r.meds.morning||'-'} | PM ${r.meds.afternoon||'-'} | EV ${r.meds.evening||'-'}`,
-        `Pain: ${r.pain||'-'}/10`,
-        `Notes: ${r.notes||'-'}`,
-        `Prepared by: ${r.nurse||'-'}`,
-        r.footer ? `Footer: ${r.footer}` : ''
-      ].filter(Boolean).join('\n');
-    }
+      /* PDF */
+      async function makePdf(rec){
+        try{
+          const { jsPDF } = window.jspdf || {};
+          if(!jsPDF){ alert('PDF library not loaded'); return null; }
+          const pdf = new jsPDF('p','pt','a4');
+          const W = pdf.internal.pageSize.getWidth();
+          pdf.setFillColor(14,165,233); pdf.rect(20, 20, W-40, 6, 'F');
+          pdf.setFont('helvetica','bold'); pdf.setFontSize(20); pdf.setTextColor(14,165,233); pdf.text('Victoria Nurse', 28, 52);
+          pdf.setFont('times','italic'); pdf.setFontSize(12); pdf.setTextColor(20,83,136); pdf.text('We Care Together', 28, 70);
+          pdf.setFont('helvetica','normal'); pdf.setFontSize(12); pdf.setTextColor(31,41,55);
+          let y=98, line=t=>{ pdf.text(t,28,y); y+=18; };
+          line(`Patient: ${rec.patient||'-'}`);
+          line(`BP: ${rec.sbp||'-'}/${rec.dbp||'-'} mmHg | HR: ${rec.pulse||'-'} bpm | Temp: ${rec.temp||'-'} °C`);
+          line(`SpO₂: ${rec.spo2||'-'}% | RR: ${rec.rr||'-'}/min | Weight: ${rec.weight||'-'} kg | Sugar: ${rec.sugar||'-'} mg/dL`);
+          line(`Pain: ${rec.pain||'-'}/10`);
+          y+=6; pdf.text('Medications:', 28, y); y+=18;
+          line(`AM: ${rec.meds.morning||'-'}`); line(`PM: ${rec.meds.afternoon||'-'}`); line(`EV: ${rec.meds.evening||'-'}`);
+          y+=6; pdf.text('Notes:', 28, y); y+=18;
+          const lines = pdf.splitTextToSize(rec.notes||'-', W-56); pdf.text(lines, 28, y); y += lines.length*14 + 12;
+          pdf.setFontSize(10); pdf.setTextColor(107,114,128);
+          const left = `Prepared by: ${rec.nurse||'-'}`;
+          const right = rec.footer ? rec.footer : 'Powered by: KarltheBrown';
+          pdf.text(left, 28, y); pdf.text(right, W - (pdf.getTextWidth(right)+28), y);
+          return pdf.output('blob');
+        }catch(e){ alert('PDF error'); return null; }
+      }
 
-    /* PDF creation */
-    async function makePdf(rec){
-      const { jsPDF } = window.jspdf;
-      const pdf = new jsPDF('p','pt','a4');
-      const W = pdf.internal.pageSize.getWidth();
+      /* Buttons */
+      safe($('btnPreview'), el => el.addEventListener('click', async ()=>{
+        if($('rememberMe')?.checked){
+          const data={ nurse:$('nurseName')?.value||'', patient:$('patientName')?.value||'', ts:Date.now() };
+          localStorage.setItem('vn_mem', JSON.stringify(data));
+        }
+        const rec = buildRecord();
+        const blob = await makePdf(rec);
+        if(!blob) return;
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `Victoria_Nurse_${(rec.patient||'patient').replace(/[^\w\-]+/g,'_')}_${new Date().toISOString().slice(0,10)}.pdf`;
+        a.click();
+        setTimeout(()=>URL.revokeObjectURL(url), 2500);
+      }));
 
-      pdf.setFillColor(14,165,233); pdf.rect(20, 20, W-40, 6, 'F');
-      pdf.setFont('helvetica','bold'); pdf.setFontSize(20); pdf.setTextColor(14,165,233); pdf.text('Victoria Nurse', 28, 52);
-      pdf.setFont('times','italic'); pdf.setFontSize(12); pdf.setTextColor(20,83,136); pdf.text('We Care Together', 28, 70);
+      safe($('btnWhatsApp'), el => el.addEventListener('click', ()=>{
+        if(!navigator.onLine){ alert("You’re offline—try again later."); return; }
+        if($('rememberMe')?.checked){
+          const data={ nurse:$('nurseName')?.value||'', patient:$('patientName')?.value||'', ts:Date.now() };
+          localStorage.setItem('vn_mem', JSON.stringify(data));
+        }
+        const rec = buildRecord(); const text = shareText(rec);
+        const normPhone = p => (p||'').replace(/[^\d+]/g,'').trim();
+        const parsePhones = s => (s||'').split(/[,;\s]+/).map(normPhone).filter(Boolean);
+        const unique = a => [...new Set(a)];
+        const nums = unique([ normPhone($('wa1')?.value), normPhone($('wa2')?.value), normPhone($('wa3')?.value), ...parsePhones($('groupPhones')?.value) ]).filter(Boolean);
+        (nums.length?nums:['']).forEach((num, i)=>{
+          const url = num ? `https://wa.me/${encodeURIComponent(num)}?text=${encodeURIComponent(text)}`
+                          : `https://wa.me/?text=${encodeURIComponent(text)}`;
+          setTimeout(()=>window.open(url,'_blank'), i*220);
+        });
+        setTimeout(()=>{ window.location.href='./index.html?v='+encodeURIComponent(window.__VN_VER__||''); }, 900);
+      }));
 
-      pdf.setFont('helvetica','normal'); pdf.setFontSize(12); pdf.setTextColor(31,41,55);
-      let y=98, line=(t)=>{ pdf.text(t,28,y); y+=18; };
-      line(`Patient: ${rec.patient||'-'}`);
-      line(`BP: ${rec.sbp||'-'}/${rec.dbp||'-'} mmHg | HR: ${rec.pulse||'-'} bpm | Temp: ${rec.temp||'-'} °C`);
-      line(`SpO₂: ${rec.spo2||'-'}% | RR: ${rec.rr||'-'}/min | Weight: ${rec.weight||'-'} kg | Sugar: ${rec.sugar||'-'} mg/dL`);
-      line(`Pain: ${rec.pain||'-'}/10`);
-      y+=6; pdf.text('Medications:', 28, y); y+=18;
-      line(`AM: ${rec.meds.morning||'-'}`); line(`PM: ${rec.meds.afternoon||'-'}`); line(`EV: ${rec.meds.evening||'-'}`);
-      y+=6; pdf.text('Notes:', 28, y); y+=18;
-      const lines = pdf.splitTextToSize(rec.notes||'-', W-56); pdf.text(lines, 28, y); y += lines.length*14 + 12;
+      safe($('btnEmail'), el => el.addEventListener('click', async ()=>{
+        if(!navigator.onLine){ alert("You’re offline—try again later."); return; }
+        if($('rememberMe')?.checked){
+          const data={ nurse:$('nurseName')?.value||'', patient:$('patientName')?.value||'', ts:Date.now() };
+          localStorage.setItem('vn_mem', JSON.stringify(data));
+        }
+        const rec = buildRecord();
+        const subject = `Patient Vitals — ${rec.patient||'Unnamed'}`;
+        const body = shareText(rec);
+        const emails = ($('groupEmails')?.value||'').split(/[,;\s]+/).map(s=>s.trim()).filter(Boolean);
+        window.location.href = `mailto:${encodeURIComponent(emails.join(','))}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+        setTimeout(()=>{ window.location.href='./index.html?v='+encodeURIComponent(window.__VN_VER__||''); }, 1000);
+      }));
 
-      pdf.setFontSize(10); pdf.setTextColor(107,114,128);
-      const left = `Prepared by: ${rec.nurse||'-'}`;
-      const right = rec.footer ? rec.footer : 'Powered by: KarltheBrown';
-      pdf.text(left, 28, y); pdf.text(right, W - (pdf.getTextWidth(right)+28), y);
-      return pdf.output('blob');
-    }
+    }); // onReady
+  })();
+  </script>
 
-    /* Buttons */
-    $('btnPreview').addEventListener('click', async ()=>{
-      saveLocalIfChecked();
-      const rec = buildRecord();
-      const blob = await makePdf(rec);
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement('a'); a.href = url; a.download = `Victoria_Nurse_${(rec.patient||'patient').replace(/[^\w\-]+/g,'_')}_${new Date().toISOString().slice(0,10)}.pdf`;
-      a.click();
-      setTimeout(()=>URL.revokeObjectURL(url), 2500);
-    });
-
-    $('btnWhatsApp').addEventListener('click', ()=>{
-      if(!navigator.onLine){ alert("You’re offline—try again later."); return; }
-      saveLocalIfChecked();
-      const rec = buildRecord(); const text = shareText(rec);
-
-      const normPhone = p => (p||'').replace(/[^\d+]/g,'').trim();
-      const parsePhones = s => (s||'').split(/[,;\s]+/).map(normPhone).filter(Boolean);
-      const unique = a => [...new Set(a)];
-      const nums = unique([ normPhone($('wa1').value), normPhone($('wa2').value), normPhone($('wa3').value), ...parsePhones($('groupPhones').value) ]).filter(Boolean);
-
-      (nums.length?nums:['']).forEach((num, i)=>{
-        const url = num ? `https://wa.me/${encodeURIComponent(num)}?text=${encodeURIComponent(text)}`
-                        : `https://wa.me/?text=${encodeURIComponent(text)}`;
-        setTimeout(()=>window.open(url,'_blank'), i*220);
-      });
-      setTimeout(()=>{ window.location.href='./index.html?v=2025-09-17-52'; }, 900);
-    });
-
-    $('btnEmail').addEventListener('click', async ()=>{
-      if(!navigator.onLine){ alert("You’re offline—try again later."); return; }
-      saveLocalIfChecked();
-      const rec = buildRecord();
-      const subject = `Patient Vitals — ${rec.patient||'Unnamed'}`;
-      const body = shareText(rec);
-      const emails = ($('groupEmails').value||'').split(/[,;\s]+/).map(s=>s.trim()).filter(Boolean);
-      window.location.href = `mailto:${encodeURIComponent(emails.join(','))}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-      setTimeout(()=>{ window.location.href='./index.html?v=2025-09-17-52'; }, 1000);
-    });
-
-    /* One-time self-cleanup to bust old SW/caches on app page */
+  <!-- One-shot cache buster for this page -->
+  <script>
     (async () => {
-      const VER = "2025-09-17-52";
+      const VER = "2025-09-17-53";
       const KEY = `vn_self_cleanup_${VER}_app`;
       const mustReset = new URLSearchParams(location.search).has('reset');
       if (mustReset || !localStorage.getItem(KEY)) {
