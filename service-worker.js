@@ -1,48 +1,99 @@
-/* Simple SW for Victoria Nurse - cache our own app shell only.
-   We deliberately avoid caching CDN libs (html2canvas/jsPDF) to prevent
-   version conflicts and CORS/taint surprises. */
+/* Victoria Nurse — Service Worker (v60) */
+const CACHE_NAME = 'victoria-nurse-v60';
 
-const SW_VERSION = 'vn-3';
-const APP_SHELL = [
+const ASSETS = [
+  // HTML (cache both plain + versioned for offline)
   './',
   './index.html',
-  './app.js?v=3'
-  // NOTE: do NOT add the CDN scripts here
+  './index.html?v=2025-09-23-02',
+  './app.html',
+  './app.html?v=2025-09-23-02',
+  './help.html',
+  './help.html?v=2025-09-23-02',
+
+  // PWA
+  './manifest.webmanifest?v=2025-09-23-02',
+
+  // Icons
+  './icons/icon-192.png?v=2025-09-23-02',
+  './icons/icon-512.png?v=2025-09-23-02',
+  './icons/icon-180.png?v=2025-09-23-02',
+  './icons/favicon.png?v=2025-09-23-02',
+
+  // Images
+  './images/welcome-victoria-nurse-medical.png?v=2025-09-23-02'
 ];
 
+// Don’t cache CDN (prevents stale versions and CORS surprises)
+function isCDN(url) {
+  return /(^https:\/\/cdn\.jsdelivr\.net)|(^https:\/\/cdn\.tailwindcss\.com)/.test(url);
+}
+
 self.addEventListener('install', (event) => {
-  event.waitUntil(
-    caches.open(SW_VERSION).then((cache) => cache.addAll(APP_SHELL))
-  );
+  event.waitUntil(caches.open(CACHE_NAME).then(cache => cache.addAll(ASSETS)));
   self.skipWaiting();
 });
 
 self.addEventListener('activate', (event) => {
-  event.waitUntil(
-    caches.keys().then((keys) =>
-      Promise.all(
-        keys.filter((k) => k !== SW_VERSION).map((k) => caches.delete(k))
-      )
-    )
-  );
+  event.waitUntil((async ()=>{
+    const keys = await caches.keys();
+    await Promise.all(keys.filter(k => k !== CACHE_NAME).map(k => caches.delete(k)));
+  })());
   self.clients.claim();
 });
 
 self.addEventListener('fetch', (event) => {
   const req = event.request;
+  if (req.method !== 'GET') return;
 
-  // Network-first for CDN libs to avoid stale versions
-  const isCDN = /cdn\.jsdelivr\.net/.test(req.url);
+  const url = new URL(req.url);
+  const isHTML = req.destination === 'document' || req.headers.get('accept')?.includes('text/html');
 
-  if (isCDN) {
-    event.respondWith(
-      fetch(req).catch(() => caches.match(req))
-    );
+  // Never cache CDN
+  if (isCDN(url.href)) {
+    event.respondWith(fetch(req).catch(() => new Response('', {status: 504})));
     return;
   }
 
-  // Cache-first for our app shell
-  event.respondWith(
-    caches.match(req).then((hit) => hit || fetch(req))
-  );
+  // Network-first for HTML with offline fallbacks
+  if (isHTML) {
+    event.respondWith((async () => {
+      try {
+        return await fetch(req);
+      } catch {
+        if (url.pathname.endsWith('/app.html')) {
+          return (await caches.match('./app.html?v=2025-09-23-02')) || (await caches.match('./app.html')) || Response.error();
+        }
+        if (url.pathname.endsWith('/help.html')) {
+          return (await caches.match('./help.html?v=2025-09-23-02')) || (await caches.match('./help.html')) || Response.error();
+        }
+        return (await caches.match('./index.html?v=2025-09-23-02')) || (await caches.match('./index.html')) || new Response('Offline', { status: 503, headers: { 'Content-Type': 'text/plain' } });
+      }
+    })());
+    return;
+  }
+
+  // Same-origin: cache-first for static assets
+  if (url.origin === location.origin) {
+    event.respondWith((async () => {
+      const cached = await caches.match(req);
+      if (cached) return cached;
+
+      try {
+        const res = await fetch(req);
+        const key = url.pathname + (url.search || '');
+        if (ASSETS.includes(key) || ASSETS.includes('.' + key)) {
+          const cache = await caches.open(CACHE_NAME);
+          cache.put(req, res.clone());
+        }
+        return res;
+      } catch {
+        return new Response('', { status: 504 });
+      }
+    })());
+    return;
+  }
+
+  // Third-party (non-CDN): go to network
+  event.respondWith(fetch(req));
 });
