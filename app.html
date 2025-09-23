@@ -202,7 +202,7 @@
             <!-- Nurse + Remember -->
             <div>
               <div class="flex items-center justify-between">
-                <label for="nurseName" class="block text-sm font-semibold mb-1">Prepared by (Nurse’s Name)</label>
+                <label for="nurseName" class="block text-sm font-semibold mb-1">Prepared by (Nurse's Name)</label>
                 <label class="text-xs flex items-center gap-1 select-none">
                   <input id="rememberMe" type="checkbox" class="accent-sky-500"> Remember on this device (7 days)
                 </label>
@@ -241,7 +241,7 @@
         <section>
           <h3 class="font-semibold text-slate-700 mb-2">Branding &amp; Footer</h3>
           <div class="grid gap-3">
-            <input id="footerNote" class="vn-field vn-input w-full" placeholder="Footer note (e.g., Nurse’s signature or clinic name)"/>
+            <input id="footerNote" class="vn-field vn-input w-full" placeholder="Footer note (e.g., Nurse's signature or clinic name)"/>
           </div>
         </section>
 
@@ -408,7 +408,7 @@
       }));
 
       safe($('btnWhatsApp'), el => el.addEventListener('click', ()=>{
-        if(!navigator.onLine){ alert("You’re offline—try again later."); return; }
+        if(!navigator.onLine){ alert("You're offline—try again later."); return; }
         if($('rememberMe')?.checked){
           const data={ nurse:$('nurseName')?.value||'', patient:$('patientName')?.value||'', ts:Date.now() };
           localStorage.setItem('vn_mem', JSON.stringify(data));
@@ -427,7 +427,7 @@
       }));
 
       safe($('btnEmail'), el => el.addEventListener('click', async ()=>{
-        if(!navigator.onLine){ alert("You’re offline—try again later."); return; }
+        if(!navigator.onLine){ alert("You're offline—try again later."); return; }
         if($('rememberMe')?.checked){
           const data={ nurse:$('nurseName')?.value||'', patient:$('patientName')?.value||'', ts:Date.now() };
           localStorage.setItem('vn_mem', JSON.stringify(data));
