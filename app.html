@@ -7,64 +7,33 @@
   <title>Victoria Nurse — We Care Together</title>
 
   <!-- Version -->
-  <script>window.__VN_VER__="2025-09-17-53";</script>
+  <script>window.__VN_VER__="2025-09-23-02";</script>
 
   <!-- PWA + Icons -->
-  <link rel="manifest" href="./manifest.webmanifest?v=2025-09-17-53"/>
+  <link rel="manifest" href="./manifest.webmanifest?v=2025-09-23-02"/>
   <meta name="theme-color" content="#0EA5E9"/>
-  <link rel="icon" type="image/png" href="./icons/favicon.png?v=2025-09-17-53"/>
-  <link rel="apple-touch-icon" sizes="180x180" href="./icons/icon-180.png?v=2025-09-17-53"/>
+  <link rel="icon" type="image/png" href="./icons/favicon.png?v=2025-09-23-02"/>
+  <link rel="apple-touch-icon" sizes="180x180" href="./icons/icon-180.png?v=2025-09-23-02"/>
 
-  <!-- Tailwind + PDF -->
+  <!-- Tailwind + jsPDF (no html2canvas) -->
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
 
   <style>
     :root{ --med-teal:#14B8A6; --med-sky:#0EA5E9; --med-indigo:#1E40AF; --label:#0891B2; }
-
-    /* Help-page colors */
     body { background:#f9fafb; color:#1f2937; }
-
-    /* Title/tagline gradient */
-    .gradient-text{
-      background:linear-gradient(90deg,#14B8A6,#0EA5E9,#1E40AF);
-      -webkit-background-clip:text; -webkit-text-fill-color:transparent;
-    }
-
-    /* Inputs */
     .vn-field{ padding:.95rem 1.1rem; border-radius:.9rem; border:1px solid #cbd5e1; background:#fff; line-height:1.6rem; }
     .vn-field:focus{ outline:none; box-shadow:0 0 0 2px var(--label); border-color:var(--label); }
     .vn-input{ height:3.25rem; } .vn-textarea{ min-height:3.75rem; }
-
-    /* Buttons (slimmer on ≥sm) */
-    .btn-grad{
-      background-image:linear-gradient(90deg,var(--med-teal),var(--med-sky),var(--med-indigo));
-      color:#fff; font-weight:700; padding:.75rem 1.1rem; border-radius:999px;
-      box-shadow:0 10px 24px rgba(0,0,0,.22);
-      transition:transform .12s,opacity .12s; width:100%;
-    }
+    .btn-grad{ background-image:linear-gradient(90deg,var(--med-teal),var(--med-sky),var(--med-indigo)); color:#fff; font-weight:700; padding:.75rem 1.1rem; border-radius:999px; box-shadow:0 10px 24px rgba(0,0,0,.22); transition:transform .12s,opacity .12s; width:100%; }
     @media (min-width:640px){ .btn-grad{ width:auto; min-width:170px; } }
     .btn-grad:hover{ opacity:.97; transform:translateY(-1px); }
     .btn-grad:active{ transform:translateY(0) scale(.985); }
-
-    /* Container: avoid clipping long forms or dropdowns */
-    .card-shell { overflow:visible; }
-    .card-body  { overflow:visible; }
-
-    /* Settings dropdown (z-index & reliable clicks) */
     .dropdown { position:relative; display:inline-block; z-index:80; }
-    .dropdown-menu{
-      position:absolute; right:0; top:100%; margin-top:.5rem;
-      background:#fff; color:#0f172a; width:240px;
-      border-radius:.75rem; box-shadow:0 10px 28px rgba(0,0,0,.15);
-      border:1px solid rgba(2,6,23,.06);
-      display:none; overflow:hidden; z-index:90; pointer-events:auto;
-    }
+    .dropdown-menu{ position:absolute; right:0; top:100%; margin-top:.5rem; background:#fff; color:#0f172a; width:240px; border-radius:.75rem; box-shadow:0 10px 28px rgba(0,0,0,.15); border:1px solid rgba(2,6,23,.06); display:none; overflow:hidden; z-index:90; }
     .dropdown.open .dropdown-menu{ display:block; }
     .dropdown-item{ display:block; width:100%; text-align:left; padding:.6rem .9rem; font-size:.9rem; }
     .dropdown-item:hover{ background:#f1f5f9; }
-
-    /* Modal */
     .modal{ position:fixed; inset:0; display:none; align-items:center; justify-content:center; z-index:100; }
     .modal.on{ display:flex; }
     .modal-back{ position:absolute; inset:0; background:rgba(0,0,0,.45); }
@@ -75,38 +44,35 @@
 <body class="min-h-screen antialiased">
   <div class="min-h-screen p-4 flex items-start justify-center">
     <main class="w-full max-w-3xl">
-      <div class="bg-white/95 backdrop-blur-xl shadow-2xl rounded-3xl ring-1 ring-slate-100 card-shell">
+      <div class="bg-white/95 backdrop-blur-xl shadow-2xl rounded-3xl ring-1 ring-slate-100">
 
 <!-- Header -->
-<header class="header-bar p-6 flex items-center justify-between bg-gradient-to-r from-teal-500 via-sky-500 to-indigo-800 rounded-t-3xl">
-  <!-- subtle veil to soften the gradient under text -->
-  <div class="header-veil"></div>
-
-  <div class="flex items-center gap-4 relative">
-    <a href="./index.html?v=2025-09-17-53" aria-label="Home">
-      <img src="./icons/icon-192.png?v=2025-09-17-53" alt="Victoria Nurse" class="h-14 w-14 rounded-2xl shadow"/>
+<header class="p-6 flex items-center justify-between bg-gradient-to-r from-teal-500 via-sky-500 to-indigo-800 rounded-t-3xl">
+  <div class="flex items-center gap-4">
+    <a href="./index.html?v=2025-09-23-02" aria-label="Home">
+      <img src="./icons/icon-192.png?v=2025-09-23-02" alt="Victoria Nurse" class="h-14 w-14 rounded-2xl shadow"/>
     </a>
-    <div class="brand-box">
-      <div class="brand-title text-xl sm:text-2xl">Victoria Nurse</div>
-      <div class="brand-tag text-xs sm:text-sm">We Care Together</div>
+    <div>
+      <div class="text-xl sm:text-2xl font-semibold">Victoria Nurse</div>
+      <div class="text-xs sm:text-sm">We Care Together</div>
     </div>
   </div>
 
   <!-- Settings dropdown -->
-  <div class="dropdown relative z-50" id="settingsWrap">
+  <div class="dropdown" id="settingsWrap">
     <button type="button" id="settingsBtn"
-      class="settings-btn-veil text-white text-xl px-2 py-1 rounded-lg hover:bg-white/30 focus:outline-none focus:ring-2 focus:ring-white/60"
+      class="text-white text-xl px-2 py-1 rounded-lg hover:bg-white/30 focus:outline-none focus:ring-2 focus:ring-white/60"
       aria-haspopup="true" aria-expanded="false" title="Settings">⚙</button>
     <div class="dropdown-menu" id="settingsMenu" role="menu" aria-label="Settings">
       <button id="menuBranding" class="dropdown-item" role="menuitem">Branding &amp; Footer</button>
       <button id="menuTheme" class="dropdown-item" role="menuitem">Theme</button>
-      <a id="menuHelp" href="./help.html?v=2025-09-17-53" class="dropdown-item" role="menuitem">Show Guide Page</a>
+      <a id="menuHelp" href="./help.html?v=2025-09-23-02" class="dropdown-item" role="menuitem">Show Guide Page</a>
     </div>
   </div>
 </header>
 
         <!-- Body -->
-        <section class="p-6 grid gap-6 card-body" role="form" aria-label="Patient Vitals Form">
+        <section class="p-6 grid gap-6" role="form" aria-label="Patient Vitals Form">
           <form id="formVitals" class="grid gap-6" autocomplete="off" novalidate>
             <!-- Patient -->
             <div>
@@ -202,7 +168,7 @@
             <!-- Nurse + Remember -->
             <div>
               <div class="flex items-center justify-between">
-                <label for="nurseName" class="block text-sm font-semibold mb-1">Prepared by (Nurse's Name)</label>
+                <label for="nurseName" class="block text-sm font-semibold mb-1">Prepared by (Nurse’s Name)</label>
                 <label class="text-xs flex items-center gap-1 select-none">
                   <input id="rememberMe" type="checkbox" class="accent-sky-500"> Remember on this device (7 days)
                 </label>
@@ -212,9 +178,9 @@
 
             <!-- Actions -->
             <div class="flex flex-col sm:flex-row flex-wrap gap-3 justify-center">
-              <button id="btnPreview" type="button" class="btn-grad">Preview & PDF</button>
+              <button id="btnPreview"  type="button" class="btn-grad">Preview & PDF</button>
               <button id="btnWhatsApp" type="button" class="btn-grad">Share WhatsApp</button>
-              <button id="btnEmail" type="button" class="btn-grad">Share Email</button>
+              <button id="btnEmail"    type="button" class="btn-grad">Share Email</button>
             </div>
           </form>
         </section>
@@ -226,40 +192,6 @@
         </footer>
       </div>
     </main>
-  </div>
-
-  <!-- SETTINGS MODAL -->
-  <div id="settingsModal" class="modal" aria-hidden="true" role="dialog" aria-modal="true">
-    <div class="modal-back" id="settingsBackdrop"></div>
-    <div class="modal-panel">
-      <header class="px-5 py-4 border-b border-slate-200 flex items-center justify-between">
-        <h2 class="font-bold text-slate-800">Settings</h2>
-        <button id="settingsClose" class="text-slate-500 hover:text-slate-800 text-xl" aria-label="Close">✕</button>
-      </header>
-      <div class="p-5 grid gap-5">
-        <!-- Branding & Footer -->
-        <section>
-          <h3 class="font-semibold text-slate-700 mb-2">Branding &amp; Footer</h3>
-          <div class="grid gap-3">
-            <input id="footerNote" class="vn-field vn-input w-full" placeholder="Footer note (e.g., Nurse's signature or clinic name)"/>
-          </div>
-        </section>
-
-        <!-- Theme -->
-        <section>
-          <h3 class="font-semibold text-slate-700 mb-2">Theme</h3>
-          <select id="themeSel" class="vn-field w-full">
-            <option value="system">System</option>
-            <option value="light">Light</option>
-            <option value="dark">Dark</option>
-          </select>
-        </section>
-      </div>
-      <footer class="px-5 py-4 border-t border-slate-200 flex justify-end gap-3">
-        <button id="settingsSave" class="btn-grad sm:w-auto">Save</button>
-        <button id="settingsCancel" class="btn-grad sm:w-auto" style="background-image:none;background:#94a3b8;">Cancel</button>
-      </footer>
-    </div>
   </div>
 
   <!-- SW register -->
@@ -275,39 +207,34 @@
     function onReady(fn){ if (document.readyState!=='loading') fn(); else document.addEventListener('DOMContentLoaded', fn); }
     onReady(function(){
       const $ = (id)=>document.getElementById(id);
-      const safe = (el, fn)=>{ if(el) fn(el); };
       $('year') && ( $('year').textContent = new Date().getFullYear() );
 
-      /* Settings dropdown */
+      /* Settings dropdown (minimal) */
       const wrap = $('settingsWrap'), btn = $('settingsBtn'), menu = $('settingsMenu');
-      function openDD(){ wrap?.classList.add('open'); btn?.setAttribute('aria-expanded','true'); }
-      function closeDD(){ wrap?.classList.remove('open'); btn?.setAttribute('aria-expanded','false'); }
-      safe(btn, b=>{
-        b.addEventListener('click', (e)=>{ e.preventDefault(); e.stopPropagation(); wrap?.classList.contains('open') ? closeDD() : openDD(); });
-      });
-      safe(menu, m=> m.addEventListener('click', (e)=> e.stopPropagation()));
+      const openDD = ()=>{ wrap?.classList.add('open'); btn?.setAttribute('aria-expanded','true'); };
+      const closeDD= ()=>{ wrap?.classList.remove('open'); btn?.setAttribute('aria-expanded','false'); };
+      btn?.addEventListener('click', (e)=>{ e.preventDefault(); e.stopPropagation(); wrap?.classList.contains('open')?closeDD():openDD(); });
+      menu?.addEventListener('click', (e)=> e.stopPropagation());
       document.addEventListener('click', ()=> closeDD());
       document.addEventListener('keydown', (e)=>{ if(e.key==='Escape') closeDD(); });
 
-      /* Settings modal */
-      const modal=$('settingsModal'), back=$('settingsBackdrop'), mClose=$('settingsClose'), mCancel=$('settingsCancel'), mSave=$('settingsSave'), themeSel=$('themeSel');
-      function openModal(){ modal?.classList.add('on'); modal?.setAttribute('aria-hidden','false'); }
-      function closeModal(){ modal?.classList.remove('on'); modal?.setAttribute('aria-hidden','true'); }
-      $('menuBranding')?.addEventListener('click', ()=>{ closeDD(); openModal(); });
-      $('menuTheme')?.addEventListener('click', ()=>{ closeDD(); openModal(); themeSel?.focus({preventScroll:true}); });
-      back?.addEventListener('click', closeModal);
-      mClose?.addEventListener('click', closeModal);
-      mCancel?.addEventListener('click', closeModal);
+      /* Settings modal (stub controls kept for future expansion) */
+      const modal=$('settingsModal'), back=$('settingsBackdrop'), mClose=$('settingsClose'), mCancel=$('settingsCancel'), mSave=$('settingsSave'), themeSel=$('themeSel'), menuBranding=$('menuBranding'), menuTheme=$('menuTheme');
+      const openModal = ()=>{ modal?.classList.add('on'); modal?.setAttribute('aria-hidden','false'); };
+      const closeModal= ()=>{ modal?.classList.remove('on'); modal?.setAttribute('aria-hidden','true'); };
+      menuBranding?.addEventListener('click', ()=>{ closeDD(); openModal(); });
+      menuTheme?.addEventListener('click', ()=>{ closeDD(); openModal(); themeSel?.focus({preventScroll:true}); });
+      back?.addEventListener('click', closeModal); mClose?.addEventListener('click', closeModal); mCancel?.addEventListener('click', closeModal);
       mSave?.addEventListener('click', ()=>{ localStorage.setItem('vn_theme', themeSel?.value || 'system'); closeModal(); alert('Settings saved'); });
 
       /* Remember Me (7 days) */
       const EXP = 7*24*60*60*1000;
-      function saveLocalIfChecked(){
+      function saveRemember(){
         if(!$('rememberMe')?.checked) return;
         const data={ nurse:$('nurseName')?.value||'', patient:$('patientName')?.value||'', ts:Date.now() };
         localStorage.setItem('vn_mem', JSON.stringify(data));
       }
-      (function loadLocal(){
+      (function loadRemember(){
         try{
           const d = JSON.parse(localStorage.getItem('vn_mem')||'{}');
           if(d.ts && Date.now()-d.ts<EXP){
@@ -337,9 +264,9 @@
         rec.onend   = ()=>{ dBtn.textContent='🎙️ Dictate'; };
       })();
 
-      /* Build record */
-      function buildRecord(){
-        const g=id=>($(''+id)?.value||'').trim();
+      /* Record builder */
+      function g(id){ return (document.getElementById(id)?.value || '').trim(); }
+      function record(){
         return {
           patient:g('patientName'), temp:g('temperature'), pulse:g('pulse'), rr:g('respiratoryRate'),
           sbp:g('sbp'), dbp:g('dbp'), spo2:g('oxygenSaturation'), sugar:g('bloodSugar'),
@@ -354,121 +281,98 @@
           `Patient: ${r.patient||'-'}`,
           `BP: ${r.sbp||'-'}/${r.dbp||'-'} mmHg | HR: ${r.pulse||'-'} bpm | Temp: ${r.temp||'-'} °C`,
           `SpO₂: ${r.spo2||'-'}% | RR: ${r.rr||'-'}/min | Weight: ${r.weight||'-'} kg | Sugar: ${r.sugar||'-'} mg/dL`,
-          `Meds: AM ${r.meds.morning||'-'}` + ` | PM ${r.meds.afternoon||'-'}` + ` | EV ${r.meds.evening||'-'}`,
+          `Meds: AM ${r.meds.morning||'-'} | PM ${r.meds.afternoon||'-'} | EV ${r.meds.evening||'-'}`,
           `Pain: ${r.pain||'-'}/10`,
           `Notes: ${r.notes||'-'}`,
           `Prepared by: ${r.nurse||'-'}`,
-          r.footer ? `Footer: ${r.footer}` : ''
+          r.footer ? `Footer: ${r.footer}` : 'Powered by: KarltheBrown'
         ].filter(Boolean).join('\n');
       }
 
-      /* PDF */
+      /* PDF (text-only layout to avoid CORS/taint issues) */
       async function makePdf(rec){
-        try{
-          const { jsPDF } = window.jspdf || {};
-          if(!jsPDF){ alert('PDF library not loaded'); return null; }
-          const pdf = new jsPDF('p','pt','a4');
-          const W = pdf.internal.pageSize.getWidth();
-          pdf.setFillColor(14,165,233); pdf.rect(20, 20, W-40, 6, 'F');
-          pdf.setFont('helvetica','bold'); pdf.setFontSize(20); pdf.setTextColor(14,165,233); pdf.text('Victoria Nurse', 28, 52);
-          pdf.setFont('times','italic'); pdf.setFontSize(12); pdf.setTextColor(20,83,136); pdf.text('We Care Together', 28, 70);
-          pdf.setFont('helvetica','normal'); pdf.setFontSize(12); pdf.setTextColor(31,41,55);
-          let y=98, line=t=>{ pdf.text(t,28,y); y+=18; };
-          line(`Patient: ${rec.patient||'-'}`);
-          line(`BP: ${rec.sbp||'-'}/${rec.dbp||'-'} mmHg | HR: ${rec.pulse||'-'} bpm | Temp: ${rec.temp||'-'} °C`);
-          line(`SpO₂: ${rec.spo2||'-'}% | RR: ${rec.rr||'-'}/min | Weight: ${rec.weight||'-'} kg | Sugar: ${rec.sugar||'-'} mg/dL`);
-          line(`Pain: ${rec.pain||'-'}/10`);
-          y+=6; pdf.text('Medications:', 28, y); y+=18;
-          line(`AM: ${rec.meds.morning||'-'}`); line(`PM: ${rec.meds.afternoon||'-'}`); line(`EV: ${rec.meds.evening||'-'}`);
-          y+=6; pdf.text('Notes:', 28, y); y+=18;
-          const lines = pdf.splitTextToSize(rec.notes||'-', W-56); pdf.text(lines, 28, y); y += lines.length*14 + 12;
-          pdf.setFontSize(10); pdf.setTextColor(107,114,128);
-          const left = `Prepared by: ${rec.nurse||'-'}`;
-          const right = rec.footer ? rec.footer : 'Powered by: KarltheBrown';
-          pdf.text(left, 28, y); pdf.text(right, W - (pdf.getTextWidth(right)+28), y);
-          return pdf.output('blob');
-        }catch(e){ alert('PDF error'); return null; }
+        const { jsPDF } = window.jspdf || {};
+        if(!jsPDF){ alert('PDF library not loaded'); return null; }
+        const pdf = new jsPDF('p','pt','a4');
+        const W = pdf.internal.pageSize.getWidth();
+
+        pdf.setFillColor(14,165,233); pdf.rect(20, 20, W-40, 6, 'F');
+        pdf.setFont('helvetica','bold'); pdf.setFontSize(20); pdf.setTextColor(14,165,233); pdf.text('Victoria Nurse', 28, 52);
+        pdf.setFont('times','italic'); pdf.setFontSize(12); pdf.setTextColor(20,83,136); pdf.text('We Care Together', 28, 70);
+        pdf.setFont('helvetica','normal'); pdf.setFontSize(12); pdf.setTextColor(31,41,55);
+
+        let y=98, line=t=>{ pdf.text(t,28,y); y+=18; };
+        line(`Patient: ${rec.patient||'-'}`);
+        line(`BP: ${rec.sbp||'-'}/${rec.dbp||'-'} mmHg | HR: ${rec.pulse||'-'} bpm | Temp: ${rec.temp||'-'} °C`);
+        line(`SpO₂: ${rec.spo2||'-'}% | RR: ${rec.rr||'-'}/min | Weight: ${rec.weight||'-'} kg | Sugar: ${rec.sugar||'-'} mg/dL`);
+        line(`Pain: ${rec.pain||'-'}/10`);
+        y+=6; pdf.text('Medications:', 28, y); y+=18;
+        line(`AM: ${rec.meds.morning||'-'}`); line(`PM: ${rec.meds.afternoon||'-'}`); line(`EV: ${rec.meds.evening||'-'}`);
+        y+=6; pdf.text('Notes:', 28, y); y+=18;
+        const lines = pdf.splitTextToSize(rec.notes||'-', W-56); pdf.text(lines, 28, y); y += lines.length*14 + 12;
+
+        pdf.setFontSize(10); pdf.setTextColor(107,114,128);
+        const left = `Prepared by: ${rec.nurse||'-'}`;
+        const right = rec.footer ? rec.footer : 'Powered by: KarltheBrown';
+        pdf.text(left, 28, y);
+        pdf.text(right, W - (pdf.getTextWidth(right)+28), y);
+
+        return pdf.output('blob');
       }
 
-      /* Buttons */
-      safe($('btnPreview'), el => el.addEventListener('click', async ()=>{
-        if($('rememberMe')?.checked){
-          const data={ nurse:$('nurseName')?.value||'', patient:$('patientName')?.value||'', ts:Date.now() };
-          localStorage.setItem('vn_mem', JSON.stringify(data));
-        }
-        const rec = buildRecord();
+      /* === Buttons — iOS/Safari-safe === */
+
+      // Preview & PDF (download in the same user gesture)
+      document.getElementById('btnPreview')?.addEventListener('click', async function(){
+        const rec = record();
         const blob = await makePdf(rec);
         if(!blob) return;
         const url = URL.createObjectURL(blob);
         const a = document.createElement('a');
         a.href = url;
         a.download = `Victoria_Nurse_${(rec.patient||'patient').replace(/[^\w\-]+/g,'_')}_${new Date().toISOString().slice(0,10)}.pdf`;
-        a.click();
-        setTimeout(()=>URL.revokeObjectURL(url), 2500);
-      }));
+        a.click(); // synchronous download
+        setTimeout(()=>URL.revokeObjectURL(url), 2000);
+      }, {passive:true});
 
-      safe($('btnWhatsApp'), el => el.addEventListener('click', ()=>{
-        if(!navigator.onLine){ alert("You're offline—try again later."); return; }
-        if($('rememberMe')?.checked){
-          const data={ nurse:$('nurseName')?.value||'', patient:$('patientName')?.value||'', ts:Date.now() };
-          localStorage.setItem('vn_mem', JSON.stringify(data));
+      // WhatsApp (use native scheme synchronously, then quick fallback to wa.me)
+      document.getElementById('btnWhatsApp')?.addEventListener('click', function(){
+        const r = record();
+        const text = encodeURIComponent(shareText(r));
+        const norm = s => (s||'').replace(/[^\d+]/g,'');
+        const phones = [
+          norm(document.getElementById('wa1')?.value),
+          norm(document.getElementById('wa2')?.value),
+          norm(document.getElementById('wa3')?.value),
+          ...(document.getElementById('groupPhones')?.value||'').split(/[,;\s]+/).map(norm)
+        ].filter(Boolean);
+        const num = phones[0] || '';
+
+        const native = `whatsapp://send?${num?`phone=${encodeURIComponent(num)}&`:''}text=${text}`;
+        try { window.location.href = native; } catch(_) {}
+        setTimeout(()=>{ window.location.href = num ? `https://wa.me/${encodeURIComponent(num)}?text=${text}`
+                                                   : `https://wa.me/?text=${text}`; }, 350);
+      }, {passive:true});
+
+      // Email (mailto assigned synchronously)
+      document.getElementById('btnEmail')?.addEventListener('click', function(){
+        const r = record();
+        const subject = encodeURIComponent(`Patient Vitals — ${r.patient||'Unnamed'}`);
+        const body    = encodeURIComponent(shareText(r));
+        const emails  = (document.getElementById('groupEmails')?.value||'').split(/[,;\s]+/).map(s=>s.trim()).filter(Boolean).join(',');
+        window.location.href = `mailto:${encodeURIComponent(emails)}?subject=${subject}&body=${body}`;
+      }, {passive:true});
+
+      // Light-weight self refresh (prevents stale assets on first boot)
+      (function(){
+        const VER = window.__VN_VER__;
+        const KEY = `vn_boot_${VER}`;
+        if (!localStorage.getItem(KEY)) {
+          try{ localStorage.setItem(KEY,'1'); location.replace(location.pathname + location.search + location.hash); }catch(_){}
         }
-        const rec = buildRecord(); const text = shareText(rec);
-        const normPhone = p => (p||'').replace(/[^\d+]/g,'').trim();
-        const parsePhones = s => (s||'').split(/[,;\s]+/).map(normPhone).filter(Boolean);
-        const unique = a => [...new Set(a)];
-        const nums = unique([ normPhone($('wa1')?.value), normPhone($('wa2')?.value), normPhone($('wa3')?.value), ...parsePhones($('groupPhones')?.value) ]).filter(Boolean);
-        (nums.length?nums:['']).forEach((num, i)=>{
-          const url = num ? `https://wa.me/${encodeURIComponent(num)}?text=${encodeURIComponent(text)}`
-                          : `https://wa.me/?text=${encodeURIComponent(text)}`;
-          setTimeout(()=>window.open(url,'_blank'), i*220);
-        });
-        setTimeout(()=>{ window.location.href='./index.html?v='+encodeURIComponent(window.__VN_VER__||''); }, 900);
-      }));
-
-      safe($('btnEmail'), el => el.addEventListener('click', async ()=>{
-        if(!navigator.onLine){ alert("You're offline—try again later."); return; }
-        if($('rememberMe')?.checked){
-          const data={ nurse:$('nurseName')?.value||'', patient:$('patientName')?.value||'', ts:Date.now() };
-          localStorage.setItem('vn_mem', JSON.stringify(data));
-        }
-        const rec = buildRecord();
-        const subject = `Patient Vitals — ${rec.patient||'Unnamed'}`;
-        const body = shareText(rec);
-        const emails = ($('groupEmails')?.value||'').split(/[,;\s]+/).map(s=>s.trim()).filter(Boolean);
-        window.location.href = `mailto:${encodeURIComponent(emails.join(','))}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-        setTimeout(()=>{ window.location.href='./index.html?v='+encodeURIComponent(window.__VN_VER__||''); }, 1000);
-      }));
-
-    }); // onReady
+      })();
+    });
   })();
-  </script>
-
-  <!-- One-shot cache buster for this page -->
-  <script>
-    (async () => {
-      const VER = "2025-09-17-53";
-      const KEY = `vn_self_cleanup_${VER}_app`;
-      const mustReset = new URLSearchParams(location.search).has('reset');
-      if (mustReset || !localStorage.getItem(KEY)) {
-        try {
-          if ('serviceWorker' in navigator) {
-            const regs = await navigator.serviceWorker.getRegistrations();
-            await Promise.all(regs.map(r => r.unregister().catch(()=>{})));
-          }
-          if (window.caches?.keys) {
-            const names = await caches.keys();
-            await Promise.all(names.map(n => caches.delete(n).catch(()=>{})));
-          }
-          localStorage.setItem(KEY, '1');
-          if (!sessionStorage.getItem(KEY)) {
-            sessionStorage.setItem(KEY, '1');
-            location.replace(location.pathname + location.search + location.hash);
-            return;
-          }
-        } catch(_) {}
-      }
-    })();
   </script>
 </body>
 </html>
